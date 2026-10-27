@@ -3,7 +3,7 @@
   - Biondi Tommaso s...
   - Longo Debora s...
   - Scottoni Emanuele s5798773
-  - Perisi Pietro s6190723:
+  - Perisi Pietro s6190723
     
 ## Web programming skills
 
