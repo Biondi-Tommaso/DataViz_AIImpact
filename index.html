@@ -21,7 +21,7 @@
       --ease:       cubic-bezier(.22, .61, .36, 1);
 
       /* Data Viz Accent Colors */
-      --accent-red: #e2231a;
+      --accent-red: #b61b13;
       --accent-node: #f4a09a;
       --accent-line: rgba(226, 35, 26, .18);
     }
@@ -660,19 +660,19 @@
       let dpr   = 1;
 
       const CONFIG = {
-        density: 4200,            // px² per nodo (più basso = più pallini)
+        density: 12000,
         minNodes: 110,
         maxNodes: 280,
         linkDist: 150,
-        nodeRadius: [3.2, 7],     // pallini più grossi
-        speed: [0.35, 0.8],       // modulo della velocità di base
+        nodeRadius: [4.5, 7],
+        speed: [0.35, 0.5],
         pointerRadius: 135,
         pointerForce: 0.16,
         maxSpeed: 2.6,
         damping: 0.97,
         shapes: ["circle"],
         nodeFill:   "rgba(244, 160, 154, 0.85)",
-        nodeStroke: "rgba(226, 35, 26, 0.6)"
+        nodeStroke: "rgba(182, 27, 19, 0.6)"
       };
 
       function resizeCanvas() {
