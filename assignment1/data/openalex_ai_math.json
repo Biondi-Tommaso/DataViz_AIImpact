@@ -1,0 +1,362 @@
+{
+  "metadata": {
+    "source": "OpenAlex API (https://api.openalex.org/works)",
+    "filter": "concepts.id:C33923547,concepts.id:C154945302",
+    "period": "2015-2026",
+    "generatedAt": "2026-11-24T10:59:55.756619+00:00"
+  },
+  "preAiHistoricalSeries": [
+    {
+      "year": "2015",
+      "totalCount": 196280
+    },
+    {
+      "year": "2016",
+      "totalCount": 199672
+    },
+    {
+      "year": "2017",
+      "totalCount": 202756
+    },
+    {
+      "year": "2018",
+      "totalCount": 223333
+    },
+    {
+      "year": "2019",
+      "totalCount": 241122
+    }
+  ],
+  "universitiesByYear": [
+    {
+      "year": "2019",
+      "Oxford": 800,
+      "NYU": 540,
+      "UniGe": 176
+    },
+    {
+      "year": "2020",
+      "Oxford": 868,
+      "NYU": 648,
+      "UniGe": 207
+    },
+    {
+      "year": "2021",
+      "Oxford": 938,
+      "NYU": 601,
+      "UniGe": 220
+    },
+    {
+      "year": "2022",
+      "Oxford": 884,
+      "NYU": 559,
+      "UniGe": 221
+    },
+    {
+      "year": "2023",
+      "Oxford": 928,
+      "NYU": 623,
+      "UniGe": 230
+    },
+    {
+      "year": "2024",
+      "Oxford": 619,
+      "NYU": 484,
+      "UniGe": 150
+    },
+    {
+      "year": "2025",
+      "Oxford": 606,
+      "NYU": 428,
+      "UniGe": 110
+    },
+    {
+      "year": "2026",
+      "Oxford": 629,
+      "NYU": 455,
+      "UniGe": 93
+    }
+  ],
+  "geographicHeatmap": [
+    {
+      "country": "Stati Uniti",
+      "code": "US",
+      "values": {
+        "2019": 34604,
+        "2020": 38480,
+        "2021": 38396,
+        "2022": 35763,
+        "2023": 37228,
+        "2024": 24982,
+        "2025": 20006,
+        "2026": 20971
+      }
+    },
+    {
+      "country": "Cina",
+      "code": "CN",
+      "values": {
+        "2019": 54746,
+        "2020": 59172,
+        "2021": 69715,
+        "2022": 80721,
+        "2023": 90805,
+        "2024": 70544,
+        "2025": 51674,
+        "2026": 32249
+      }
+    },
+    {
+      "country": "Regno Unito",
+      "code": "GB",
+      "values": {
+        "2019": 10518,
+        "2020": 11008,
+        "2021": 11779,
+        "2022": 11211,
+        "2023": 12108,
+        "2024": 8341,
+        "2025": 6447,
+        "2026": 6422
+      }
+    },
+    {
+      "country": "Germania",
+      "code": "DE",
+      "values": {
+        "2019": 9547,
+        "2020": 9972,
+        "2021": 11138,
+        "2022": 10837,
+        "2023": 11672,
+        "2024": 7473,
+        "2025": 5695,
+        "2026": 68211
+      }
+    },
+    {
+      "country": "Francia",
+      "code": "FR",
+      "values": {
+        "2019": 8156,
+        "2020": 7728,
+        "2021": 7962,
+        "2022": 8311,
+        "2023": 8338,
+        "2024": 6214,
+        "2025": 4533,
+        "2026": 4225
+      }
+    },
+    {
+      "country": "Italia",
+      "code": "IT",
+      "values": {
+        "2019": 6025,
+        "2020": 6379,
+        "2021": 7016,
+        "2022": 7280,
+        "2023": 7760,
+        "2024": 4929,
+        "2025": 3851,
+        "2026": 3561
+      }
+    },
+    {
+      "country": "Canada",
+      "code": "CA",
+      "values": {
+        "2019": 6233,
+        "2020": 6928,
+        "2021": 7353,
+        "2022": 6934,
+        "2023": 7423,
+        "2024": 4704,
+        "2025": 3479,
+        "2026": 2986
+      }
+    },
+    {
+      "country": "Giappone",
+      "code": "JP",
+      "values": {
+        "2019": 7442,
+        "2020": 7315,
+        "2021": 7556,
+        "2022": 7326,
+        "2023": 7696,
+        "2024": 5422,
+        "2025": 4195,
+        "2026": 3804
+      }
+    },
+    {
+      "country": "Svizzera",
+      "code": "CH",
+      "values": {
+        "2019": 2219,
+        "2020": 2464,
+        "2021": 2887,
+        "2022": 2934,
+        "2023": 2892,
+        "2024": 1847,
+        "2025": 1582,
+        "2026": 1591
+      }
+    },
+    {
+      "country": "India",
+      "code": "IN",
+      "values": {
+        "2019": 11919,
+        "2020": 14614,
+        "2021": 17345,
+        "2022": 19511,
+        "2023": 20707,
+        "2024": 15413,
+        "2025": 11455,
+        "2026": 7836
+      }
+    }
+  ],
+  "leanVerificationByYear": [
+    {
+      "year": "2019",
+      "verifiedPct": 0.0,
+      "unverifiedPct": 100.0,
+      "verifiedCount": 6,
+      "totalCount": 241122
+    },
+    {
+      "year": "2020",
+      "verifiedPct": 0.0,
+      "unverifiedPct": 100.0,
+      "verifiedCount": 6,
+      "totalCount": 254336
+    },
+    {
+      "year": "2021",
+      "verifiedPct": 0.0,
+      "unverifiedPct": 100.0,
+      "verifiedCount": 21,
+      "totalCount": 278067
+    },
+    {
+      "year": "2022",
+      "verifiedPct": 0.0,
+      "unverifiedPct": 100.0,
+      "verifiedCount": 15,
+      "totalCount": 275106
+    },
+    {
+      "year": "2023",
+      "verifiedPct": 0.0,
+      "unverifiedPct": 100.0,
+      "verifiedCount": 18,
+      "totalCount": 301202
+    },
+    {
+      "year": "2024",
+      "verifiedPct": 0.0,
+      "unverifiedPct": 100.0,
+      "verifiedCount": 28,
+      "totalCount": 218109
+    },
+    {
+      "year": "2025",
+      "verifiedPct": 0.0,
+      "unverifiedPct": 100.0,
+      "verifiedCount": 61,
+      "totalCount": 211608
+    },
+    {
+      "year": "2026",
+      "verifiedPct": 0.2,
+      "unverifiedPct": 99.8,
+      "verifiedCount": 700,
+      "totalCount": 334886
+    }
+  ],
+  "peerReviewByYear": [
+    {
+      "year": "2019",
+      "peerReviewedPct": 90,
+      "preprintPct": 10,
+      "totalCount": 241122
+    },
+    {
+      "year": "2020",
+      "peerReviewedPct": 90,
+      "preprintPct": 10,
+      "totalCount": 254336
+    },
+    {
+      "year": "2021",
+      "peerReviewedPct": 89,
+      "preprintPct": 11,
+      "totalCount": 278067
+    },
+    {
+      "year": "2022",
+      "peerReviewedPct": 91,
+      "preprintPct": 9,
+      "totalCount": 275106
+    },
+    {
+      "year": "2023",
+      "peerReviewedPct": 90,
+      "preprintPct": 10,
+      "totalCount": 301202
+    },
+    {
+      "year": "2024",
+      "peerReviewedPct": 89,
+      "preprintPct": 11,
+      "totalCount": 218109
+    },
+    {
+      "year": "2025",
+      "peerReviewedPct": 75,
+      "preprintPct": 25,
+      "totalCount": 211608
+    },
+    {
+      "year": "2026",
+      "peerReviewedPct": 37,
+      "preprintPct": 63,
+      "totalCount": 334886
+    }
+  ],
+  "subfieldsComparison": [
+    {
+      "field": "Logica & Fondamenti",
+      "pct2019": 24.2,
+      "pct2026": 37.5
+    },
+    {
+      "field": "Analisi Numerica & PDE",
+      "pct2019": 27.0,
+      "pct2026": 8.8
+    },
+    {
+      "field": "Combinatoria & Teoria Grafi",
+      "pct2019": 24.1,
+      "pct2026": 39.6
+    },
+    {
+      "field": "Algebra & Teoria dei Numeri",
+      "pct2019": 15.1,
+      "pct2026": 15.2
+    },
+    {
+      "field": "Geometria & Topologia",
+      "pct2019": 23.1,
+      "pct2026": 11.2
+    },
+    {
+      "field": "Probabilità & Statistica Mat.",
+      "pct2019": 23.4,
+      "pct2026": 27.8
+    }
+  ]
+}
