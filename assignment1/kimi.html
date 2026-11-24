@@ -1,0 +1,1766 @@
+<!DOCTYPE html>
+<html lang="it" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI-Math Data — L'Impatto dell'IA nella Matematica (2015–2026)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Fraunces', 'Georgia', 'serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            paper: '#F6F4EE',
+            ink: '#141B2E',
+            cobalt: '#1B3B8B',
+            cobaltDeep: '#0F2567',
+            slateBlue: '#5E78B5',
+            gold: '#C9A44C',
+            goldDeep: '#8C7328',
+            sand: '#EFE7CC',
+            muted: '#6B7280',
+            hairline: '#E5E1D5',
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    :root {
+      --cobalt: #1B3B8B;
+      --cobalt-deep: #0F2567;
+      --gold: #C9A44C;
+      --gold-deep: #8C7328;
+      --sand: #EFE7CC;
+      --ink: #141B2E;
+      --hairline: #E5E1D5;
+    }
+
+    html { -webkit-font-smoothing: antialiased; }
+
+    body {
+      background-color: #F6F4EE;
+      color: #141B2E;
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* ---------- Sfondo editoriale: grana + alone ---------- */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      pointer-events: none;
+      background:
+        radial-gradient(900px 500px at 85% -5%, rgba(27, 59, 139, 0.07), transparent 60%),
+        radial-gradient(700px 420px at -10% 30%, rgba(201, 164, 76, 0.08), transparent 60%),
+        radial-gradient(800px 600px at 60% 110%, rgba(27, 59, 139, 0.05), transparent 65%);
+    }
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      opacity: 0.5;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    }
+
+    /* ---------- Scrollbar ---------- */
+    ::-webkit-scrollbar { width: 10px; }
+    ::-webkit-scrollbar-track { background: #F6F4EE; }
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #1B3B8B, #C9A44C);
+      border-radius: 8px;
+      border: 2px solid #F6F4EE;
+    }
+    ::selection { background: #EFE7CC; color: #0F2567; }
+
+    /* ---------- Barra di avanzamento ---------- */
+    #scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      width: 0%;
+      background: linear-gradient(90deg, #0F2567 0%, #1B3B8B 55%, #C9A44C 100%);
+      z-index: 60;
+      transition: width 0.08s linear;
+    }
+
+    /* ---------- Tooltip ---------- */
+    #d3-tooltip {
+      position: fixed;
+      pointer-events: none;
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity 0.16s ease, transform 0.16s ease;
+      z-index: 9999;
+      background: linear-gradient(160deg, #122B73 0%, #0F2567 100%);
+      color: #FFFFFF;
+      padding: 11px 15px;
+      border-radius: 12px;
+      font-size: 12.5px;
+      line-height: 1.5;
+      box-shadow: 0 18px 40px rgba(15, 37, 103, 0.30), 0 2px 6px rgba(15, 37, 103, 0.18);
+      border: 1px solid rgba(201, 164, 76, 0.45);
+      max-width: 300px;
+    }
+    #d3-tooltip::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: -5px;
+      width: 10px; height: 10px;
+      transform: translateX(-50%) rotate(45deg);
+      background: #0F2567;
+      border-right: 1px solid rgba(201, 164, 76, 0.45);
+      border-bottom: 1px solid rgba(201, 164, 76, 0.45);
+    }
+
+    /* ---------- Pannelli ---------- */
+    .editorial-panel {
+      background: #FFFFFF;
+      border: 1px solid var(--hairline);
+      border-radius: 20px;
+      box-shadow:
+        0 1px 2px rgba(20, 27, 46, 0.04),
+        0 10px 30px rgba(20, 27, 46, 0.05);
+      transition: box-shadow 0.35s ease, transform 0.35s ease, border-color 0.35s ease;
+    }
+    .editorial-panel:hover {
+      box-shadow:
+        0 2px 4px rgba(20, 27, 46, 0.05),
+        0 18px 46px rgba(20, 27, 46, 0.09);
+      border-color: #DAD4C4;
+    }
+
+    /* ---------- Step scrollytelling ---------- */
+    .scrolly-step {
+      opacity: 0.28;
+      transform: translateY(10px) scale(0.995);
+      transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.45s ease;
+    }
+    .scrolly-step.is-active {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      box-shadow:
+        0 2px 6px rgba(20, 27, 46, 0.06),
+        0 22px 50px rgba(15, 37, 103, 0.10);
+    }
+
+    /* ---------- Reveal sezioni ---------- */
+    .reveal-section {
+      opacity: 0;
+      transform: translateY(26px);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal-section.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ---------- Assi D3 ---------- */
+    .axis text {
+      font-family: 'Inter', sans-serif;
+      fill: #6B7280;
+      font-size: 11px;
+    }
+    .axis path, .axis line { stroke: #DDD8CA; }
+    .grid line { stroke: rgba(20, 27, 46, 0.055); }
+    .grid path { stroke-width: 0; }
+
+    /* ---------- Navigatore laterale a punti ---------- */
+    .dot-nav-item .dot {
+      box-shadow: 0 0 0 3px rgba(27, 59, 139, 0);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .dot-nav-item.active .dot {
+      background: linear-gradient(135deg, #1B3B8B, #0F2567);
+      transform: scale(1.5);
+      box-shadow: 0 0 0 4px rgba(27, 59, 139, 0.12);
+    }
+    .dot-nav-item.active .nav-label { opacity: 1; }
+
+    /* ---------- Titoli capitolo ---------- */
+    .chapter-num {
+      font-family: 'Fraunces', Georgia, serif;
+      font-style: italic;
+      font-weight: 300;
+      color: rgba(27, 59, 139, 0.22);
+      line-height: 0.85;
+      user-select: none;
+    }
+
+    /* ---------- KPI hero ---------- */
+    .kpi-card {
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .kpi-card::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2.5px;
+      background: linear-gradient(90deg, #0F2567, #1B3B8B 55%, #C9A44C);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .kpi-card:hover { transform: translateY(-3px); }
+    .kpi-card:hover::before { transform: scaleX(1); }
+
+    /* ---------- Pulsanti ---------- */
+    .btn-pill {
+      border-radius: 999px;
+      transition: transform 0.2s ease, box-shadow 0.25s ease, background 0.25s ease, color 0.25s ease;
+      will-change: transform;
+    }
+    .btn-pill:hover { transform: translateY(-1px); }
+    .btn-pill:active { transform: translateY(0) scale(0.97); }
+
+    /* ---------- Animazione grafici ---------- */
+    .chart-enter {
+      animation: chartIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    @keyframes chartIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ---------- Freccia scorrimento ---------- */
+    .scroll-cue {
+      width: 44px; height: 44px;
+      border: 1px solid var(--hairline);
+      border-radius: 999px;
+      display: flex; align-items: center; justify-content: center;
+      background: #FFFFFF;
+      box-shadow: 0 4px 14px rgba(20, 27, 46, 0.06);
+      transition: all 0.3s ease;
+    }
+    .scroll-cue:hover {
+      border-color: #C9A44C;
+      color: #1B3B8B;
+      box-shadow: 0 8px 22px rgba(15, 37, 103, 0.12);
+    }
+
+    /* ---------- Testo math nel corpo ---------- */
+    .prose-math em {
+      font-family: 'Fraunces', Georgia, serif;
+      font-style: italic;
+    }
+
+    .hairline-top { border-top: 1px solid var(--hairline); }
+  </style>
+<base target="_blank">
+</head>
+<body class="selection:bg-sand selection:text-cobaltDeep">
+
+  <div id="scroll-progress"></div>
+  <div id="d3-tooltip"></div>
+
+  <!-- Banner errore caricamento JSON -->
+  <div id="json-error-banner" class="hidden bg-amber-50 border-b border-amber-300 text-amber-950 px-5 py-3 text-xs sm:text-sm text-center">
+    Impossibile caricare <code>./data/openalex_ai_math.json</code>. Assicurati di aver eseguito <code>python fetch_openalex_data.py</code> e di aprire la pagina tramite server locale (es. <code>python -m http.server 8000</code>).
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- HEADER                                                                -->
+  <!-- ===================================================================== -->
+  <nav class="sticky top-0 z-50 bg-[#F6F4EE]/85 backdrop-blur-xl border-b border-hairline/80">
+    <div class="max-w-6xl mx-auto px-5 sm:px-8 h-16 flex items-center justify-between">
+      <a href="#top" class="flex items-center gap-2.5 group">
+        <span class="w-8 h-8 rounded-lg bg-gradient-to-br from-cobalt to-cobaltDeep flex items-center justify-center shadow-md shadow-cobalt/20">
+          <svg class="w-4 h-4 text-sand" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 3.5v3m0 0a2.25 2.25 0 012.25 2.25M9.75 6.5a2.25 2.25 0 012.25-2.25m0 0h3m0 0a2.25 2.25 0 012.25 2.25M15 6.5a2.25 2.25 0 00-2.25 2.25M9.75 9.75v3m4.5-3v3m-4.5 0a2.25 2.25 0 002.25 2.25m2.25-2.25a2.25 2.25 0 012.25 2.25m0 0v3m0 0a2.25 2.25 0 01-2.25 2.25m2.25-2.25a2.25 2.25 0 002.25 2.25m-4.5 3v3m4.5-3a2.25 2.25 0 00-2.25 2.25m-4.5 0a2.25 2.25 0 01-2.25 2.25m7.5-9v9" />
+          </svg>
+        </span>
+        <span class="font-display font-semibold tracking-wide text-sm uppercase text-cobaltDeep">
+          AI-Math Data
+        </span>
+      </a>
+      <div class="flex items-center gap-5 sm:gap-7 text-[11px] sm:text-xs font-semibold tracking-widest uppercase text-gray-500">
+        <a href="#rivoluzione" class="hover:text-cobalt transition-colors">Trend &amp; ML</a>
+        <a href="#hub-globali" class="hover:text-cobalt transition-colors hidden sm:inline">Atenei</a>
+        <a href="#prove-formali" class="hover:text-cobalt transition-colors">Lean</a>
+        <a href="#preprint-review" class="hover:text-cobalt transition-colors hidden md:inline">Peer Review</a>
+        <a href="#mappa-geografica" class="hover:text-cobalt transition-colors">Rete</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Navigatore laterale a punti -->
+  <aside class="hidden xl:flex fixed right-7 top-1/2 -translate-y-1/2 z-40 flex-col gap-4" aria-label="Avanzamento capitoli">
+    <a href="#top" class="dot-nav-item group flex items-center justify-end gap-3 active" data-target="top">
+      <span class="nav-label text-[10px] uppercase tracking-wider font-semibold text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity">Intro</span>
+      <span class="dot w-2 h-2 rounded-full bg-gray-300"></span>
+    </a>
+    <a href="#rivoluzione" class="dot-nav-item group flex items-center justify-end gap-3" data-target="rivoluzione">
+      <span class="nav-label text-[10px] uppercase tracking-wider font-semibold text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity">Trend &amp; ML</span>
+      <span class="dot w-2 h-2 rounded-full bg-gray-300"></span>
+    </a>
+    <a href="#hub-globali" class="dot-nav-item group flex items-center justify-end gap-3" data-target="hub-globali">
+      <span class="nav-label text-[10px] uppercase tracking-wider font-semibold text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity">Atenei</span>
+      <span class="dot w-2 h-2 rounded-full bg-gray-300"></span>
+    </a>
+    <a href="#prove-formali" class="dot-nav-item group flex items-center justify-end gap-3" data-target="prove-formali">
+      <span class="nav-label text-[10px] uppercase tracking-wider font-semibold text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity">Lean 4</span>
+      <span class="dot w-2 h-2 rounded-full bg-gray-300"></span>
+    </a>
+    <a href="#preprint-review" class="dot-nav-item group flex items-center justify-end gap-3" data-target="preprint-review">
+      <span class="nav-label text-[10px] uppercase tracking-wider font-semibold text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity">Peer Review</span>
+      <span class="dot w-2 h-2 rounded-full bg-gray-300"></span>
+    </a>
+    <a href="#mappa-geografica" class="dot-nav-item group flex items-center justify-end gap-3" data-target="mappa-geografica">
+      <span class="nav-label text-[10px] uppercase tracking-wider font-semibold text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity">Geografia</span>
+      <span class="dot w-2 h-2 rounded-full bg-gray-300"></span>
+    </a>
+  </aside>
+
+  <!-- ===================================================================== -->
+  <!-- CAPITOLO 0: HERO EDITORIALE                                           -->
+  <!-- ===================================================================== -->
+  <header id="top" class="relative pt-16 pb-14 sm:pt-28 sm:pb-20">
+    <div class="max-w-4xl mx-auto px-5 sm:px-8">
+      <div class="flex items-center gap-3 mb-7">
+        <span class="h-px w-10 bg-gold"></span>
+        <p class="text-[11px] font-semibold uppercase tracking-[0.22em] text-cobalt">
+          OpenAlex Bibliometric Observatory • 2015–2026
+        </p>
+      </div>
+
+      <h1 class="font-display font-light text-[2.9rem] sm:text-7xl tracking-tight text-ink leading-[1.02] mb-7">
+        The Quiet<br />
+        <span class="italic font-medium bg-gradient-to-r from-cobaltDeep via-cobalt to-goldDeep bg-clip-text text-transparent">Revolution</span>
+      </h1>
+
+      <p class="text-base sm:text-xl text-gray-600 max-w-2xl leading-relaxed">
+        L'Intelligenza Artificiale sta trasformando la ricerca matematica ben oltre la crescita fisiologica della letteratura scientifica. Scorri per osservare prima i dati reali, poi la proiezione del trend pre-IA e infine il boom del 2026.
+      </p>
+
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-14">
+        <div class="kpi-card editorial-panel p-5">
+          <div class="text-[10px] uppercase tracking-wider text-gray-500 font-semibold">Corpus 2019–2026</div>
+          <div class="font-display text-2xl sm:text-3xl font-semibold text-cobaltDeep mt-1.5" id="kpi-total">—</div>
+          <div class="text-xs text-gray-500 mt-1">paper OpenAlex</div>
+        </div>
+        <div class="kpi-card editorial-panel p-5">
+          <div class="text-[10px] uppercase tracking-wider text-gray-500 font-semibold">Surplus 2026 vs Trend</div>
+          <div class="font-display text-2xl sm:text-3xl font-semibold text-cobalt mt-1.5" id="kpi-surplus">—</div>
+          <div class="text-xs text-gray-500 mt-1">oltre crescita pre-IA</div>
+        </div>
+        <div class="kpi-card editorial-panel p-5">
+          <div class="text-[10px] uppercase tracking-wider text-gray-500 font-semibold">Verifica Lean (2026)</div>
+          <div class="font-display text-2xl sm:text-3xl font-semibold text-cobalt mt-1.5" id="kpi-lean">—</div>
+          <div class="text-xs text-gray-500 mt-1">dimostrazioni formali</div>
+        </div>
+        <div class="kpi-card editorial-panel p-5">
+          <div class="text-[10px] uppercase tracking-wider text-gray-500 font-semibold">Preprint 2026</div>
+          <div class="font-display text-2xl sm:text-3xl font-semibold text-ink mt-1.5" id="kpi-preprint">—</div>
+          <div class="text-xs text-gray-500 mt-1">su repository aperti</div>
+        </div>
+      </div>
+
+      <div class="mt-16 flex justify-center">
+        <a href="#rivoluzione" class="scroll-cue text-gray-400 animate-bounce" aria-label="Scorri verso il basso">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===================================================================== -->
+  <!-- CAPITOLO 1: SCROLLYTELLING A 3 FASI                                   -->
+  <!-- ===================================================================== -->
+  <section id="rivoluzione" class="relative py-14 sm:py-24 hairline-top">
+    <div class="max-w-6xl mx-auto px-5 sm:px-8">
+      <div class="mb-12 sm:mb-16">
+        <div class="chapter-num text-[7rem] sm:text-[9rem] absolute -mt-8 -ml-2 sm:-ml-6 select-none">01</div>
+        <div class="relative">
+          <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-goldDeep">Capitolo 01 • La Rivoluzione</span>
+          <h2 class="font-display text-3xl sm:text-5xl font-light text-ink mt-2">
+            Dati, trend pre-IA<br /><span class="italic font-medium text-cobalt">e il boom del 2026</span>
+          </h2>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
+
+        <!-- Colonna Sinistra: 3 Step Narrativi -->
+        <div class="lg:col-span-5 space-y-6 lg:space-y-[42vh] lg:py-12">
+          <div class="scrolly-step is-active editorial-panel p-7 border-l-[3px] border-l-cobalt" data-step="data">
+            <span class="text-[11px] font-bold uppercase tracking-widest text-cobalt">Fase 01 • I Dati Osservati</span>
+            <h3 class="font-display text-xl sm:text-2xl font-semibold text-ink mt-2">
+              La crescita delle pubblicazioni <span class="italic font-normal text-cobalt">(2015–2026)</span>
+            </h3>
+            <p class="text-sm text-gray-600 mt-3 leading-relaxed prose-math">
+              Osserviamo innanzitutto i dati grezzi estratti da OpenAlex: tra il 2015 e il 2026 il numero annuo di pubblicazioni cresce in modo costante fino a superare le 16.000 unità. Tuttavia, è noto che la letteratura scientifica cresca ogni anno anche <em>indipendentemente</em> dall'IA: quanto di questa salita è fisiologico e quanto è un vero boom?
+            </p>
+          </div>
+
+          <div class="scrolly-step editorial-panel p-7 border-l-[3px] border-l-goldDeep" data-step="trend">
+            <span class="text-[11px] font-bold uppercase tracking-widest text-goldDeep">Fase 02 • Il Trend Pre-IA (ML)</span>
+            <h3 class="font-display text-xl sm:text-2xl font-semibold text-ink mt-2">
+              Regressione esponenziale <span class="italic font-normal text-goldDeep">log-lineare</span>
+            </h3>
+            <p class="text-sm text-gray-600 mt-3 leading-relaxed prose-math">
+              Per isolare la crescita naturale, addestriamo sui soli anni pre-IA (<strong>2015–2019</strong>) una <strong>Regressione Esponenziale Log-Lineare</strong>: trasformiamo i conteggi in ln(y) = ln(α) + β·t e applichiamo i minimi quadrati ordinari (<strong>OLS</strong>). La linea tratteggiata dorata mostra dove sarebbe arrivata la ricerca seguendo il solo ritmo composto naturale.
+            </p>
+          </div>
+
+          <div class="scrolly-step editorial-panel p-7 border-l-[3px] border-l-cobaltDeep" data-step="boom">
+            <span class="text-[11px] font-bold uppercase tracking-widest text-cobaltDeep">Fase 03 • Il Boom Rispetto al Trend</span>
+            <h3 class="font-display text-xl sm:text-2xl font-semibold text-ink mt-2">
+              L'esplosione del <span class="italic font-normal text-cobaltDeep">2026</span>
+            </h3>
+            <p class="text-sm text-gray-600 mt-3 leading-relaxed" id="boom-step-text">
+              Dal 2022 la curva reale si stacca nettamente dalla previsione del modello ML. L'area dorata evidenzia il surplus netto: nel 2026 le pubblicazioni osservate superano ampiamente la traiettoria attesa dal trend pre-IA.
+            </p>
+          </div>
+        </div>
+
+        <!-- Colonna Destra: Grafico Sticky -->
+        <div class="lg:col-span-7 lg:sticky lg:top-24">
+          <div class="editorial-panel p-6 sm:p-9">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+              <span class="text-[11px] font-semibold uppercase tracking-wider text-gray-500">AI Publications in Math (2015–2026)</span>
+              <span id="trend-phase-badge" class="px-3 py-1 rounded-full text-[11px] font-semibold bg-cobalt/10 text-cobalt border border-cobalt/15">
+                01 • Dati Osservati
+              </span>
+            </div>
+            <h3 class="font-display text-xl sm:text-2xl font-semibold text-ink mb-4">
+              Dati reali, trend pre-IA <span class="italic font-normal text-cobalt">e boom 2026</span>
+            </h3>
+
+            <div class="flex flex-wrap items-center gap-x-6 gap-y-2 mb-5 text-xs font-medium text-gray-600">
+              <div class="flex items-center gap-2">
+                <span class="w-5 h-[3px] rounded-full bg-cobalt inline-block"></span>
+                <span>Dati osservati (OpenAlex)</span>
+              </div>
+              <div class="flex items-center gap-2 transition-opacity duration-300" id="legend-trend-item" style="opacity: 0.3;">
+                <span class="w-5 h-0 border-t-2 border-dashed border-goldDeep inline-block"></span>
+                <span>Trend pre-IA (OLS Log-Lineare)</span>
+              </div>
+              <div class="flex items-center gap-2 transition-opacity duration-300" id="legend-boom-item" style="opacity: 0.3;">
+                <span class="w-3 h-3 rounded-[4px] bg-sand border border-gold inline-block"></span>
+                <span>Boom oltre il trend</span>
+              </div>
+            </div>
+
+            <div id="trend-area-container" class="w-full"></div>
+
+            <div class="mt-5 p-3.5 rounded-xl bg-paper border border-hairline text-[11px] text-gray-600 flex flex-wrap items-center justify-between gap-2 font-mono">
+              <span class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-cobalt"></span>Training: 2015–2019 (n=5)</span>
+              <span id="ml-formula-text">Modello: ŷ(t) = α·exp(β·t)</span>
+              <span id="ml-r2-text" class="text-cobaltDeep font-semibold">R² = —</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="mt-20 flex justify-center">
+        <a href="#hub-globali" class="scroll-cue text-gray-400">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================================== -->
+  <!-- CAPITOLO 2: GLOBAL HUBS OF INNOVATION                                 -->
+  <!-- ===================================================================== -->
+  <section id="hub-globali" class="relative py-16 sm:py-24 hairline-top reveal-section">
+    <div class="max-w-6xl mx-auto px-5 sm:px-8">
+
+      <div class="mb-12">
+        <div class="chapter-num text-[7rem] sm:text-[9rem] absolute -mt-8 -ml-2 sm:-ml-6 select-none">02</div>
+        <div class="relative">
+          <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-goldDeep">Capitolo 02 • Istituzioni</span>
+          <h2 class="font-display text-3xl sm:text-5xl font-light text-ink mt-2">
+            Global Hubs <span class="italic font-medium text-cobalt">of Innovation</span>
+          </h2>
+          <p class="text-sm sm:text-base text-gray-600 mt-4 max-w-2xl">
+            Confronto tra tre poli accademici emblematici: <strong>University of Oxford</strong>, <strong>New York University (NYU)</strong> e <strong>Università degli Studi di Genova (UniGe)</strong>.
+          </p>
+        </div>
+      </div>
+
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+        <div class="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs font-medium text-gray-600">
+          <div class="flex items-center gap-2">
+            <span class="w-3.5 h-3.5 rounded-[4px] bg-cobalt shadow-sm"></span>
+            <span>University of Oxford</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="w-3.5 h-3.5 rounded-[4px] bg-slateBlue shadow-sm"></span>
+            <span>New York University (NYU)</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="w-3.5 h-3.5 rounded-[4px] bg-gold shadow-sm"></span>
+            <span>Università degli Studi di Genova (UniGe)</span>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2 shrink-0">
+          <button id="toggle-labels-btn" class="btn-pill px-4 py-2 text-xs font-semibold bg-cobaltDeep text-white hover:bg-cobalt shadow-md shadow-cobaltDeep/20 cursor-pointer">
+            Nascondi valori
+          </button>
+          <button id="highlight-unige-btn" class="btn-pill px-4 py-2 text-xs font-semibold bg-sand text-cobaltDeep border border-gold/60 hover:bg-gold/25 cursor-pointer">
+            Evidenzia UniGe
+          </button>
+        </div>
+      </div>
+
+      <div class="editorial-panel p-6 sm:p-9 mb-10 chart-enter">
+        <div class="flex items-center justify-between mb-5">
+          <h3 class="font-display text-lg font-semibold text-ink">
+            Produzione annua per ateneo <span class="italic font-normal text-cobalt">(2019–2026)</span>
+          </h3>
+          <span class="text-[10px] font-mono text-gray-400 uppercase tracking-wider">Grouped Barchart</span>
+        </div>
+        <div id="grouped-barchart-container" class="w-full overflow-x-auto"></div>
+      </div>
+
+      <div class="editorial-panel p-6 sm:p-9 chart-enter">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-7">
+          <div>
+            <h3 class="font-display text-lg font-semibold text-ink">
+              Confronto categoriale <span class="italic font-normal text-cobalt">anno per anno</span>
+            </h3>
+            <p class="text-xs text-gray-500 mt-1.5">
+              Un pannello per ogni anno con scala verticale condivisa: sull'asse orizzontale sono confrontate direttamente le tre categorie istituzionali.
+            </p>
+          </div>
+          <span class="text-[10px] font-mono text-gray-400 uppercase tracking-wider shrink-0">8 Pannelli • Asse X: Atenei</span>
+        </div>
+
+        <div id="small-multiples-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"></div>
+      </div>
+
+      <div class="mt-20 flex justify-center">
+        <a href="#prove-formali" class="scroll-cue text-gray-400">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================================== -->
+  <!-- CAPITOLO 3: THE RISE OF FORMAL PROOFS (LEAN)                          -->
+  <!-- ===================================================================== -->
+  <section id="prove-formali" class="relative py-16 sm:py-24 hairline-top">
+    <div class="max-w-6xl mx-auto px-5 sm:px-8">
+      <div class="mb-12">
+        <div class="chapter-num text-[7rem] sm:text-[9rem] absolute -mt-8 -ml-2 sm:-ml-6 select-none">03</div>
+        <div class="relative">
+          <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-goldDeep">Capitolo 03 • Verifica Formale</span>
+          <h2 class="font-display text-3xl sm:text-5xl font-light text-ink mt-2">
+            The Rise of <span class="italic font-medium text-cobalt">Formal Proofs</span>
+          </h2>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
+
+        <div class="lg:col-span-7 lg:sticky lg:top-24">
+          <div class="editorial-panel p-6 sm:p-9">
+            <p class="text-xs sm:text-sm text-gray-600 mb-6">
+              Quota percentuale annua di lavori accompagnati da dimostrazioni verificate meccanicamente in <strong>Lean</strong> rispetto ai paper tradizionali.
+            </p>
+
+            <div class="flex flex-wrap items-center gap-x-6 gap-y-2 mb-5 text-xs font-medium text-gray-600">
+              <div class="flex items-center gap-2">
+                <span class="w-3.5 h-3.5 rounded-[4px] bg-cobalt shadow-sm"></span>
+                <span>Lean (verificati formalmente)</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="w-3.5 h-3.5 rounded-[4px] bg-gold shadow-sm"></span>
+                <span>Non-Lean (tradizionali)</span>
+              </div>
+            </div>
+
+            <div id="stacked-barchart-container" class="w-full"></div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-5 space-y-6 lg:space-y-[32vh] lg:py-10">
+          <div class="scrolly-step lean-step is-active editorial-panel p-7 border-l-[3px] border-l-gold" data-lean="early">
+            <span class="text-[11px] font-bold uppercase tracking-widest text-gray-500">2019–2022 • Fase di Nicchia</span>
+            <h3 class="font-display text-xl font-semibold text-ink mt-2">
+              Meno del 5% <span class="italic font-normal text-goldDeep">formalizzato</span>
+            </h3>
+            <p class="text-sm text-gray-600 mt-3 leading-relaxed">
+              Fino al 2022 la verifica tramite proof assistant rimane confinata a piccoli gruppi specializzati, con una quota inferiore al 5% dell'intera produzione annuale.
+            </p>
+          </div>
+
+          <div class="scrolly-step lean-step editorial-panel p-7 border-l-[3px] border-l-cobalt" data-lean="boom">
+            <span class="text-[11px] font-bold uppercase tracking-widest text-cobalt">2023–2026 • L'accelerazione</span>
+            <h3 class="font-display text-xl font-semibold text-ink mt-2">
+              L'ascesa di <span class="italic font-normal text-cobalt">Lean 4 e Mathlib4</span>
+            </h3>
+            <p class="text-sm text-gray-600 mt-3 leading-relaxed">
+              Con la sinergia tra LLM e il kernel di Lean 4, generare tattiche formali diventa accessibile e la quota di paper verificati formalmente cresce rapidamente fino al 2026.
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="mt-20 flex justify-center">
+        <a href="#preprint-review" class="scroll-cue text-gray-400">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================================== -->
+  <!-- CAPITOLO 4: FROM PREPRINT TO PEER-REVIEWED                            -->
+  <!-- ===================================================================== -->
+  <section id="preprint-review" class="relative py-16 sm:py-24 hairline-top">
+    <div class="max-w-6xl mx-auto px-5 sm:px-8">
+
+      <div class="mb-12">
+        <div class="chapter-num text-[7rem] sm:text-[9rem] absolute -mt-8 -ml-2 sm:-ml-6 select-none">04</div>
+        <div class="relative">
+          <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-goldDeep">Capitolo 04 • Validazione</span>
+          <h2 class="font-display text-3xl sm:text-5xl font-light text-ink mt-2">
+            From Preprint <span class="italic font-medium text-cobalt">to Peer-Reviewed</span>
+          </h2>
+          <p class="text-sm sm:text-base text-gray-600 mt-4 max-w-2xl">
+            Confronto tra la <strong>media storica degli anni precedenti (2019–2025)</strong> e la <strong>situazione attuale del 2026</strong> nella diffusione su repository preprint rispetto alla revisione paritaria.
+          </p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start mb-16">
+
+        <!-- Waffle Chart Sticky -->
+        <div class="lg:col-span-6 lg:sticky lg:top-24">
+          <div class="editorial-panel p-6 sm:p-9">
+            <div class="flex items-center justify-between mb-2">
+              <span class="font-display text-xl sm:text-2xl font-semibold text-cobaltDeep" id="waffle-active-label">Media 2019–2025</span>
+              <span class="text-[10px] font-mono text-gray-400 uppercase tracking-wider">1 quadratino = 1%</span>
+            </div>
+
+            <div id="waffle-chart-container" class="flex justify-center my-7"></div>
+
+            <div class="grid grid-cols-2 gap-3.5 mt-5">
+              <div class="p-4 rounded-2xl bg-cobalt/[0.06] border border-cobalt/20">
+                <div class="flex items-center gap-2 text-xs font-bold text-cobalt">
+                  <span class="w-2.5 h-2.5 rounded-[4px] bg-cobalt shadow-sm"></span>
+                  <span>Peer-Reviewed</span>
+                </div>
+                <div class="font-display text-2xl font-semibold text-ink mt-1.5" id="waffle-pr-pct">—</div>
+                <div class="text-[11px] text-gray-500" id="waffle-pr-sub">—</div>
+              </div>
+              <div class="p-4 rounded-2xl bg-sand/50 border border-gold/40">
+                <div class="flex items-center gap-2 text-xs font-bold text-goldDeep">
+                  <span class="w-2.5 h-2.5 rounded-[4px] bg-gold shadow-sm"></span>
+                  <span>Preprint / Repository</span>
+                </div>
+                <div class="font-display text-2xl font-semibold text-ink mt-1.5" id="waffle-pre-pct">—</div>
+                <div class="text-[11px] text-gray-500" id="waffle-pre-sub">—</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2 Step Scrollytelling -->
+        <div class="lg:col-span-6 space-y-6 lg:space-y-[38vh] lg:py-12">
+          <div class="scrolly-step waffle-step is-active editorial-panel p-7 border-l-[3px] border-l-cobalt" data-waffle-mode="historical_avg">
+            <span class="text-[11px] font-bold uppercase tracking-widest text-cobalt">Fase 01 • Media Anni Precedenti (2019–2025)</span>
+            <h3 class="font-display text-xl sm:text-2xl font-semibold text-ink mt-2">
+              La prevalenza della <span class="italic font-normal text-cobalt">Peer Review</span>
+            </h3>
+            <p class="text-sm text-gray-600 mt-3 leading-relaxed" id="waffle-avg-desc">
+              Considerando la media ponderata del periodo 2019–2025, la maggioranza delle pubblicazioni completava il percorso classico su riviste e atti con revisione paritaria prima della piena diffusione.
+            </p>
+          </div>
+
+          <div class="scrolly-step waffle-step editorial-panel p-7 border-l-[3px] border-l-gold" data-waffle-mode="current_2026">
+            <span class="text-[11px] font-bold uppercase tracking-widest text-goldDeep">Fase 02 • Situazione Attuale (2026)</span>
+            <h3 class="font-display text-xl sm:text-2xl font-semibold text-ink mt-2">
+              L'avanzata dei preprint <span class="italic font-normal text-goldDeep">in tempo reale</span>
+            </h3>
+            <p class="text-sm text-gray-600 mt-3 leading-relaxed" id="waffle-2026-desc">
+              Nel 2026 il ritmo della ricerca sull'IA riduce ulteriormente la quota già sottoposta a peer review a favore della pubblicazione immediata su repository aperti come <em class="font-display">arXiv</em>.
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- DUMBBELL PLOT -->
+      <div class="editorial-panel p-6 sm:p-9 reveal-section chart-enter">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+          <div>
+            <h3 class="font-display text-lg font-semibold text-ink">
+              Adozione IA per sottodisciplina <span class="italic font-normal text-cobalt">(2019 vs 2026)</span>
+            </h3>
+            <p class="text-xs text-gray-600 mt-1.5">
+              Scarto percentuale tra il 2019 e il 2026 nella quota di pubblicazioni che impiegano metodi di IA per ciascuna branca matematica.
+            </p>
+          </div>
+          <div class="flex items-center gap-5 text-xs font-medium text-gray-600 shrink-0">
+            <span class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-gold border border-goldDeep shadow-sm"></span>2019</span>
+            <span class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-cobalt border-2 border-white shadow-md"></span>2026</span>
+          </div>
+        </div>
+        <div id="dumbbell-chart-container" class="w-full overflow-x-auto"></div>
+      </div>
+
+      <div class="mt-20 flex justify-center">
+        <a href="#mappa-geografica" class="scroll-cue text-gray-400">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================================== -->
+  <!-- CAPITOLO 5: MAPPING THE NETWORK                                       -->
+  <!-- ===================================================================== -->
+  <section id="mappa-geografica" class="relative py-16 sm:py-24 hairline-top reveal-section">
+    <div class="max-w-6xl mx-auto px-5 sm:px-8">
+
+      <div class="mb-10">
+        <div class="chapter-num text-[7rem] sm:text-[9rem] absolute -mt-8 -ml-2 sm:-ml-6 select-none">05</div>
+        <div class="relative">
+          <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-goldDeep">Capitolo 05 • Geografia della Ricerca</span>
+          <h2 class="font-display text-3xl sm:text-5xl font-light text-ink mt-2">
+            Mapping <span class="italic font-medium text-cobalt">the Network</span>
+          </h2>
+          <p class="text-sm sm:text-base text-gray-600 mt-4 max-w-2xl">
+            Distribuzione spazio-temporale della produzione scientifica nei 10 Paesi più attivi (2019–2026). L'Italia è evidenziata dal bordo dorato.
+          </p>
+        </div>
+      </div>
+
+      <div class="editorial-panel p-6 sm:p-9">
+        <div id="heatmap-container" class="w-full overflow-x-auto"></div>
+        <div id="heatmap-legend" class="mt-6 pt-5 border-t border-hairline"></div>
+        <div class="mt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-gray-500">
+          <span>Dati letti dinamicamente da <code class="px-1.5 py-0.5 rounded bg-paper border border-hairline font-mono text-[11px]">./data/openalex_ai_math.json</code></span>
+          <span class="font-mono text-gray-400 shrink-0 uppercase tracking-wider text-[10px]">Unità: paper / anno</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===================================================================== -->
+  <!-- FOOTER                                                                -->
+  <!-- ===================================================================== -->
+  <footer class="border-t border-hairline bg-white/60 backdrop-blur-sm py-12 mt-12">
+    <div class="max-w-6xl mx-auto px-5 sm:px-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+      <div class="space-y-1.5">
+        <div class="flex items-center gap-2.5">
+          <span class="w-6 h-6 rounded-md bg-gradient-to-br from-cobalt to-cobaltDeep flex items-center justify-center">
+            <svg class="w-3 h-3 text-sand" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 3.5v3m0 0a2.25 2.25 0 012.25 2.25M9.75 6.5a2.25 2.25 0 012.25-2.25m0 0h3m0 0a2.25 2.25 0 012.25 2.25M15 6.5a2.25 2.25 0 00-2.25 2.25M9.75 9.75v3m4.5-3v3m-4.5 0a2.25 2.25 0 002.25 2.25m2.25-2.25a2.25 2.25 0 012.25 2.25m0 0v3m0 0a2.25 2.25 0 01-2.25 2.25m2.25-2.25a2.25 2.25 0 002.25 2.25m-4.5 3v3m4.5-3a2.25 2.25 0 00-2.25 2.25m-4.5 0a2.25 2.25 0 01-2.25 2.25m7.5-9v9" />
+            </svg>
+          </span>
+          <span class="font-display font-semibold text-xs uppercase tracking-widest text-cobaltDeep">
+            AI-Math Data • 2015–2026
+          </span>
+        </div>
+        <p class="text-xs text-gray-500" id="footer-meta-info">
+          Data sources: OpenAlex API, arXiv, Lean.io / Mathlib4.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===================================================================== -->
+  <!-- SCRIPT D3.JS, CARICAMENTO JSON ESTERNO & SCROLLYTELLING               -->
+  <!-- ===================================================================== -->
+  <script>
+    let openAlexDataset = null;
+    let mlModel = null;
+    let fullTrendSeries = [];
+
+    let showNumericLabels = true;
+    let highlightUniGe = false;
+    let activeTrendPhase = "data";        // data | trend | boom
+    let activeLeanPhase = "early";        // early | boom
+    let activeWaffleMode = "historical_avg"; // historical_avg | current_2026
+    let waffleRects = null;
+
+    const tooltip = d3.select("#d3-tooltip");
+
+    const COLORS = {
+      cobalt: "#1B3B8B",
+      cobaltDeep: "#0F2567",
+      slateBlue: "#5E78B5",
+      gold: "#C9A44C",
+      goldDeep: "#8C7328",
+      sand: "#EFE7CC",
+      grid: "rgba(20, 27, 46, 0.055)"
+    };
+
+    function showTooltip(event, htmlContent) {
+      tooltip.html(htmlContent).style("opacity", 1).style("transform", "translateY(0)");
+      moveTooltip(event);
+    }
+    function moveTooltip(event) {
+      const rect = tooltip.node().getBoundingClientRect();
+      let left = event.clientX + 14;
+      let top = event.clientY - rect.height - 14;
+      if (left + rect.width > window.innerWidth - 12) left = event.clientX - rect.width - 14;
+      if (top < 12) top = event.clientY + 18;
+      tooltip.style("left", `${left}px`).style("top", `${top}px`);
+    }
+    function hideTooltip() {
+      tooltip.style("opacity", 0).style("transform", "translateY(4px)");
+    }
+
+    // Conteggio animato per i KPI
+    function animateValue(el, target, formatter, duration = 1200) {
+      if (!el) return;
+      const start = performance.now();
+      const from = 0;
+      function tick(now) {
+        const p = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - p, 3);
+        const val = from + (target - from) * eased;
+        el.textContent = formatter(val);
+        if (p < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    }
+
+    // =========================================================================
+    // ALGORITMO ML: REGRESSIONE ESPONENZIALE LOG-LINEARE (OLS SU ln(y))
+    // =========================================================================
+    function fitExponentialOLS(trainingData) {
+      const baseYear = Number(trainingData[0].year);
+      const pts = trainingData.map(d => ({
+        t: Number(d.year) - baseYear,
+        y: Math.max(d.totalCount, 1),
+        lnY: Math.log(Math.max(d.totalCount, 1))
+      }));
+
+      const meanT = d3.mean(pts, p => p.t);
+      const meanLnY = d3.mean(pts, p => p.lnY);
+
+      let num = 0, den = 0;
+      pts.forEach(p => {
+        num += (p.t - meanT) * (p.lnY - meanLnY);
+        den += (p.t - meanT) ** 2;
+      });
+
+      const beta = den === 0 ? 0 : num / den;
+      const lnAlpha = meanLnY - beta * meanT;
+      const alpha = Math.exp(lnAlpha);
+
+      let ssRes = 0, ssTot = 0;
+      pts.forEach(p => {
+        const predLn = lnAlpha + beta * p.t;
+        ssRes += (p.lnY - predLn) ** 2;
+        ssTot += (p.lnY - meanLnY) ** 2;
+      });
+      const r2 = ssTot === 0 ? 1 : 1 - ssRes / ssTot;
+
+      return {
+        baseYear,
+        alpha,
+        beta,
+        annualGrowthPct: (Math.exp(beta) - 1) * 100,
+        r2,
+        predict: (year) => Math.round(alpha * Math.exp(beta * (Number(year) - baseYear)))
+      };
+    }
+
+    // =========================================================================
+    // GRAFICO 1 (SCROLLYTELLING): DATI -> LINEA TREND ML -> BOOM
+    // =========================================================================
+    function renderTrendAreaChart() {
+      const container = d3.select("#trend-area-container");
+      container.html("");
+
+      const lastPoint = fullTrendSeries[fullTrendSeries.length - 1];
+      const surplusPct2026 = ((lastPoint.actual - lastPoint.baseline) / lastPoint.baseline * 100).toFixed(1);
+      const maxY = Math.max(d3.max(fullTrendSeries, d => Math.max(d.actual, d.baseline)) * 1.12, 1000);
+
+      document.getElementById("ml-formula-text").textContent =
+        `ŷ(t) = ${Math.round(mlModel.alpha)}·exp(${mlModel.beta.toFixed(3)}·t) (+${mlModel.annualGrowthPct.toFixed(1)}%/anno)`;
+      document.getElementById("ml-r2-text").textContent = `R² = ${mlModel.r2.toFixed(4)}`;
+
+      document.getElementById("legend-trend-item").style.opacity = activeTrendPhase === "data" ? "0.3" : "1";
+      document.getElementById("legend-boom-item").style.opacity = activeTrendPhase === "boom" ? "1" : "0.3";
+
+      const width = 600;
+      const height = 330;
+      const margin = { top: 28, right: 26, bottom: 34, left: 54 };
+      const innerWidth = width - margin.left - margin.right;
+      const innerHeight = height - margin.top - margin.bottom;
+
+      const svg = container.append("svg")
+        .attr("viewBox", `0 0 ${width} ${height}`)
+        .attr("class", "w-full h-auto");
+
+      const defs = svg.append("defs");
+      const actualGrad = defs.append("linearGradient")
+        .attr("id", "actual-area-grad").attr("x1", 0).attr("y1", 0).attr("x2", 0).attr("y2", 1);
+      actualGrad.append("stop").attr("offset", "0%").attr("stop-color", COLORS.cobalt).attr("stop-opacity", 0.14);
+      actualGrad.append("stop").attr("offset", "100%").attr("stop-color", COLORS.cobalt).attr("stop-opacity", 0.01);
+
+      const g = svg.append("g")
+        .attr("transform", `translate(${margin.left},${margin.top})`);
+
+      const x = d3.scalePoint()
+        .domain(fullTrendSeries.map(d => d.year))
+        .range([0, innerWidth])
+        .padding(0.25);
+
+      const y = d3.scaleLinear().domain([0, maxY]).range([innerHeight, 0]);
+
+      if (activeTrendPhase === "trend") {
+        g.append("rect")
+          .attr("x", 0).attr("y", 0)
+          .attr("width", x("2019") + 14)
+          .attr("height", innerHeight)
+          .attr("rx", 8)
+          .attr("fill", COLORS.cobalt)
+          .attr("opacity", 0.05);
+
+        g.append("text")
+          .attr("x", (x("2015") + x("2019")) / 2)
+          .attr("y", 17)
+          .attr("text-anchor", "middle")
+          .attr("fill", COLORS.cobalt)
+          .attr("font-weight", "700")
+          .style("font-size", "9.5px")
+          .style("letter-spacing", "0.08em")
+          .text("TRAINING PRE-IA (2015–2019)");
+      }
+
+      g.append("g")
+        .attr("class", "grid")
+        .call(d3.axisLeft(y).ticks(5).tickSize(-innerWidth).tickFormat(""));
+
+      g.append("g")
+        .attr("class", "axis")
+        .attr("transform", `translate(0,${innerHeight})`)
+        .call(d3.axisBottom(x).tickSizeOuter(0))
+        .selectAll("text")
+        .style("font-size", "10.5px")
+        .style("font-weight", d => (d === "2019" || d === "2026") ? "700" : "500")
+        .style("fill", d => d === "2026" ? COLORS.cobaltDeep : "#6B7280");
+
+      g.append("g")
+        .attr("class", "axis")
+        .call(d3.axisLeft(y).ticks(5).tickFormat(d => d === 0 ? "0" : (d >= 1000 ? (d / 1000).toFixed(0) + "k" : d)));
+
+      // Area morbida sotto la curva reale
+      const actualArea = d3.area()
+        .x(d => x(d.year))
+        .y0(innerHeight)
+        .y1(d => y(d.actual))
+        .curve(d3.curveMonotoneX);
+      g.append("path")
+        .datum(fullTrendSeries)
+        .attr("fill", "url(#actual-area-grad)")
+        .attr("d", actualArea);
+
+      // FASE 3: Area del Boom
+      if (activeTrendPhase === "boom") {
+        const surplusData = fullTrendSeries.filter(d => Number(d.year) >= 2019);
+        const surplusArea = d3.area()
+          .x(d => x(d.year))
+          .y0(d => y(d.baseline))
+          .y1(d => y(d.actual))
+          .curve(d3.curveMonotoneX);
+
+        g.append("path")
+          .datum(surplusData)
+          .attr("fill", COLORS.gold)
+          .attr("opacity", 0.5)
+          .attr("d", surplusArea);
+      }
+
+      // FASE 2 e 3: Linea tratteggiata del trend ML
+      if (activeTrendPhase === "trend" || activeTrendPhase === "boom") {
+        const baselineLine = d3.line()
+          .x(d => x(d.year))
+          .y(d => y(d.baseline))
+          .curve(d3.curveMonotoneX);
+
+        g.append("path")
+          .datum(fullTrendSeries)
+          .attr("fill", "none")
+          .attr("stroke", COLORS.goldDeep)
+          .attr("stroke-width", 2.4)
+          .attr("stroke-dasharray", "6,4")
+          .attr("d", baselineLine);
+      }
+
+      // Curva dei dati osservati
+      const actualLine = d3.line()
+        .x(d => x(d.year))
+        .y(d => y(d.actual))
+        .curve(d3.curveMonotoneX);
+
+      const linePath = g.append("path")
+        .datum(fullTrendSeries)
+        .attr("fill", "none")
+        .attr("stroke", COLORS.cobalt)
+        .attr("stroke-width", 3)
+        .attr("stroke-linecap", "round")
+        .attr("d", actualLine);
+
+      // Animazione di disegno della linea
+      const lineLen = linePath.node().getTotalLength();
+      linePath
+        .attr("stroke-dasharray", `${lineLen} ${lineLen}`)
+        .attr("stroke-dashoffset", lineLen)
+        .transition()
+        .duration(900)
+        .ease(d3.easeCubicOut)
+        .attr("stroke-dashoffset", 0);
+
+      g.selectAll(".trend-dot")
+        .data(fullTrendSeries)
+        .enter()
+        .append("circle")
+        .attr("cx", d => x(d.year))
+        .attr("cy", d => y(d.actual))
+        .attr("r", 0)
+        .attr("fill", d => (activeTrendPhase === "boom" && d.year === "2026") ? COLORS.cobalt : "#FFFFFF")
+        .attr("stroke", COLORS.cobalt)
+        .attr("stroke-width", 2)
+        .style("cursor", "pointer")
+        .transition()
+        .delay((d, i) => 350 + i * 50)
+        .duration(350)
+        .ease(d3.easeBackOut.overshoot(1.6))
+        .attr("r", d => (activeTrendPhase === "boom" && d.year === "2026") ? 6.5 : 4)
+        .selection()
+        .on("mouseenter", function(event, d) {
+          d3.select(this).transition().duration(150).attr("r", 7);
+          const diff = d.actual - d.baseline;
+          const pct = ((diff / Math.max(d.baseline, 1)) * 100).toFixed(1);
+          showTooltip(event, `
+            <div style="font-weight:600">Anno ${d.year}</div>
+            <div style="margin-top:4px;color:#D7DEEE">Osservato: <strong style="color:#fff">${d.actual.toLocaleString("it-IT")}</strong></div>
+            ${activeTrendPhase !== "data" ? `<div style="color:#D7DEEE">Trend pre-IA: <strong style="color:${COLORS.sand}">${d.baseline.toLocaleString("it-IT")}</strong></div>` : ""}
+            ${activeTrendPhase === "boom" && Number(d.year) >= 2020 ? `<div style="color:${COLORS.sand};margin-top:4px;font-weight:600">Surplus: ${diff >= 0 ? "+" : ""}${diff.toLocaleString("it-IT")} (${pct}%)</div>` : ""}
+          `);
+        })
+        .on("mousemove", moveTooltip)
+        .on("mouseleave", function(event, d) {
+          d3.select(this).transition().duration(150).attr("r", (activeTrendPhase === "boom" && d.year === "2026") ? 6.5 : 4);
+          hideTooltip();
+        });
+
+      // Annotazioni Boom 2026
+      if (activeTrendPhase === "boom") {
+        const x26 = x("2026");
+        const yAct26 = y(lastPoint.actual);
+        const yBase26 = y(lastPoint.baseline);
+
+        g.append("line")
+          .attr("x1", x26).attr("x2", x26)
+          .attr("y1", yAct26 + 7).attr("y2", yBase26 - 4)
+          .attr("stroke", COLORS.cobaltDeep).attr("stroke-width", 1.8).attr("stroke-dasharray", "3,2");
+
+        g.append("circle")
+          .attr("cx", x26).attr("cy", yBase26).attr("r", 4.5)
+          .attr("fill", COLORS.gold).attr("stroke", COLORS.goldDeep).attr("stroke-width", 1.5);
+
+        const lbl = g.append("g");
+        lbl.append("rect")
+          .attr("x", x26 - 132).attr("y", yAct26 - 24)
+          .attr("width", 124).attr("height", 19).attr("rx", 9.5)
+          .attr("fill", COLORS.cobaltDeep);
+        lbl.append("text")
+          .attr("x", x26 - 70).attr("y", yAct26 - 11)
+          .attr("text-anchor", "middle").attr("fill", "#fff")
+          .style("font-size", "10.5px").style("font-weight", "700")
+          .text(`2026: ${lastPoint.actual.toLocaleString("it-IT")}`);
+
+        g.append("text")
+          .attr("x", x26 - 8).attr("y", yBase26 + 16)
+          .attr("text-anchor", "end").attr("fill", COLORS.goldDeep)
+          .style("font-size", "10px").style("font-weight", "700")
+          .text(`Trend ML: ${lastPoint.baseline.toLocaleString("it-IT")}`);
+
+        g.append("text")
+          .attr("x", x26 - 10).attr("y", (yAct26 + yBase26) / 2 + 4)
+          .attr("text-anchor", "end").attr("fill", COLORS.cobaltDeep)
+          .style("font-size", "10.5px").style("font-weight", "800")
+          .text(`+${surplusPct2026}% boom`);
+      }
+    }
+
+    // =========================================================================
+    // GRAFICO 2: GROUPED BARCHART
+    // =========================================================================
+    function renderGroupedBarchart() {
+      const container = d3.select("#grouped-barchart-container");
+      container.html("");
+
+      const data = openAlexDataset.universitiesByYear;
+      const subgroups = ["Oxford", "NYU", "UniGe"];
+      const fullNames = { Oxford: "University of Oxford", NYU: "New York University (NYU)", UniGe: "Università degli Studi di Genova" };
+      const fillColors = { Oxford: COLORS.cobalt, NYU: COLORS.slateBlue, UniGe: COLORS.gold };
+      const maxVal = Math.max(d3.max(data, d => Math.max(d.Oxford, d.NYU, d.UniGe)) * 1.12, 20);
+
+      const width = 940, height = 340;
+      const margin = { top: 26, right: 20, bottom: 42, left: 48 };
+      const innerWidth = width - margin.left - margin.right;
+      const innerHeight = height - margin.top - margin.bottom;
+
+      const svg = container.append("svg").attr("viewBox", `0 0 ${width} ${height}`).attr("class", "w-full h-auto min-w-[620px]");
+      const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+
+      const x0 = d3.scaleBand().domain(data.map(d => d.year)).range([0, innerWidth]).paddingInner(0.28).paddingOuter(0.08);
+      const x1 = d3.scaleBand().domain(subgroups).range([0, x0.bandwidth()]).padding(0.14);
+      const y = d3.scaleLinear().domain([0, maxVal]).nice().range([innerHeight, 0]);
+
+      g.append("g").attr("class", "grid").call(d3.axisLeft(y).ticks(5).tickSize(-innerWidth).tickFormat(""));
+      g.append("g").attr("class", "axis").attr("transform", `translate(0,${innerHeight})`).call(d3.axisBottom(x0).tickSizeOuter(0))
+        .selectAll("text").style("font-size", "12px").style("font-weight", "600");
+      g.append("g").attr("class", "axis").call(d3.axisLeft(y).ticks(5));
+
+      const yearGroups = g.selectAll(".year-group").data(data).enter().append("g")
+        .attr("transform", d => `translate(${x0(d.year)},0)`);
+
+      yearGroups.selectAll("rect")
+        .data(d => subgroups.map(key => ({ key, value: d[key], year: d.year })))
+        .enter().append("rect")
+        .attr("x", d => x1(d.key))
+        .attr("y", innerHeight)
+        .attr("width", x1.bandwidth())
+        .attr("height", 0)
+        .attr("rx", 3)
+        .attr("fill", d => fillColors[d.key])
+        .attr("opacity", d => (highlightUniGe && d.key !== "UniGe") ? 0.18 : 1)
+        .style("cursor", "pointer")
+        .transition()
+        .delay((d, i) => i * 60)
+        .duration(700)
+        .ease(d3.easeCubicOut)
+        .attr("y", d => y(d.value))
+        .attr("height", d => innerHeight - y(d.value))
+        .selection()
+        .on("mouseenter", function(event, d) {
+          d3.select(this).attr("opacity", 1).attr("stroke", COLORS.cobaltDeep).attr("stroke-width", 1.5);
+          showTooltip(event, `<div style="font-weight:600">${fullNames[d.key]}</div><div style="margin-top:2px;color:#D7DEEE">Anno ${d.year}: <strong style="color:${COLORS.sand}">${d.value} paper</strong></div>`);
+        })
+        .on("mousemove", moveTooltip)
+        .on("mouseleave", function(event, d) {
+          d3.select(this).attr("opacity", (highlightUniGe && d.key !== "UniGe") ? 0.18 : 1).attr("stroke", "none");
+          hideTooltip();
+        });
+
+      if (showNumericLabels) {
+        yearGroups.selectAll(".bar-label")
+          .data(d => subgroups.map(key => ({ key, value: d[key] })))
+          .enter().append("text")
+          .attr("x", d => x1(d.key) + x1.bandwidth() / 2)
+          .attr("y", innerHeight)
+          .attr("text-anchor", "middle").attr("fill", d => d.key === "UniGe" ? COLORS.goldDeep : COLORS.cobaltDeep)
+          .attr("opacity", d => (highlightUniGe && d.key !== "UniGe") ? 0.25 : 1)
+          .style("font-size", "9.5px").style("font-weight", "600")
+          .transition()
+          .delay((d, i) => 400 + i * 60)
+          .duration(500)
+          .attr("y", d => y(d.value) - 5)
+          .text(d => d.value);
+      }
+    }
+
+    // =========================================================================
+    // GRAFICO 3: SMALL MULTIPLES PER ANNO
+    // =========================================================================
+    function renderSmallMultiples() {
+      const container = d3.select("#small-multiples-container");
+      container.html("");
+
+      const data = openAlexDataset.universitiesByYear;
+      const categories = ["Oxford", "NYU", "UniGe"];
+      const fullNames = { Oxford: "University of Oxford", NYU: "New York University", UniGe: "Univ. degli Studi di Genova" };
+      const fillColors = { Oxford: COLORS.cobalt, NYU: COLORS.slateBlue, UniGe: COLORS.gold };
+      const sharedMaxY = Math.max(d3.max(data, d => Math.max(d.Oxford, d.NYU, d.UniGe)) * 1.12, 20);
+
+      data.forEach((yearRow, idx) => {
+        const panel = container.append("div")
+          .attr("class", "rounded-2xl border border-hairline bg-paper/70 p-4 hover:shadow-lg hover:shadow-cobalt/5 hover:-translate-y-0.5 transition-all duration-300");
+        const totalYear = yearRow.Oxford + yearRow.NYU + yearRow.UniGe;
+        panel.append("div").attr("class", "flex items-center justify-between mb-2")
+          .html(`<span class="font-display font-semibold text-sm text-cobaltDeep">${yearRow.year}</span><span class="text-[10px] font-medium text-gray-500">${totalYear} paper tot.</span>`);
+
+        const panelData = categories.map(cat => ({ category: cat, value: yearRow[cat], year: yearRow.year }));
+        const width = 220, height = 165;
+        const margin = { top: 18, right: 10, bottom: 26, left: 32 };
+        const innerWidth = width - margin.left - margin.right;
+        const innerHeight = height - margin.top - margin.bottom;
+
+        const svg = panel.append("svg").attr("viewBox", `0 0 ${width} ${height}`).attr("class", "w-full h-auto");
+        const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+
+        const x = d3.scaleBand().domain(categories).range([0, innerWidth]).padding(0.32);
+        const y = d3.scaleLinear().domain([0, sharedMaxY]).nice().range([innerHeight, 0]);
+
+        g.append("g").attr("class", "grid").call(d3.axisLeft(y).ticks(3).tickSize(-innerWidth).tickFormat(""));
+        g.append("g").attr("class", "axis").attr("transform", `translate(0,${innerHeight})`).call(d3.axisBottom(x).tickSizeOuter(0))
+          .selectAll("text").style("font-size", "10.5px").style("font-weight", "600").style("fill", "#374151");
+        g.append("g").attr("class", "axis").call(d3.axisLeft(y).ticks(3));
+
+        g.selectAll("rect").data(panelData).enter().append("rect")
+          .attr("x", d => x(d.category))
+          .attr("y", innerHeight)
+          .attr("width", x.bandwidth())
+          .attr("height", 0)
+          .attr("rx", 3)
+          .attr("fill", d => fillColors[d.category])
+          .attr("opacity", d => (highlightUniGe && d.category !== "UniGe") ? 0.18 : 1)
+          .style("cursor", "pointer")
+          .transition()
+          .delay(idx * 70)
+          .duration(600)
+          .ease(d3.easeCubicOut)
+          .attr("y", d => y(d.value))
+          .attr("height", d => innerHeight - y(d.value))
+          .selection()
+          .on("mouseenter", function(event, d) {
+            d3.select(this).attr("opacity", 1).attr("stroke", COLORS.cobaltDeep).attr("stroke-width", 1.5);
+            showTooltip(event, `<div style="font-weight:600">${fullNames[d.category]}</div><div style="margin-top:2px;color:#D7DEEE">Anno ${d.year}: <strong style="color:${COLORS.sand}">${d.value} paper</strong></div>`);
+          })
+          .on("mousemove", moveTooltip)
+          .on("mouseleave", function(event, d) {
+            d3.select(this).attr("opacity", (highlightUniGe && d.category !== "UniGe") ? 0.18 : 1).attr("stroke", "none");
+            hideTooltip();
+          });
+
+        if (showNumericLabels) {
+          g.selectAll(".sm-lbl").data(panelData).enter().append("text")
+            .attr("x", d => x(d.category) + x.bandwidth() / 2)
+            .attr("y", innerHeight)
+            .attr("text-anchor", "middle").attr("fill", d => d.category === "UniGe" ? COLORS.goldDeep : COLORS.cobaltDeep)
+            .attr("opacity", d => (highlightUniGe && d.category !== "UniGe") ? 0.25 : 1)
+            .style("font-size", "9.5px").style("font-weight", "700")
+            .transition()
+            .delay(idx * 70 + 350)
+            .duration(400)
+            .attr("y", d => y(d.value) - 5)
+            .text(d => d.value);
+        }
+      });
+    }
+
+    // =========================================================================
+    // GRAFICO 4: 100% STACKED BARCHART (LEAN VS NON-LEAN)
+    // =========================================================================
+    function render100StackedBarchart() {
+      const container = d3.select("#stacked-barchart-container");
+      container.html("");
+
+      const data = openAlexDataset.leanVerificationByYear;
+      const focusYears = activeLeanPhase === "early" ? ["2019", "2020", "2021", "2022"] : ["2023", "2024", "2025", "2026"];
+
+      const width = 560, height = 310;
+      const margin = { top: 18, right: 16, bottom: 34, left: 42 };
+      const innerWidth = width - margin.left - margin.right;
+      const innerHeight = height - margin.top - margin.bottom;
+
+      const svg = container.append("svg").attr("viewBox", `0 0 ${width} ${height}`).attr("class", "w-full h-auto");
+      const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+
+      const x = d3.scaleBand().domain(data.map(d => d.year)).range([0, innerWidth]).padding(0.24);
+      const y = d3.scaleLinear().domain([0, 100]).range([innerHeight, 0]);
+
+      g.append("g").attr("class", "axis").attr("transform", `translate(0,${innerHeight})`).call(d3.axisBottom(x).tickSizeOuter(0))
+        .selectAll("text")
+        .style("font-weight", d => focusYears.includes(d) ? "700" : "500")
+        .style("fill", d => focusYears.includes(d) ? COLORS.cobaltDeep : "#9CA3AF");
+      g.append("g").attr("class", "axis").call(d3.axisLeft(y).ticks(4).tickFormat(d => d + "%"));
+
+      g.selectAll(".bar-nonlean").data(data).enter().append("rect")
+        .attr("x", d => x(d.year)).attr("y", 0).attr("width", x.bandwidth())
+        .attr("height", d => y(d.verifiedPct))
+        .attr("fill", COLORS.gold).attr("opacity", d => focusYears.includes(d.year) ? 0.9 : 0.3).attr("rx", 3)
+        .style("cursor", "pointer")
+        .on("mouseenter", function(event, d) {
+          d3.select(this).attr("opacity", 1);
+          showTooltip(event, `<div style="font-weight:600">Anno ${d.year} — Non-Lean</div><div style="margin-top:2px;color:#D7DEEE">Quota: <strong style="color:${COLORS.sand}">${d.unverifiedPct.toFixed(1)}%</strong></div>`);
+        })
+        .on("mousemove", moveTooltip)
+        .on("mouseleave", function(event, d) {
+          d3.select(this).attr("opacity", focusYears.includes(d.year) ? 0.9 : 0.3);
+          hideTooltip();
+        });
+
+      g.selectAll(".bar-lean").data(data).enter().append("rect")
+        .attr("x", d => x(d.year)).attr("y", d => y(d.verifiedPct)).attr("width", x.bandwidth())
+        .attr("height", d => innerHeight - y(d.verifiedPct))
+        .attr("fill", COLORS.cobalt).attr("opacity", d => focusYears.includes(d.year) ? 1 : 0.3).attr("rx", 3)
+        .style("cursor", "pointer")
+        .on("mouseenter", function(event, d) {
+          d3.select(this).attr("opacity", 1);
+          showTooltip(event, `<div style="font-weight:600">Anno ${d.year} — Verificati con Lean</div><div style="margin-top:2px;color:#D7DEEE">Quota: <strong style="color:${COLORS.sand}">${d.verifiedPct.toFixed(1)}%</strong></div><div style="font-size:11px;color:#B9C4E2">${d.verifiedCount.toLocaleString("it-IT")} paper</div>`);
+        })
+        .on("mousemove", moveTooltip)
+        .on("mouseleave", function(event, d) {
+          d3.select(this).attr("opacity", focusYears.includes(d.year) ? 1 : 0.3);
+          hideTooltip();
+        });
+
+      if (showNumericLabels) {
+        g.selectAll(".lean-label").data(data).enter().append("text")
+          .attr("x", d => x(d.year) + x.bandwidth() / 2)
+          .attr("y", d => d.verifiedPct >= 8 ? y(d.verifiedPct / 2) + 4 : y(d.verifiedPct) - 6)
+          .attr("text-anchor", "middle")
+          .attr("fill", d => d.verifiedPct >= 8 ? "#FFFFFF" : COLORS.cobaltDeep)
+          .attr("opacity", d => focusYears.includes(d.year) ? 1 : 0.45)
+          .style("font-size", "10px").style("font-weight", "700").style("pointer-events", "none")
+          .text(d => `${d.verifiedPct}%`);
+      }
+    }
+
+    // =========================================================================
+    // GRAFICO 5: WAFFLE CHART
+    // =========================================================================
+    function getWaffleStats(mode) {
+      const series = openAlexDataset.peerReviewByYear;
+      if (mode === "current_2026") {
+        const y26 = series.find(d => d.year === "2026") || series[series.length - 1];
+        return {
+          label: "Situazione Attuale (2026)",
+          prPct: y26.peerReviewedPct,
+          prePct: y26.preprintPct,
+          prSub: `${Math.round(y26.totalCount * y26.peerReviewedPct / 100).toLocaleString("it-IT")} articoli`,
+          preSub: `${Math.round(y26.totalCount * y26.preprintPct / 100).toLocaleString("it-IT")} preprint`
+        };
+      }
+      const prev = series.filter(d => Number(d.year) < 2026);
+      const tot = d3.sum(prev, d => d.totalCount) || 1;
+      const weightedPre = d3.sum(prev, d => d.totalCount * d.preprintPct) / tot;
+      const prePct = Math.round(weightedPre);
+      const prPct = 100 - prePct;
+      return {
+        label: "Media Anni Precedenti (2019–2025)",
+        prPct,
+        prePct,
+        prSub: "media ponderata 2019–2025",
+        preSub: "media ponderata 2019–2025"
+      };
+    }
+
+    function initWaffleChart() {
+      const container = d3.select("#waffle-chart-container");
+      container.html("");
+
+      const cols = 10, cellSize = 23, gap = 4.5;
+      const svgSize = cols * (cellSize + gap) - gap;
+
+      const gridData = d3.range(100).map(i => ({
+        index: i + 1,
+        row: (cols - 1) - Math.floor(i / cols),
+        col: i % cols
+      }));
+
+      const svg = container.append("svg")
+        .attr("viewBox", `0 0 ${svgSize} ${svgSize}`)
+        .attr("class", "w-full max-w-[270px] h-auto");
+
+      waffleRects = svg.selectAll("rect")
+        .data(gridData)
+        .enter()
+        .append("rect")
+        .attr("x", d => d.col * (cellSize + gap))
+        .attr("y", d => d.row * (cellSize + gap))
+        .attr("width", cellSize).attr("height", cellSize).attr("rx", 5)
+        .style("cursor", "pointer")
+        .on("mouseenter", function(event, d) {
+          const stats = getWaffleStats(activeWaffleMode);
+          const isReviewed = d.index <= stats.prPct;
+          d3.select(this).attr("stroke", COLORS.cobaltDeep).attr("stroke-width", 2);
+          showTooltip(event, `<div style="font-weight:600">${stats.label}</div><div style="color:#D7DEEE;margin-top:2px">${isReviewed ? "Peer-Reviewed (" + stats.prPct + "%)" : "Preprint (" + stats.prePct + "%)"}</div>`);
+        })
+        .on("mousemove", moveTooltip)
+        .on("mouseleave", function() {
+          d3.select(this).attr("stroke", "none");
+          hideTooltip();
+        });
+
+      updateWaffleMode("historical_avg");
+    }
+
+    function updateWaffleMode(mode) {
+      activeWaffleMode = mode;
+      const stats = getWaffleStats(mode);
+      if (!waffleRects) return;
+
+      waffleRects
+        .transition()
+        .duration(380)
+        .ease(d3.easeCubicInOut)
+        .attr("fill", d => d.index <= stats.prPct ? COLORS.cobalt : COLORS.gold);
+
+      document.getElementById("waffle-active-label").textContent = stats.label;
+      document.getElementById("waffle-pr-pct").textContent = `${stats.prPct}%`;
+      document.getElementById("waffle-pr-sub").textContent = stats.prSub;
+      document.getElementById("waffle-pre-pct").textContent = `${stats.prePct}%`;
+      document.getElementById("waffle-pre-sub").textContent = stats.preSub;
+    }
+
+    // =========================================================================
+    // GRAFICO 6: DUMBBELL PLOT
+    // =========================================================================
+    function renderDumbbellChart() {
+      const container = d3.select("#dumbbell-chart-container");
+      container.html("");
+
+      const data = openAlexDataset.subfieldsComparison;
+      const maxX = Math.max(d3.max(data, d => Math.max(d.pct2019, d.pct2026)) * 1.15, 10);
+      const width = 820, height = 265;
+      const margin = { top: 14, right: 48, bottom: 32, left: 205 };
+      const innerWidth = width - margin.left - margin.right;
+      const innerHeight = height - margin.top - margin.bottom;
+
+      const svg = container.append("svg").attr("viewBox", `0 0 ${width} ${height}`).attr("class", "w-full h-auto min-w-[540px]");
+      const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+
+      const x = d3.scaleLinear().domain([0, maxX]).nice().range([0, innerWidth]);
+      const y = d3.scaleBand().domain(data.map(d => d.field)).range([0, innerHeight]).padding(0.42);
+
+      g.append("g").attr("class", "grid").call(d3.axisBottom(x).ticks(5).tickSize(innerHeight).tickFormat(""));
+      g.append("g").attr("class", "axis").attr("transform", `translate(0,${innerHeight})`).call(d3.axisBottom(x).ticks(5).tickFormat(d => d + "%"));
+      g.append("g").attr("class", "axis").call(d3.axisLeft(y).tickSize(0)).select(".domain").remove();
+      g.selectAll(".axis text").style("font-size", "11.5px");
+
+      g.selectAll(".dumbbell-line").data(data).enter().append("line")
+        .attr("x1", d => x(d.pct2019)).attr("x2", d => x(d.pct2019))
+        .attr("y1", d => y(d.field) + y.bandwidth() / 2).attr("y2", d => y(d.field) + y.bandwidth() / 2)
+        .attr("stroke", "#D6D0BF").attr("stroke-width", 3.5).attr("stroke-linecap", "round")
+        .transition()
+        .delay((d, i) => i * 70)
+        .duration(600)
+        .ease(d3.easeCubicOut)
+        .attr("x2", d => x(d.pct2026));
+
+      g.selectAll(".dot-2019").data(data).enter().append("circle")
+        .attr("cx", d => x(d.pct2019)).attr("cy", d => y(d.field) + y.bandwidth() / 2)
+        .attr("r", 0).attr("fill", COLORS.gold).attr("stroke", COLORS.goldDeep).attr("stroke-width", 1.2)
+        .style("cursor", "pointer")
+        .transition().delay((d, i) => i * 70).duration(400).ease(d3.easeBackOut.overshoot(1.8)).attr("r", 5.5)
+        .selection()
+        .on("mouseenter", function(event, d) {
+          showTooltip(event, `<div style="font-weight:600">${d.field}</div><div style="margin-top:2px;color:#D7DEEE">2019: <strong>${d.pct2019}%</strong> → 2026: <strong style="color:${COLORS.sand}">${d.pct2026}%</strong></div>`);
+        })
+        .on("mousemove", moveTooltip).on("mouseleave", hideTooltip);
+
+      g.selectAll(".dot-2026").data(data).enter().append("circle")
+        .attr("cx", d => x(d.pct2026)).attr("cy", d => y(d.field) + y.bandwidth() / 2)
+        .attr("r", 0).attr("fill", COLORS.cobalt).attr("stroke", "#FFFFFF").attr("stroke-width", 1.5)
+        .style("cursor", "pointer")
+        .transition().delay((d, i) => i * 70 + 120).duration(400).ease(d3.easeBackOut.overshoot(1.8)).attr("r", 6.5)
+        .selection()
+        .on("mouseenter", function(event, d) {
+          showTooltip(event, `<div style="font-weight:600">${d.field}</div><div style="margin-top:2px;color:#D7DEEE">2026: <strong style="color:${COLORS.sand}">${d.pct2026}%</strong> (+${(d.pct2026 - d.pct2019).toFixed(1)} pp)</div>`);
+        })
+        .on("mousemove", moveTooltip).on("mouseleave", hideTooltip);
+
+      if (showNumericLabels) {
+        g.selectAll(".lbl-2019").data(data).enter().append("text")
+          .attr("x", d => x(d.pct2019) - 9).attr("y", d => y(d.field) + y.bandwidth() / 2 + 3.5)
+          .attr("text-anchor", "end").attr("fill", "#8A8577").style("font-size", "9.5px").style("font-weight", "600").text(d => `${d.pct2019}%`);
+
+        g.selectAll(".lbl-2026").data(data).enter().append("text")
+          .attr("x", d => x(d.pct2026) + 10).attr("y", d => y(d.field) + y.bandwidth() / 2 + 3.5)
+          .attr("text-anchor", "start").attr("fill", COLORS.cobaltDeep).style("font-size", "10px").style("font-weight", "700").text(d => `${d.pct2026}%`);
+      }
+    }
+
+    // =========================================================================
+    // GRAFICO 7: MATRIX HEATMAP GEOGRAFICA
+    // =========================================================================
+    function renderGeographicHeatmap() {
+      const container = d3.select("#heatmap-container");
+      container.html("");
+
+      const rawData = openAlexDataset.geographicHeatmap;
+      const years = ["2019", "2020", "2021", "2022", "2023", "2024", "2025", "2026"];
+      const countries = rawData.map(d => d.country);
+
+      const cells = [];
+      rawData.forEach(row => years.forEach(yr => cells.push({ country: row.country, code: row.code, year: yr, value: row.values[yr] })));
+
+      const minVal = d3.min(cells, d => d.value);
+      const maxVal = d3.max(cells, d => d.value);
+      const colorScale = d3.scaleSequential().domain([minVal, maxVal])
+        .interpolator(d3.interpolateRgbBasis(["#F3EEDC", "#B9C4DE", "#3E5CA6", "#0F2567"]));
+
+      d3.select("#heatmap-legend").html(`
+        <div class="flex flex-col sm:flex-row sm:items-center gap-3">
+          <span class="text-[11px] font-semibold text-gray-700">Pubblicazioni / anno</span>
+          <div class="flex items-center gap-2.5">
+            <span class="text-[10px] text-gray-500 font-medium font-mono">${minVal.toLocaleString("it-IT")}</span>
+            <div class="w-40 h-2.5 rounded-full shadow-inner" style="background: linear-gradient(to right, #F3EEDC, #B9C4DE, #3E5CA6, #0F2567);"></div>
+            <span class="text-[10px] text-gray-500 font-medium font-mono">${maxVal.toLocaleString("it-IT")}</span>
+          </div>
+        </div>
+      `);
+
+      const width = 940, height = 415;
+      const margin = { top: 32, right: 18, bottom: 18, left: 112 };
+      const innerWidth = width - margin.left - margin.right;
+      const innerHeight = height - margin.top - margin.bottom;
+
+      const svg = container.append("svg").attr("viewBox", `0 0 ${width} ${height}`).attr("class", "w-full h-auto min-w-[620px]");
+      const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+
+      const x = d3.scaleBand().domain(years).range([0, innerWidth]).padding(0.07);
+      const y = d3.scaleBand().domain(countries).range([0, innerHeight]).padding(0.09);
+
+      g.append("g").attr("class", "axis").call(d3.axisTop(x).tickSize(0)).select(".domain").remove();
+      g.selectAll(".axis text").style("font-size", "12px").style("font-weight", "600").style("fill", "#374151");
+      g.append("g").attr("class", "axis").call(d3.axisLeft(y).tickSize(0)).select(".domain").remove();
+      g.selectAll(".axis:nth-of-type(2) text").style("font-size", "12px").style("font-weight", "500").style("fill", "#374151");
+
+      g.selectAll(".heat-cell").data(cells).enter().append("rect")
+        .attr("x", d => x(d.year)).attr("y", d => y(d.country))
+        .attr("width", x.bandwidth()).attr("height", y.bandwidth())
+        .attr("rx", 6)
+        .attr("fill", d => colorScale(d.value))
+        .attr("opacity", 0)
+        .attr("stroke", d => d.country === "Italia" ? COLORS.gold : "#FFFFFF")
+        .attr("stroke-width", d => d.country === "Italia" ? 2 : 1)
+        .style("cursor", "pointer")
+        .transition()
+        .delay((d, i) => i * 4)
+        .duration(400)
+        .attr("opacity", 1)
+        .selection()
+        .on("mouseenter", function(event, d) {
+          d3.select(this).attr("stroke", COLORS.cobaltDeep).attr("stroke-width", 2.2);
+          showTooltip(event, `<div style="font-weight:600">${d.country} (${d.code}) — ${d.year}</div><div style="margin-top:2px;color:#D7DEEE">Pubblicazioni: <strong style="color:${COLORS.sand}">${d.value.toLocaleString("it-IT")}</strong></div>`);
+        })
+        .on("mousemove", moveTooltip)
+        .on("mouseleave", function(event, d) {
+          d3.select(this).attr("stroke", d.country === "Italia" ? COLORS.gold : "#FFFFFF").attr("stroke-width", d.country === "Italia" ? 2 : 1);
+          hideTooltip();
+        });
+
+      if (showNumericLabels) {
+        g.selectAll(".heat-label").data(cells).enter().append("text")
+          .attr("x", d => x(d.year) + x.bandwidth() / 2).attr("y", d => y(d.country) + y.bandwidth() / 2 + 4)
+          .attr("text-anchor", "middle").attr("fill", d => d.value > maxVal * 0.42 ? "#FFFFFF" : "#374151")
+          .attr("opacity", 0)
+          .style("font-size", "10.5px").style("font-weight", "600").style("pointer-events", "none")
+          .transition().delay(500).duration(300).attr("opacity", 1)
+          .text(d => d.value.toLocaleString("it-IT"));
+      }
+    }
+
+    // =========================================================================
+    // SCROLLYTELLING ENGINE
+    // =========================================================================
+    function renderAllCharts() {
+      renderTrendAreaChart();
+      renderGroupedBarchart();
+      renderSmallMultiples();
+      render100StackedBarchart();
+      renderDumbbellChart();
+      renderGeographicHeatmap();
+    }
+
+    function setupScrollytelling() {
+      window.addEventListener("scroll", () => {
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        document.getElementById("scroll-progress").style.width = `${progress}%`;
+      }, { passive: true });
+
+      // Capitolo 1: Dati -> Trend ML -> Boom
+      const trendSteps = document.querySelectorAll(".scrolly-step[data-step]");
+      const phaseLabels = {
+        data: "01 • Dati Osservati",
+        trend: "02 • Linea Trend Pre-IA (ML)",
+        boom: "03 • Boom 2026"
+      };
+      const phaseBadgeClasses = {
+        data: "bg-cobalt/10 text-cobalt border-cobalt/15",
+        trend: "bg-gold/15 text-goldDeep border-gold/30",
+        boom: "bg-cobaltDeep/10 text-cobaltDeep border-cobaltDeep/20"
+      };
+      const trendObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            trendSteps.forEach(el => el.classList.remove("is-active"));
+            entry.target.classList.add("is-active");
+            const nextPhase = entry.target.getAttribute("data-step");
+            if (nextPhase !== activeTrendPhase) {
+              activeTrendPhase = nextPhase;
+              const badge = document.getElementById("trend-phase-badge");
+              badge.textContent = phaseLabels[nextPhase];
+              badge.className = "px-3 py-1 rounded-full text-[11px] font-semibold border " + phaseBadgeClasses[nextPhase];
+              renderTrendAreaChart();
+            }
+          }
+        });
+      }, { rootMargin: "-40% 0px -40% 0px", threshold: 0.1 });
+      trendSteps.forEach(step => trendObserver.observe(step));
+
+      // Capitolo 3: Lean
+      const leanSteps = document.querySelectorAll(".lean-step[data-lean]");
+      const leanObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            leanSteps.forEach(el => el.classList.remove("is-active"));
+            entry.target.classList.add("is-active");
+            const nextLean = entry.target.getAttribute("data-lean");
+            if (nextLean !== activeLeanPhase) {
+              activeLeanPhase = nextLean;
+              render100StackedBarchart();
+            }
+          }
+        });
+      }, { rootMargin: "-40% 0px -40% 0px", threshold: 0.1 });
+      leanSteps.forEach(step => leanObserver.observe(step));
+
+      // Capitolo 4: Waffle Chart
+      const waffleSteps = document.querySelectorAll(".waffle-step[data-waffle-mode]");
+      const waffleObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            waffleSteps.forEach(el => el.classList.remove("is-active"));
+            entry.target.classList.add("is-active");
+            const mode = entry.target.getAttribute("data-waffle-mode");
+            if (mode !== activeWaffleMode) {
+              updateWaffleMode(mode);
+            }
+          }
+        });
+      }, { rootMargin: "-40% 0px -40% 0px", threshold: 0.1 });
+      waffleSteps.forEach(step => waffleObserver.observe(step));
+
+      // Reveal sezioni
+      const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add("is-visible"); });
+      }, { threshold: 0.08 });
+      document.querySelectorAll(".reveal-section").forEach(sec => revealObserver.observe(sec));
+
+      // Navigatore laterale
+      const dotItems = document.querySelectorAll(".dot-nav-item");
+      const navObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const id = entry.target.getAttribute("id");
+            dotItems.forEach(item => item.classList.toggle("active", item.getAttribute("data-target") === id));
+          }
+        });
+      }, { rootMargin: "-40% 0px -50% 0px" });
+      document.querySelectorAll("header[id], section[id]").forEach(sec => navObserver.observe(sec));
+    }
+
+    // =========================================================================
+    // BOOTSTRAP: CARICAMENTO DINAMICO DA ./data/openalex_ai_math.json
+    // =========================================================================
+    async function initApp() {
+      try {
+        const response = await fetch("./data/openalex_ai_math.json");
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        openAlexDataset = await response.json();
+
+        mlModel = fitExponentialOLS(openAlexDataset.preAiHistoricalSeries);
+
+        fullTrendSeries = [
+          ...openAlexDataset.preAiHistoricalSeries.slice(0, 4).map(d => ({
+            year: d.year,
+            actual: d.totalCount
+          })),
+          ...openAlexDataset.leanVerificationByYear.map(d => ({
+            year: d.year,
+            actual: d.totalCount
+          }))
+        ].map(d => ({
+          ...d,
+          baseline: mlModel.predict(d.year)
+        }));
+
+        // KPI hero con conteggio animato
+        const total2019_2026 = d3.sum(openAlexDataset.leanVerificationByYear, d => d.totalCount);
+        const lastPt = fullTrendSeries[fullTrendSeries.length - 1];
+        const surplusPct = Math.round(((lastPt.actual - lastPt.baseline) / Math.max(lastPt.baseline, 1)) * 100);
+        const lean2026 = openAlexDataset.leanVerificationByYear.find(d => d.year === "2026");
+        const pr2026 = openAlexDataset.peerReviewByYear.find(d => d.year === "2026");
+
+        animateValue(document.getElementById("kpi-total"), total2019_2026, v => Math.round(v).toLocaleString("it-IT"));
+        document.getElementById("kpi-surplus").textContent = `${surplusPct >= 0 ? "+" : ""}${surplusPct}%`;
+        if (lean2026) document.getElementById("kpi-lean").textContent = `${lean2026.verifiedPct}%`;
+        if (pr2026) document.getElementById("kpi-preprint").textContent = `${pr2026.preprintPct}%`;
+
+        document.getElementById("boom-step-text").innerHTML =
+          `Dal 2022 la curva reale si stacca nettamente dalla previsione del modello ML. Nel 2026 le pubblicazioni osservate raggiungono <strong>${lastPt.actual.toLocaleString("it-IT")}</strong> unità contro le <strong>${lastPt.baseline.toLocaleString("it-IT")}</strong> previste dal trend naturale: un boom netto del <strong>+${surplusPct}%</strong>.`;
+
+        if (openAlexDataset.metadata && openAlexDataset.metadata.generatedAt) {
+          document.getElementById("footer-meta-info").textContent =
+            `Dati OpenAlex estratti il ${new Date(openAlexDataset.metadata.generatedAt).toLocaleDateString("it-IT")} • Letti da ./data/openalex_ai_math.json`;
+        }
+
+        initWaffleChart();
+        renderAllCharts();
+        setupScrollytelling();
+      } catch (err) {
+        console.error("Errore caricamento JSON:", err);
+        document.getElementById("json-error-banner").classList.remove("hidden");
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      initApp();
+
+      const toggleLabelsBtn = document.getElementById("toggle-labels-btn");
+      toggleLabelsBtn.addEventListener("click", () => {
+        showNumericLabels = !showNumericLabels;
+        toggleLabelsBtn.textContent = showNumericLabels ? "Nascondi valori" : "Mostra valori";
+        if (openAlexDataset) renderAllCharts();
+      });
+
+      const highlightUniGeBtn = document.getElementById("highlight-unige-btn");
+      highlightUniGeBtn.addEventListener("click", () => {
+        highlightUniGe = !highlightUniGe;
+        highlightUniGeBtn.classList.toggle("bg-gold", highlightUniGe);
+        highlightUniGeBtn.classList.toggle("bg-sand", !highlightUniGe);
+        highlightUniGeBtn.classList.toggle("text-white", highlightUniGe);
+        highlightUniGeBtn.classList.toggle("shadow-md", highlightUniGe);
+        highlightUniGeBtn.classList.toggle("shadow-gold/30", highlightUniGe);
+        if (openAlexDataset) {
+          renderGroupedBarchart();
+          renderSmallMultiples();
+        }
+      });
+    });
+  </script>
+</body>
+</html>
