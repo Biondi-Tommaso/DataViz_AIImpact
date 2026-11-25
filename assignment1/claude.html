@@ -3,22 +3,23 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>AI-Math Data — L'Impatto dell'IA nella Matematica (2015–2026)</title>
+<title>AI-Math Data — L'Impatto dell'IA nella Matematica (2000–2026)</title>
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <style>
-:root{--paper:#F5F6FB;--ink:#0E1630;--blue:#2447C8;--sky:#8EA2E0;--gold:#D9A93A;--goldD:#8A650C;--sand:#E8D9A6;--mist:#6B7390;--line:#DDE1EE;--serif:"Fraunces",Georgia,serif;--sans:"Instrument Sans",system-ui,sans-serif}
+:root{--paper:#F5F6FB;--ink:#0E1630;--blue:#2447C8;--sky:#8EA2E0;--mid:#4F7CAC;--gold:#D9A93A;--goldD:#8A650C;--sand:#E8D9A6;--mist:#6B7390;--line:#DDE1EE;--serif:"Fraunces",Georgia,serif;--sans:"Instrument Sans",system-ui,sans-serif}
 *{box-sizing:border-box;margin:0}
-html{scroll-behavior:smooth}
-body{background:var(--paper);color:var(--ink);font:400 16px/1.65 var(--sans);-webkit-font-smoothing:antialiased}
+html{scroll-behavior:smooth;max-width:100%;overflow-x:clip}
+body{background:var(--paper);color:var(--ink);font:400 16px/1.65 var(--sans);-webkit-font-smoothing:antialiased;max-width:100%;overflow-x:clip}
 a{color:inherit;text-decoration:none}
 :focus-visible{outline:2px solid var(--blue);outline-offset:3px}
 ::selection{background:var(--sand)}
 h1,h2,h3{font-family:var(--serif);font-weight:600;letter-spacing:-.02em;line-height:1.1}
 code{font-size:.9em;background:rgba(0,0,0,.06);padding:1px 5px;border-radius:4px}
-.wrap{max-width:1160px;margin:0 auto;padding:0 24px}
+.wrap{max-width:1160px;width:100%;margin:0 auto;padding:0 24px}
+.wrap>*,.stack>*,.split>*,.hero>*{min-width:0}
 #bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--blue),var(--gold));z-index:60}
 #err{display:none;background:#FFF4D6;border-bottom:1px solid #E7C766;padding:12px 24px;font-size:14px;text-align:center}
 nav{position:sticky;top:0;z-index:50;background:rgba(245,246,251,.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
@@ -42,14 +43,14 @@ header .lead{margin-top:26px;font-size:19px;line-height:1.55;color:#B9C2E0;max-w
 .kpis b{display:block;font:600 34px/1.1 var(--serif);letter-spacing:-.02em;color:#fff}
 .kpis b.g{color:var(--gold)}
 .kpis small{display:block;margin-top:6px;font-size:13px;color:#98A3C8;line-height:1.4}
-.curve{background:rgba(255,255,255,.04);border:1px solid #2C3760;border-radius:22px;padding:26px 22px 14px}
+.curve{background:rgba(255,255,255,.04);border:1px solid #2C3760;border-radius:22px;padding:26px 22px 14px;max-width:100%}
 .curve p{font-size:13px;color:#98A3C8;margin-top:6px;display:flex;gap:18px;flex-wrap:wrap}
 .curve p i{display:inline-block;width:18px;height:0;border-top:3px solid #fff;margin-right:7px;vertical-align:3px}
 .curve p i.d{border-top:2px dashed var(--gold)}
 .curve .axis text{fill:#98A3C8}.curve .axis path,.curve .axis line{stroke:#37426B}
 /* sections */
 section{padding:104px 0;border-top:1px solid var(--line)}
-.sh{max-width:700px;margin-bottom:44px}
+.sh{max-width:720px;margin-bottom:44px}
 .sh h2,.panel h2{font-size:clamp(32px,4.4vw,52px)}
 .sh p{margin-top:14px;color:#4A5272;font-size:17px}
 .k{font:600 14px var(--sans);color:var(--blue);margin-bottom:10px;display:block}
@@ -62,7 +63,7 @@ section{padding:104px 0;border-top:1px solid var(--line)}
 .step.gold.on{border-color:var(--gold)}
 .step h3{font-size:clamp(24px,2.6vw,32px);margin:4px 0 12px}
 .step p{color:#434B6B;max-width:480px}
-.panel{background:#fff;border:1px solid var(--line);border-radius:22px;padding:32px;box-shadow:0 1px 0 rgba(14,22,48,.03),0 24px 48px -28px rgba(14,22,48,.18)}
+.panel{background:#fff;border:1px solid var(--line);border-radius:22px;padding:32px;min-width:0;max-width:100%;box-shadow:0 1px 0 rgba(14,22,48,.03),0 24px 48px -28px rgba(14,22,48,.18)}
 .panel h3.t{font-size:22px;margin-bottom:6px}
 .panel .sub{font-size:14px;color:var(--mist)}
 .row{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:flex-start}
@@ -78,35 +79,45 @@ section{padding:104px 0;border-top:1px solid var(--line)}
 .btn{font:600 14px var(--sans);padding:10px 18px;border-radius:99px;border:1px solid var(--ink);background:var(--ink);color:#fff;cursor:pointer;transition:.2s}
 .btn:hover{background:var(--blue);border-color:var(--blue)}
 .btn.alt{background:transparent;color:var(--ink)}.btn.alt:hover{background:var(--sand);border-color:var(--sand)}
-.btn.alt.on{background:var(--gold);border-color:var(--gold)}
-.stack{display:grid;gap:28px}
-.sm{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:22px}
-.sm>div{border:1px solid var(--line);border-radius:14px;padding:12px 12px 4px;background:var(--paper)}
-.sm .h{display:flex;justify-content:space-between;align-items:baseline;font-size:12px;color:var(--mist)}
-.sm .h b{font:600 17px var(--serif);color:var(--ink)}
-.scr{overflow-x:auto}
+.btn.alt.on{background:var(--gold);border-color:var(--gold);color:var(--ink)}
+.btn.sm-nav{padding:6px 13px;font-size:16px;line-height:1}
+.pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.pill{font:600 12px var(--sans);padding:5px 11px;border-radius:99px;border:1px solid var(--line);background:var(--paper);color:var(--mist);cursor:pointer;transition:.15s}
+.pill:hover{border-color:var(--blue);color:var(--blue)}
+.pill.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.stack{display:grid;grid-template-columns:minmax(0,1fr);gap:28px}
+/* Carosello orizzontale cards capitolo 2 contenuto dentro la panel */
+.sm{display:flex;flex-wrap:nowrap;gap:16px;width:100%;max-width:100%;min-width:0;margin-top:20px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 2px 14px;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:var(--sky) var(--paper)}
+.sm::-webkit-scrollbar{height:8px}
+.sm::-webkit-scrollbar-track{background:var(--paper);border-radius:99px}
+.sm::-webkit-scrollbar-thumb{background:#B9C4E6;border-radius:99px}
+.sm::-webkit-scrollbar-thumb:hover{background:var(--blue)}
+.sm>div{flex:0 0 242px;scroll-snap-align:start;border:1px solid var(--line);border-radius:16px;padding:14px 14px 6px;background:var(--paper);box-shadow:0 8px 20px -14px rgba(14,22,48,.16)}
+.sm .h{display:flex;justify-content:space-between;align-items:baseline;font-size:12px;color:var(--mist);margin-bottom:4px}
+.sm .h b{font:600 18px var(--serif);color:var(--ink)}
+.scr{width:100%;max-width:100%;min-width:0;overflow-x:auto}
 .chart{width:100%;height:auto;display:block}
 .axis text{fill:var(--mist);font:500 11px var(--sans)}
 .axis path,.axis line{stroke:var(--line)}
 .axis.big text{font-size:12px;font-weight:600;fill:var(--ink)}
 .grid line{stroke:#ECEEF6}.grid path{display:none}
 .hov{cursor:pointer}.hov:hover{stroke:var(--ink);stroke-width:1.5;opacity:1}
-.cells{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px}
-.cell{padding:14px 16px;border-radius:14px;border:1px solid var(--line)}
-.cell.pr{background:rgba(36,71,200,.06)}.cell.pre{background:rgba(217,169,58,.14)}
-.cell em{font-style:normal;font-size:13px;font-weight:600;display:flex;align-items:center;gap:8px}
-.cell b{display:block;font:600 34px/1.15 var(--serif);margin-top:2px}
-.cell small{font-size:12px;color:var(--mist)}
+.cells{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:8px}
+.cell{padding:12px 14px;border-radius:14px;border:1px solid var(--line)}
+.cell.pr{background:rgba(36,71,200,.06)}.cell.bo{background:rgba(79,124,172,.12)}.cell.pre{background:rgba(217,169,58,.14)}
+.cell em{font-style:normal;font-size:12px;font-weight:600;display:flex;align-items:center;gap:6px}
+.cell b{display:block;font:600 28px/1.15 var(--serif);margin-top:2px}
+.cell small{font-size:11.5px;color:var(--mist);display:block;margin-top:2px}
 #heat-lg{font-size:12px;font-weight:600}
-#heat-lg div{width:150px;height:10px;border-radius:9px;margin:6px 0 4px}
+#heat-lg div{width:160px;height:11px;border-radius:9px;margin:6px 0 4px;border:1px solid var(--line)}
 #heat-lg p{display:flex;justify-content:space-between;color:var(--mist);font-weight:500}
 .foot{margin-top:18px;padding-top:16px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;font-size:13px;color:var(--mist)}
 footer{background:var(--ink);color:#B9C2E0;padding:44px 0;font-size:14px}
 footer b{display:block;font:700 18px var(--serif);color:#fff;margin-bottom:4px}
-#tt{position:fixed;pointer-events:none;opacity:0;transition:opacity .14s;z-index:9999;background:var(--ink);color:#fff;padding:10px 14px;border-radius:12px;font-size:13px;line-height:1.5;max-width:300px;box-shadow:0 16px 32px rgba(14,22,48,.28)}
+#tt{position:fixed;pointer-events:none;opacity:0;transition:opacity .14s;z-index:9999;background:var(--ink);color:#fff;padding:10px 14px;border-radius:12px;font-size:13px;line-height:1.5;max-width:310px;box-shadow:0 16px 32px rgba(14,22,48,.28)}
 #tt .g{color:var(--sand)}#tt small{color:#A9B3D6}
-@media(max-width:980px){.hero,.split,.split.lean,.split.wf{grid-template-columns:1fr;gap:36px}.sticky{position:static}.steps{gap:28px;padding:0}.step{opacity:1}.sm{grid-template-columns:1fr 1fr}nav ul{gap:16px;font-size:13px}section{padding:72px 0}}
-@media(max-width:620px){nav ul li:nth-child(n+4){display:none}.panel{padding:20px}.sm{grid-template-columns:1fr}.cells{grid-template-columns:1fr}}
+@media(max-width:980px){.hero,.split,.split.lean,.split.wf{grid-template-columns:1fr;gap:36px}.sticky{position:static}.steps{gap:28px;padding:0}.step{opacity:1}nav ul{gap:16px;font-size:13px}section{padding:72px 0}}
+@media(max-width:620px){nav ul li:nth-child(n+4){display:none}.panel{padding:20px}.cells{grid-template-columns:1fr}.sm>div{flex:0 0 220px}}
 @media(min-width:1280px){.rail{display:flex}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
 </style>
@@ -117,12 +128,12 @@ footer b{display:block;font:700 18px var(--serif);color:#fff;margin-bottom:4px}
 
 <nav><div class="wrap">
   <a href="#top" class="brand">AI-Math Data</a>
-  <ul><li><a href="#rivoluzione">Trend &amp; ML</a></li><li><a href="#hub-globali">Atenei</a></li><li><a href="#prove-formali">Lean</a></li><li><a href="#preprint-review">Peer Review</a></li><li><a href="#mappa-geografica">Rete</a></li></ul>
+  <ul><li><a href="#rivoluzione">Trend &amp; Regressione</a></li><li><a href="#hub-globali">Atenei</a></li><li><a href="#prove-formali">Lean</a></li><li><a href="#preprint-review">Peer Review</a></li><li><a href="#mappa-geografica">Rete</a></li></ul>
 </div></nav>
 
 <aside class="rail" aria-label="Avanzamento capitoli">
   <a href="#top" class="on" data-t="top"><span>Intro</span><i></i></a>
-  <a href="#rivoluzione" data-t="rivoluzione"><span>Trend &amp; ML</span><i></i></a>
+  <a href="#rivoluzione" data-t="rivoluzione"><span>Trend &amp; Reg.</span><i></i></a>
   <a href="#hub-globali" data-t="hub-globali"><span>Atenei</span><i></i></a>
   <a href="#prove-formali" data-t="prove-formali"><span>Lean 4</span><i></i></a>
   <a href="#preprint-review" data-t="preprint-review"><span>Peer Review</span><i></i></a>
@@ -132,17 +143,17 @@ footer b{display:block;font:700 18px var(--serif);color:#fff;margin-bottom:4px}
 <header id="top"><div class="wrap hero">
   <div>
     <h1>The Quiet Revolution</h1>
-    <p class="lead">L'intelligenza artificiale sta cambiando la ricerca matematica ben oltre la crescita normale della letteratura. Scorri: prima i dati reali, poi la proiezione pre-IA, infine il boom del 2026.</p>
+    <p class="lead">L'intelligenza artificiale sta cambiando la ricerca matematica ben oltre la traiettoria attesa. Scorri: prima i dati osservati dal 2000, poi la regressione addestrata fino al 2025, infine il confronto con il 2026.</p>
     <div class="kpis">
       <div><b id="kpi-total">—</b><small>paper OpenAlex, 2019–2026</small></div>
-      <div><b id="kpi-surplus" class="g">—</b><small>nel 2026 rispetto al trend pre-IA</small></div>
-      <div><b id="kpi-lean">—</b><small>verificati formalmente con Lean nel 2026</small></div>
-      <div><b id="kpi-preprint">—</b><small>su repository aperti nel 2026</small></div>
+      <div><b id="kpi-surplus" class="g">—</b><small id="kpi-surplus-lbl">nel 2026 rispetto alla regressione 2000–2025</small></div>
+      <div><b id="kpi-lean">—</b><small>dei paper AI di verifica formale usa Lean (2026)</small></div>
+      <div><b id="kpi-preprint">—</b><small>presenti su arXiv nel 2026</small></div>
     </div>
   </div>
   <div class="curve">
     <div id="hero-curve"></div>
-    <p><span><i></i>Pubblicazioni osservate</span><span><i class="d"></i>Crescita attesa senza IA</span></p>
+    <p><span><i></i>Pubblicazioni osservate</span><span><i class="d"></i>Regressione storica (fino al 2025)</span></p>
   </div>
 </div></header>
 
@@ -150,30 +161,35 @@ footer b{display:block;font:700 18px var(--serif);color:#fff;margin-bottom:4px}
   <div class="steps">
     <div class="step st-trend on" data-v="data">
       <span class="k">Fase 1: i dati osservati</span>
-      <h3>La crescita delle pubblicazioni, 2015–2026</h3>
-      <p>I dati grezzi di OpenAlex mostrano un numero di pubblicazioni annue in costante aumento fino a oltre 16.000. Ma la letteratura scientifica cresce ogni anno anche <em>senza</em> l'IA: quanta di questa salita è fisiologica e quanta è un vero boom?</p>
+      <h3 id="s1-title">La crescita delle pubblicazioni, 2000–2026</h3>
+      <p>I dati di OpenAlex mostrano l'intera serie delle pubblicazioni all'incrocio tra matematica e intelligenza artificiale, a partire dagli anni 2000 fino al 2026.</p>
     </div>
     <div class="step gold st-trend" data-v="trend">
-      <span class="k" style="color:var(--goldD)">Fase 2: il trend pre-IA</span>
-      <h3>Regressione esponenziale log-lineare</h3>
-      <p>Per isolare la crescita naturale addestriamo sui soli anni 2015–2019 una regressione esponenziale: trasformiamo i conteggi in ln(y) = ln(α) + βt e applichiamo i minimi quadrati (OLS). La linea tratteggiata mostra dove sarebbe arrivata la ricerca al solo ritmo naturale.</p>
+      <span class="k" style="color:var(--goldD)">Fase 2: regressione fino al 2025</span>
+      <h3 id="s2-title">Modello esponenziale e polinomiale (2000–2025)</h3>
+      <p id="s2-text">Addestriamo una regressione (esponenziale o polinomiale di 2°/3° grado) su tutta la serie storica fino al 2025 incluso, per stimare la traiettoria di crescita attesa fino al 2026.</p>
     </div>
     <div class="step st-trend" data-v="boom">
-      <span class="k">Fase 3: il boom rispetto al trend</span>
-      <h3>L'esplosione del 2026</h3>
-      <p id="boom-text">Dal 2022 la curva reale si stacca nettamente dalla previsione del modello. L'area dorata è il surplus netto rispetto alla traiettoria attesa.</p>
+      <span class="k">Fase 3: il 2026 rispetto al modello</span>
+      <h3>Lo scarto del 2026 rispetto alla curva stimata</h3>
+      <p id="boom-text">Confrontando il valore osservato del 2026 con la proiezione della regressione addestrata fino al 2025, misuriamo quanto il ritmo attuale superi la tendenza storica.</p>
     </div>
   </div>
   <div class="sticky"><div class="panel">
-    <div class="row"><span class="sub">Pubblicazioni di IA in matematica, 2015–2026</span><span id="phase-badge" class="badge">Dati osservati</span></div>
-    <h3 class="t" style="margin-top:8px">Dati reali, trend pre-IA e boom 2026</h3>
+    <div class="row"><span class="sub" id="t-sub">Pubblicazioni di IA in matematica, 2000–2026</span><span id="phase-badge" class="badge">Dati osservati</span></div>
+    <h3 class="t" style="margin-top:8px">Dati reali, regressione 2000–2025 e proiezione 2026</h3>
+    <div id="reg-pills" class="pills">
+      <button type="button" class="pill on" data-m="exp">Esponenziale</button>
+      <button type="button" class="pill" data-m="poly2">Polinomiale 2° grado</button>
+      <button type="button" class="pill" data-m="poly3">Polinomiale 3° grado</button>
+    </div>
     <div class="lg">
       <div><i class="ln"></i>Dati osservati (OpenAlex)</div>
-      <div id="lg-trend" style="opacity:.25"><i class="dsh"></i>Trend pre-IA (OLS log-lineare)</div>
-      <div id="lg-boom" style="opacity:.25"><i style="background:var(--sand);border:1px solid var(--gold)"></i>Boom oltre il trend</div>
+      <div id="lg-trend" style="opacity:.25"><i class="dsh"></i><span id="lg-avg-txt">Regressione (2000–2025)</span></div>
+      <div id="lg-boom" style="opacity:.25"><i style="background:var(--sand);border:1px solid var(--gold)"></i>Scarto rispetto al modello</div>
     </div>
     <div id="trend-chart"></div>
-    <div class="ml"><span>Training: 2015–2019 (n=5)</span><span id="ml-f">ŷ(t) = α·exp(β·t)</span><b id="ml-r2">R² = —</b></div>
+    <div class="ml"><span id="ml-win">Training: 2000–2025</span><span id="ml-f">ŷ(t) = —</span><b id="ml-r2">R² = —</b></div>
   </div></div>
 </div></div></section>
 
@@ -196,8 +212,16 @@ footer b{display:block;font:700 18px var(--serif);color:#fff;margin-bottom:4px}
       <div id="grouped" class="scr" style="margin-top:14px"></div>
     </div>
     <div class="panel">
-      <h3 class="t">Anno per anno, a scala condivisa</h3>
-      <p class="sub">Un pannello per ogni anno, con lo stesso asse verticale: sull'asse orizzontale si confrontano direttamente i tre atenei.</p>
+      <div class="row" style="align-items:center">
+        <div>
+          <h3 class="t">Anno per anno, a scala condivisa</h3>
+          <p class="sub">Scorri orizzontalmente le card anno per anno dentro questo pannello (stesso asse verticale).</p>
+        </div>
+        <div class="btns" style="margin:0">
+          <button id="sm-prev" class="btn alt sm-nav" type="button" aria-label="Scorri a sinistra">&#8249;</button>
+          <button id="sm-next" class="btn alt sm-nav" type="button" aria-label="Scorri a destra">&#8250;</button>
+        </div>
+      </div>
       <div id="smalls" class="sm"></div>
     </div>
   </div>
@@ -206,53 +230,79 @@ footer b{display:block;font:700 18px var(--serif);color:#fff;margin-bottom:4px}
 <section id="prove-formali"><div class="wrap"><div class="split lean">
   <div class="sticky"><div class="panel">
     <span class="k">Capitolo 3: verifica formale</span>
-    <h2 style="font-size:clamp(28px,3.4vw,40px);margin-bottom:12px">The Rise of Formal Proofs</h2>
-    <p class="sub">Quota annua di lavori con dimostrazioni verificate meccanicamente in <strong>Lean</strong>, rispetto ai paper tradizionali.</p>
-    <div class="lg"><div><i style="background:var(--blue)"></i>Lean (verificati formalmente)</div><div><i style="background:var(--sand)"></i>Non-Lean (tradizionali)</div></div>
+    <div class="row" style="align-items:center;margin-bottom:8px">
+      <h2 style="font-size:clamp(28px,3.4vw,40px)">The Rise of Formal Proofs</h2>
+    </div>
+    <p class="sub" id="lean-sub">Quota annua di paper AI di verifica formale / theorem proving che utilizzano <strong>Lean</strong> (Lean 3/4 &amp; Mathlib) rispetto ad altri proof assistant.</p>
+    <div id="lean-pills" class="pills">
+      <button type="button" class="pill on" data-m="formal">Quota tra i Proof Assistant (AI)</button>
+      <button type="button" class="pill" data-m="mathai">Quota su tutto Math + AI</button>
+      <button type="button" class="pill" data-m="count">Volumi assoluti (paper)</button>
+    </div>
+    <div class="lg"><div><i style="background:var(--blue)"></i><span id="lg-lean-txt">Lean (verificati formalmente)</span></div><div id="lg-nonlean"><i style="background:var(--sand)"></i>Altri proof assistant (Isabelle, Coq/Rocq, HOL…)</div></div>
     <div id="stacked"></div>
   </div></div>
   <div class="steps">
     <div class="step gold st-lean on" data-v="early">
-      <span class="k" style="color:var(--goldD)">2019–2022: una nicchia</span>
-      <h3>Meno del 5% formalizzato</h3>
-      <p>Fino al 2022 la verifica con proof assistant resta confinata a piccoli gruppi specializzati, sotto il 5% della produzione annuale.</p>
+      <span class="k" style="color:var(--goldD)">2019–2022: i primi passi</span>
+      <h3>Prima della svolta di Lean 4</h3>
+      <p>Tra il 2019 e il 2022 il theorem proving neurale era frammentato tra Isabelle, Coq, HOL Light e Metamath; i lavori basati su Lean e Mathlib erano ancora una minoranza.</p>
     </div>
     <div class="step st-lean" data-v="boom">
       <span class="k">2023–2026: l'accelerazione</span>
       <h3>L'ascesa di Lean 4 e Mathlib4</h3>
-      <p>Con la sinergia tra LLM e il kernel di Lean 4, generare tattiche formali diventa accessibile e la quota di paper verificati cresce rapidamente fino al 2026.</p>
+      <p>Con Lean 4, Mathlib4 e i nuovi prover LLM (AlphaProof, DeepSeek-Prover, Goedel-Prover), Lean diventa rapidamente il linguaggio dominante nella verifica formale assistita dall'IA.</p>
     </div>
   </div>
 </div></div></section>
 
 <section id="preprint-review"><div class="wrap">
   <div class="sh">
-    <span class="k">Capitolo 4: validazione</span>
-    <h2>From Preprint to Peer-Reviewed</h2>
-    <p>La <strong>media storica 2019–2025</strong> a confronto con la <strong>situazione del 2026</strong>: quanti lavori passano per la revisione paritaria e quanti restano su repository preprint.</p>
+    <span class="k">Capitolo 4: validazione e preprint</span>
+    <h2>From arXiv to Peer-Reviewed</h2>
+    <p>Confronto pulito anno per anno tra <strong>pubblicazioni peer-reviewed</strong> (riviste e conferenze) e <strong>preprint su arXiv</strong>. Usiamo tutte le <code>locations</code> di OpenAlex, così un paper nato su arXiv e poi pubblicato in rivista <strong>continua a risultare presente su arXiv</strong>.</p>
   </div>
+
+  <div class="panel" style="margin-bottom:28px">
+    <div class="row">
+      <div>
+        <h3 class="t">Peer-Reviewed vs arXiv anno per anno, 2019–2026</h3>
+        <p class="sub">Le barre mostrano i volumi totali annuali e l'intersezione esatta (paper presenti sia su arXiv che su rivista/conferenza); la linea tratteggiata indica il rapporto Peer-Reviewed / arXiv.</p>
+      </div>
+      <div class="lg" style="margin:0">
+        <div><i style="background:var(--blue)"></i>Solo Peer-Reviewed</div>
+        <div><i style="background:var(--mid)"></i>arXiv &rarr; Peer-Reviewed (entrambi)</div>
+        <div><i style="background:var(--gold)"></i>Solo arXiv</div>
+      </div>
+    </div>
+    <div id="pr-yearly" class="scr" style="margin-top:14px"></div>
+  </div>
+
   <div class="split wf" style="margin-bottom:48px">
     <div class="sticky"><div class="panel">
       <div class="row" style="align-items:baseline"><h3 id="w-label" style="font-size:26px">Media 2019–2025</h3><span class="sub">1 quadratino = 1%</span></div>
-      <div id="waffle" style="display:flex;justify-content:center;margin:24px 0"></div>
+      <div id="wf-pills" class="pills"></div>
+      <div id="waffle" style="display:flex;justify-content:center;margin:22px 0"></div>
       <div class="cells">
-        <div class="cell pr"><em style="color:var(--blue)"><i style="width:10px;height:10px;border-radius:3px;background:var(--blue)"></i>Peer-reviewed</em><b id="w-pr">—</b><small id="w-prs">—</small></div>
-        <div class="cell pre"><em style="color:var(--goldD)"><i style="width:10px;height:10px;border-radius:3px;background:var(--gold)"></i>Preprint / repository</em><b id="w-pre">—</b><small id="w-pres">—</small></div>
+        <div class="cell pr"><em style="color:var(--blue)"><i style="width:9px;height:9px;border-radius:3px;background:var(--blue)"></i>Solo Peer-reviewed</em><b id="w-pr">—</b><small id="w-prs">—</small></div>
+        <div class="cell bo"><em style="color:var(--mid)"><i style="width:9px;height:9px;border-radius:3px;background:var(--mid)"></i>arXiv + Peer-reviewed</em><b id="w-bo">—</b><small id="w-bos">—</small></div>
+        <div class="cell pre"><em style="color:var(--goldD)"><i style="width:9px;height:9px;border-radius:3px;background:var(--gold)"></i>Solo arXiv</em><b id="w-pre">—</b><small id="w-pres">—</small></div>
       </div>
     </div></div>
     <div class="steps" style="gap:38vh">
       <div class="step st-wf on" data-v="hist">
         <span class="k">Fase 1: media 2019–2025</span>
-        <h3>La prevalenza della peer review</h3>
-        <p>Nella media ponderata 2019–2025, la maggioranza delle pubblicazioni completava il percorso classico su riviste e atti con revisione paritaria prima della piena diffusione.</p>
+        <h3>La doppia vita dei paper su arXiv</h3>
+        <p>Negli anni 2019–2025 una quota consistente dei lavori pubblicati su riviste o conferenze conserva anche la propria copia su arXiv (fascia azzurro-ardesia): tracciarla evita di sottostimare arXiv negli anni passati.</p>
       </div>
       <div class="step gold st-wf" data-v="now">
         <span class="k" style="color:var(--goldD)">Fase 2: situazione attuale, 2026</span>
-        <h3>L'avanzata dei preprint</h3>
-        <p>Nel 2026 il ritmo della ricerca sull'IA riduce ancora la quota sottoposta a peer review, a favore della pubblicazione immediata su repository aperti come <em>arXiv</em>.</p>
+        <h3>L'avanzata immediata su arXiv</h3>
+        <p>Nel 2026 la rapidità di pubblicazione aumenta la quota dei lavori presenti su arXiv rispetto a quelli che hanno già completato la revisione paritaria.</p>
       </div>
     </div>
   </div>
+
   <div class="panel">
     <div class="row">
       <div><h3 class="t">Adozione dell'IA per sottodisciplina, 2019 vs 2026</h3><p class="sub">Variazione della quota di pubblicazioni che usano metodi di IA in ciascuna branca matematica.</p></div>
@@ -267,22 +317,23 @@ footer b{display:block;font:700 18px var(--serif);color:#fff;margin-bottom:4px}
     <div class="sh" style="margin:0">
       <span class="k">Capitolo 5: geografia della ricerca</span>
       <h2>Mapping the Network</h2>
-      <p>Produzione scientifica nei 10 Paesi più attivi, 2019–2026. L'Italia ha il bordo dorato.</p>
+      <p>Produzione scientifica nei 10 Paesi più attivi, 2019–2026. Il bianco neutro corrisponde esattamente allo <strong>0</strong>; l'Italia ha il bordo dorato.</p>
     </div>
     <div id="heat-lg" class="panel" style="padding:14px 18px"></div>
   </div>
   <div class="panel">
     <div id="heat" class="scr"></div>
-    <div class="foot"><span>Dati letti da <code>./data/openalex_ai_math.json</code></span><span>Unità: paper / anno</span></div>
+    <div class="foot"><span>Dati letti da <code>./data/openalex_ai_math.json</code></span><span>Unità: paper / anno (0 = bianco)</span></div>
   </div>
 </div></section>
 
-<footer><div class="wrap"><b>AI-Math Data, 2015–2026</b><span id="meta">Fonti: OpenAlex API, arXiv, Lean.io / Mathlib4.</span></div></footer>
+<footer><div class="wrap"><b>AI-Math Data, 2000–2026</b><span id="meta">Fonti: OpenAlex API, arXiv, Lean / Mathlib4.</span></div></footer>
 
 <script>
-let D,ML,SER=[],labels=true,uni=false,tPh="data",lPh="early",wMode="hist",wR;
-const $=id=>document.getElementById(id),it=n=>n.toLocaleString("it-IT"),tt=d3.select("#tt");
-const C={ink:"#0E1630",blue:"#2447C8",sky:"#8EA2E0",gold:"#D9A93A",goldD:"#8A650C",sand:"#E8D9A6"};
+let D,SER=[],HIST_START="2000",REG=null,regMode="exp",leanMode="formal",labels=true,uni=false,tPh="data",lPh="early",wMode="hist",wR;
+const $=id=>document.getElementById(id),it=n=>Math.round(n).toLocaleString("it-IT"),tt=d3.select("#tt");
+const fmtPct=v=>(+v).toLocaleString("it-IT",{minimumFractionDigits:0,maximumFractionDigits:2})+"%";
+const C={ink:"#0E1630",blue:"#2447C8",sky:"#8EA2E0",mid:"#4F7CAC",gold:"#D9A93A",goldD:"#8A650C",sand:"#E8D9A6",line:"#DDE1EE"};
 const rm=matchMedia("(prefers-reduced-motion:reduce)").matches;
 const U=["Oxford","NYU","UniGe"],UN={Oxford:"University of Oxford",NYU:"New York University (NYU)",UniGe:"Università degli Studi di Genova"},UC={Oxford:C.blue,NYU:C.sky,UniGe:C.gold};
 const dim=k=>uni&&k!=="UniGe"?.22:1, lc=k=>k==="UniGe"?C.goldD:C.ink;
@@ -298,54 +349,160 @@ function mk(sel,w,h,m,cls=""){const svg=d3.select(sel).html("").append("svg").at
 const gridY=(g,y,iw,n)=>g.append("g").attr("class","grid").call(d3.axisLeft(y).ticks(n).tickSize(-iw).tickFormat(""));
 const axX=(g,x,ih,cls="axis")=>g.append("g").attr("class",cls).attr("transform",`translate(0,${ih})`).call(d3.axisBottom(x).tickSizeOuter(0));
 
-function fitOLS(tr){const b0=+tr[0].year,p=tr.map(d=>({t:+d.year-b0,l:Math.log(Math.max(d.totalCount,1))})),
-  mt=d3.mean(p,q=>q.t),ml=d3.mean(p,q=>q.l);let n=0,dn=0;p.forEach(q=>{n+=(q.t-mt)*(q.l-ml);dn+=(q.t-mt)**2});
-  const beta=dn?n/dn:0,la=ml-beta*mt;let sr=0,st=0;p.forEach(q=>{sr+=(q.l-la-beta*q.t)**2;st+=(q.l-ml)**2});
-  return{alpha:Math.exp(la),beta,growth:(Math.exp(beta)-1)*100,r2:st?1-sr/st:1,predict:y=>Math.round(Math.exp(la+beta*(+y-b0)))}}
-
-/* Hero: curva osservata vs trend */
-function heroCurve(){
-  const{g,iw,ih}=mk("#hero-curve",560,290,{t:14,r:12,b:30,l:12});
-  const x=d3.scalePoint().domain(SER.map(d=>d.year)).range([0,iw]),y=d3.scaleLinear().domain([0,d3.max(SER,d=>Math.max(d.actual,d.baseline))*1.08]).range([ih,0]);
-  const line=k=>d3.line().x(d=>x(d.year)).y(d=>y(d[k])).curve(d3.curveMonotoneX)(SER);
-  g.append("path").attr("d",d3.area().x(d=>x(d.year)).y0(d=>y(d.baseline)).y1(d=>y(d.actual)).curve(d3.curveMonotoneX)(SER.filter(d=>+d.year>=2019))).attr("fill","rgba(217,169,58,.3)");
-  g.append("path").attr("d",line("baseline")).attr("fill","none").attr("stroke",C.gold).attr("stroke-width",2).attr("stroke-dasharray","6 5");
-  const p=g.append("path").attr("d",line("actual")).attr("fill","none").attr("stroke","#fff").attr("stroke-width",3.5).attr("stroke-linecap","round");
-  const L=p.node().getTotalLength();p.attr("stroke-dasharray",L).attr("stroke-dashoffset",L).transition().duration(rm?0:2200).ease(d3.easeCubicOut).attr("stroke-dashoffset",0);
-  g.append("g").attr("class","axis").attr("transform",`translate(0,${ih+6})`).call(d3.axisBottom(x).tickValues(["2015","2019","2026"]).tickSize(0)).select(".domain").remove();
+/* Solutore lineare Gauss con pivoting parziale per regressione polinomiale & Gauss-Newton */
+function solveLinear(A,b){
+  const n=b.length,M=A.map((r,i)=>[...r,b[i]]);
+  for(let i=0;i<n;i++){
+    let piv=i;for(let k=i+1;k<n;k++)if(Math.abs(M[k][i])>Math.abs(M[piv][i]))piv=k;
+    [M[i],M[piv]]=[M[piv],M[i]];
+    const div=M[i][i];if(Math.abs(div)<1e-12)continue;
+    for(let j=i;j<=n;j++)M[i][j]/=div;
+    for(let k=0;k<n;k++)if(k!==i){const f=M[k][i];for(let j=i;j<=n;j++)M[k][j]-=f*M[i][j]}
+  }
+  return M.map(r=>r[n]);
 }
 
-/* Grafico 1: dati / trend / boom */
+function r2Score(ys,preds){
+  const mu=d3.mean(ys);let sr=0,st=0;
+  ys.forEach((y,i)=>{sr+=(y-preds[i])**2;st+=(y-mu)**2});
+  return st>0?1-sr/st:1;
+}
+
+/* Regressioni addestrate sui soli anni fino al 2025 (2000–2025) */
+function fitRegression(rows,mode){
+  const tr=rows.filter(d=>+d.year<=2025),b0=+tr[0].year,span=Math.max(+tr[tr.length-1].year-b0,1);
+  const ts=tr.map(d=>+d.year-b0),ys=tr.map(d=>d.actual);
+
+  if(mode==="poly2"||mode==="poly3"){
+    const deg=mode==="poly2"?2:3,m=deg+1;
+    // Normalizziamo u = t/span in [0,1] per condizionamento numerico perfetto
+    const us=ts.map(t=>t/span);
+    const A=Array.from({length:m},()=>Array(m).fill(0)),bv=Array(m).fill(0);
+    us.forEach((u,idx)=>{
+      for(let i=0;i<m;i++){
+        bv[i]+=ys[idx]*(u**i);
+        for(let j=0;j<m;j++)A[i][j]+=u**(i+j);
+      }
+    });
+    const cu=solveLinear(A,bv);
+    const ct=cu.map((c,i)=>c/(span**i));
+    const pred=yr=>{const t=+yr-b0;let v=0;for(let i=0;i<m;i++)v+=ct[i]*(t**i);return Math.max(0,Math.round(v))};
+    const r2=r2Score(ys,tr.map(d=>pred(d.year)));
+    const fmtC=v=>Math.abs(v)>=10?v.toFixed(1):v.toFixed(2);
+    const eq=deg===2
+      ?`ŷ(t) = ${Math.round(ct[0])} ${ct[1]>=0?"+":"−"} ${fmtC(Math.abs(ct[1]))}t ${ct[2]>=0?"+":"−"} ${fmtC(Math.abs(ct[2]))}t²`
+      :`ŷ(t) = ${Math.round(ct[0])} ${ct[1]>=0?"+":"−"} ${fmtC(Math.abs(ct[1]))}t ${ct[2]>=0?"+":"−"} ${fmtC(Math.abs(ct[2]))}t² ${ct[3]>=0?"+":"−"} ${Math.abs(ct[3]).toFixed(2)}t³`;
+    return{mode,label:`Polinomiale ${deg}° grado`,eq,r2,n:tr.length,predict:pred};
+  }
+
+  // Esponenziale: inizializzazione log-lineare + ottimizzazione non-lineare Levenberg-Marquardt sui conteggi reali
+  const lps=ts.map((t,i)=>({t,l:Math.log(Math.max(ys[i],1))}));
+  const mt=d3.mean(lps,p=>p.t),ml=d3.mean(lps,p=>p.l);
+  let num=0,den=0;lps.forEach(p=>{num+=(p.t-mt)*(p.l-ml);den+=(p.t-mt)**2});
+  let beta=den?num/den:0,alpha=Math.exp(ml-beta*mt);
+
+  const evalSse=(a,b)=>ts.reduce((s,t,i)=>{const e=ys[i]-a*Math.exp(b*t);return s+e*e},0);
+  let sse=evalSse(alpha,beta),lam=1e-3;
+  for(let iters=0;iters<40;iters++){
+    let j00=0,j01=0,j11=0,g0=0,g1=0;
+    for(let i=0;i<ts.length;i++){
+      const t=ts[i],eb=Math.exp(Math.min(beta*t,40)),f=alpha*eb,res=ys[i]-f;
+      const dA=eb,dB=f*t;
+      j00+=dA*dA;j01+=dA*dB;j11+=dB*dB;g0+=dA*res;g1+=dB*res;
+    }
+    const[da,db]=solveLinear([[j00*(1+lam)+1e-9,j01],[j01,j11*(1+lam)+1e-9]],[g0,g1]);
+    if(!Number.isFinite(da)||!Number.isFinite(db))break;
+    const na=alpha+da,nb=beta+db;
+    if(na>0&&Math.abs(nb)<1){
+      const ns=evalSse(na,nb);
+      if(ns<sse){alpha=na;beta=nb;sse=ns;lam=Math.max(lam*0.5,1e-7);if(Math.abs(da)<1e-6&&Math.abs(db)<1e-7)break;continue}
+    }
+    lam*=5;
+  }
+  const pred=yr=>Math.max(0,Math.round(alpha*Math.exp(beta*(+yr-b0))));
+  const r2=r2Score(ys,tr.map(d=>pred(d.year)));
+  const gPct=((Math.exp(beta)-1)*100).toFixed(1);
+  return{mode:"exp",label:"Esponenziale",eq:`ŷ(t) = ${alpha.toFixed(1)}·exp(${beta.toFixed(3)}·t) (+${gPct}%/anno)`,r2,n:tr.length,predict:pred};
+}
+
+function applyRegression(){
+  const raw=SER.map(d=>({year:d.year,actual:d.actual}));
+  REG=fitRegression(raw,regMode);
+  SER=raw.map(d=>({...d,baseline:REG.predict(d.year)}));
+
+  const last=SER[SER.length-1],sp=Math.round((last.actual-last.baseline)/Math.max(last.baseline,1)*100);
+  $("kpi-surplus").textContent=(sp>=0?"+":"")+sp+"%";
+  $("kpi-surplus-lbl").textContent=`nel 2026 rispetto alla reg. ${HIST_START}–2025`;
+  $("lg-avg-txt").textContent=`${REG.label} (${HIST_START}–2025)`;
+  $("boom-text").innerHTML=`Confrontando il 2026 osservato (<strong>${it(last.actual)}</strong>) con la proiezione del modello <strong>${REG.label}</strong> addestrato sul periodo ${HIST_START}–2025 (<strong>${it(last.baseline)}</strong>), emerge uno scarto del <strong>${sp>=0?"+":""}${sp}%</strong>.`;
+
+  document.querySelectorAll("#reg-pills .pill").forEach(el=>el.classList.toggle("on",el.dataset.m===regMode));
+  heroCurve();
+  trendChart();
+}
+
+/* Hero: curva osservata vs regressione */
+function heroCurve(){
+  const{g,iw,ih}=mk("#hero-curve",560,290,{t:14,r:14,b:30,l:14});
+  const x=d3.scalePoint().domain(SER.map(d=>d.year)).range([0,iw]),
+    y=d3.scaleLinear().domain([0,d3.max(SER,d=>Math.max(d.actual,d.baseline))*1.08]).range([ih,0]);
+  const line=k=>d3.line().x(d=>x(d.year)).y(d=>y(d[k])).curve(d3.curveMonotoneX)(SER);
+  g.append("path").attr("d",d3.area().x(d=>x(d.year)).y0(d=>y(d.baseline)).y1(d=>y(d.actual)).curve(d3.curveMonotoneX)(SER.filter(d=>+d.year>=2020))).attr("fill","rgba(217,169,58,.28)");
+  g.append("path").attr("d",line("baseline")).attr("fill","none").attr("stroke",C.gold).attr("stroke-width",2).attr("stroke-dasharray","6 5");
+  const p=g.append("path").attr("d",line("actual")).attr("fill","none").attr("stroke","#fff").attr("stroke-width",3.5).attr("stroke-linecap","round");
+  const L=p.node().getTotalLength();p.attr("stroke-dasharray",L).attr("stroke-dashoffset",L).transition().duration(rm?0:1600).ease(d3.easeCubicOut).attr("stroke-dashoffset",0);
+  const ticks=[HIST_START,"2015","2025","2026"].filter((v,i,a)=>a.indexOf(v)===i&&SER.some(s=>s.year===v));
+  g.append("g").attr("class","axis").attr("transform",`translate(0,${ih+6})`).call(d3.axisBottom(x).tickValues(ticks).tickSize(0)).select(".domain").remove();
+}
+
+/* Grafico 1: dati reali + regressione 2000–2025 + scarto 2026 */
 function trendChart(){
-  const last=SER[SER.length-1],sp=((last.actual-last.baseline)/last.baseline*100).toFixed(1);
-  $("ml-f").textContent=`ŷ(t) = ${Math.round(ML.alpha)}·exp(${ML.beta.toFixed(3)}·t), +${ML.growth.toFixed(1)}%/anno`;
-  $("ml-r2").textContent=`R² = ${ML.r2.toFixed(4)}`;
+  const last=SER[SER.length-1],sp=((last.actual-last.baseline)/Math.max(last.baseline,1)*100).toFixed(1);
+  $("ml-win").textContent=`Training: ${HIST_START}–2025 (n=${REG.n})`;
+  $("ml-f").textContent=REG.eq;
+  $("ml-r2").textContent=`R² = ${REG.r2.toFixed(4)}`;
   $("lg-trend").style.opacity=tPh==="data"?.25:1;$("lg-boom").style.opacity=tPh==="boom"?1:.25;
+
   const{g,iw,ih}=mk("#trend-chart",600,330,{t:26,r:26,b:34,l:54});
   const x=d3.scalePoint().domain(SER.map(d=>d.year)).range([0,iw]).padding(.25),
     y=d3.scaleLinear().domain([0,Math.max(d3.max(SER,d=>Math.max(d.actual,d.baseline))*1.12,1000)]).range([ih,0]);
+
   if(tPh==="trend"){
-    g.append("rect").attr("width",x("2019")+14).attr("height",ih).attr("rx",8).attr("fill",C.blue).attr("opacity",.06);
-    g.append("text").attr("x",(x("2015")+x("2019"))/2).attr("y",16).attr("text-anchor","middle").attr("fill",C.blue).style("font","600 11px var(--sans)").text("Training pre-IA (2015–2019)");
+    const xEnd=x("2025")??iw;
+    g.append("rect").attr("x",Math.max(x(HIST_START)-8,0)).attr("width",Math.min(xEnd-(x(HIST_START)-8)+10,iw)).attr("height",ih).attr("rx",8).attr("fill",C.blue).attr("opacity",.06);
+    g.append("text").attr("x",(x(HIST_START)+xEnd)/2).attr("y",16).attr("text-anchor","middle").attr("fill",C.blue).style("font","600 11px var(--sans)").text(`Training regressione (${HIST_START}–2025)`);
   }
-  gridY(g,y,iw,5);axX(g,x,ih).selectAll("text").style("font-weight",d=>d==="2019"||d==="2026"?700:500).style("fill",d=>d==="2026"?C.ink:null);
+
+  gridY(g,y,iw,5);
+  const xTickVals=SER.map(d=>d.year).filter(yr=>yr===HIST_START||yr==="2025"||yr==="2026"||(+yr%5===0&&SER.length>15)||SER.length<=15);
+  g.append("g").attr("class","axis").attr("transform",`translate(0,${ih})`).call(d3.axisBottom(x).tickValues(xTickVals).tickSizeOuter(0))
+    .selectAll("text").style("font-weight",d=>d==="2025"||d==="2026"?700:500).style("fill",d=>d==="2026"?C.ink:null);
   g.append("g").attr("class","axis").call(d3.axisLeft(y).ticks(5).tickFormat(d=>d>=1000?d/1000+"k":d));
-  if(tPh==="boom")g.append("path").datum(SER.filter(d=>+d.year>=2019)).attr("fill",C.gold).attr("opacity",.5)
-    .attr("d",d3.area().x(d=>x(d.year)).y0(d=>y(d.baseline)).y1(d=>y(d.actual)).curve(d3.curveMonotoneX));
+
+  if(tPh==="boom"){
+    g.append("path").datum(SER.filter(d=>+d.year>=2020)).attr("fill",C.gold).attr("opacity",.45)
+      .attr("d",d3.area().x(d=>x(d.year)).y0(d=>y(d.baseline)).y1(d=>y(d.actual)).curve(d3.curveMonotoneX));
+  }
+
   const ln=k=>d3.line().x(d=>x(d.year)).y(d=>y(d[k])).curve(d3.curveMonotoneX);
-  if(tPh!=="data")g.append("path").datum(SER).attr("fill","none").attr("stroke",C.goldD).attr("stroke-width",2.4).attr("stroke-dasharray","6,4").attr("d",ln("baseline"));
+  if(tPh!=="data"){
+    g.append("path").datum(SER).attr("fill","none").attr("stroke",C.goldD).attr("stroke-width",2.4).attr("stroke-dasharray","6,4").attr("d",ln("baseline"));
+  }
   g.append("path").datum(SER).attr("fill","none").attr("stroke",C.blue).attr("stroke-width",3).attr("stroke-linecap","round").attr("d",ln("actual"));
+
   const big=d=>tPh==="boom"&&d.year==="2026";
   tip(g.selectAll(".d").data(SER).enter().append("circle").attr("class","hov").attr("cx",d=>x(d.year)).attr("cy",d=>y(d.actual))
-    .attr("r",d=>big(d)?6.5:4.5).attr("fill",d=>big(d)?C.blue:"#fff").attr("stroke",C.blue).attr("stroke-width",2),
+    .attr("r",d=>big(d)?6.5:SER.length>16?3.5:4.5).attr("fill",d=>big(d)?C.blue:"#fff").attr("stroke",C.blue).attr("stroke-width",2),
     d=>{const df=d.actual-d.baseline;return `<b>Anno ${d.year}</b><br>Osservato: <b>${it(d.actual)}</b>`+
-      (tPh!=="data"?`<br>Trend pre-IA: <b class="g">${it(d.baseline)}</b>`:"")+
-      (tPh==="boom"&&+d.year>=2020?`<br><b class="g">Surplus: ${df>=0?"+":""}${it(df)} (${(df/Math.max(d.baseline,1)*100).toFixed(1)}%)</b>`:"")});
+      (tPh!=="data"?`<br>${REG.label}: <b class="g">${it(d.baseline)}</b>`:"")+
+      (tPh==="boom"?`<br><b class="g">Scarto: ${df>=0?"+":""}${it(df)} (${(df/Math.max(d.baseline,1)*100).toFixed(1)}%)</b>`:"")});
+
   if(tPh==="boom"){
     const x6=x("2026"),ya=y(last.actual),yb=y(last.baseline);
-    g.append("line").attr("x1",x6).attr("x2",x6).attr("y1",ya+7).attr("y2",yb-4).attr("stroke",C.ink).attr("stroke-width",1.8).attr("stroke-dasharray","3,2");
+    g.append("line").attr("x1",x6).attr("x2",x6).attr("y1",Math.min(ya,yb)+5).attr("y2",Math.max(ya,yb)-4).attr("stroke",C.ink).attr("stroke-width",1.8).attr("stroke-dasharray","3,2");
     g.append("circle").attr("cx",x6).attr("cy",yb).attr("r",4.5).attr("fill",C.gold).attr("stroke",C.goldD).attr("stroke-width",1.5);
-    [[x6-8,ya-10,C.ink,`2026: ${it(last.actual)}`,800],[x6-8,yb+16,C.goldD,`Trend: ${it(last.baseline)}`,700],[x6-10,(ya+yb)/2+4,C.ink,`+${sp}% boom`,700]]
+    const yTop=Math.min(ya,yb)-10,yBot=Math.max(ya,yb)+16;
+    [[x6-8,ya<yb?yTop:yBot,C.ink,`2026 oss.: ${it(last.actual)}`,800],[x6-8,ya<yb?yBot:yTop,C.goldD,`Atteso: ${it(last.baseline)}`,700],[x6-10,(ya+yb)/2+4,C.ink,`${+sp>=0?"+":""}${sp}%`,700]]
       .forEach(([a,b,f,t,w])=>g.append("text").attr("x",a).attr("y",b).attr("text-anchor","end").attr("fill",f).style("font","600 11px var(--sans)").style("font-weight",w).text(t));
   }
 }
@@ -364,12 +521,13 @@ function grouped(){
   if(labels)cells.append("text").attr("x",c=>x1(c.k)+x1.bandwidth()/2).attr("y",c=>y(c.v)-5).attr("text-anchor","middle").attr("fill",c=>lc(c.k)).attr("opacity",c=>dim(c.k)).style("font","600 10px var(--sans)").text(c=>c.v);
 }
 
-/* Grafico 3: small multiples */
+/* Grafico 3: card orizzontali anno per anno (scrollabile internamente) */
 function smalls(){
-  const box=d3.select("#smalls").html(""),d=D.universitiesByYear,mx=Math.max(d3.max(d,r=>Math.max(r.Oxford,r.NYU,r.UniGe))*1.12,20);
+  const box=d3.select("#smalls").html(""),d=D.universitiesByYear,mx=Math.max(d3.max(d,r=>Math.max(r.Oxford,r.NYU,r.UniGe))*1.15,20);
   d.forEach(r=>{
     const p=box.append("div");p.append("div").attr("class","h").html(`<b>${r.year}</b><span>${r.Oxford+r.NYU+r.UniGe} paper</span>`);
-    const id="sm"+r.year,hold=p.append("div").attr("id",id),{g,iw,ih}=mk("#"+id,220,165,{t:18,r:10,b:26,l:32});
+    const id="sm"+r.year;p.append("div").attr("id",id);
+    const{g,iw,ih}=mk("#"+id,210,165,{t:20,r:10,b:26,l:32});
     const x=d3.scaleBand().domain(U).range([0,iw]).padding(.32),y=d3.scaleLinear().domain([0,mx]).nice().range([ih,0]),data=U.map(k=>({k,v:r[k],y:r.year}));
     gridY(g,y,iw,3);axX(g,x,ih,"axis big").selectAll("text").style("font-size","10.5px");g.append("g").attr("class","axis").call(d3.axisLeft(y).ticks(3));
     tip(g.selectAll("rect").data(data).enter().append("rect").attr("class","hov").attr("x",c=>x(c.k)).attr("y",c=>y(c.v)).attr("width",x.bandwidth()).attr("height",c=>ih-y(c.v)).attr("rx",3).attr("fill",c=>UC[c.k]).attr("opacity",c=>dim(c.k)),
@@ -378,40 +536,140 @@ function smalls(){
   });
 }
 
-/* Grafico 4: Lean vs non-Lean al 100% */
+/* Grafico 4: Lean (Tra i Proof Assistant AI / Su Math+AI / Volumi assoluti) */
 function stacked(){
   const d=D.leanVerificationByYear,foc=lPh==="early"?["2019","2020","2021","2022"]:["2023","2024","2025","2026"],o=k=>foc.includes(k)?1:.3;
-  const{g,iw,ih}=mk("#stacked",560,310,{t:18,r:16,b:34,l:42}),x=d3.scaleBand().domain(d.map(r=>r.year)).range([0,iw]).padding(.24),y=d3.scaleLinear().domain([0,100]).range([ih,0]);
+  document.querySelectorAll("#lean-pills .pill").forEach(el=>el.classList.toggle("on",el.dataset.m===leanMode));
+
+  const isFormal=leanMode==="formal",isCount=leanMode==="count";
+  $("lg-nonlean").style.display=isFormal?"block":"none";
+  $("lg-lean-txt").textContent=isCount?"Paper AI/Math con Lean (conteggio)":isFormal?"Lean (tra i Proof Assistant AI)":"Lean (su tutto Math + AI)";
+  $("lean-sub").innerHTML=isFormal
+    ?"Quota annua di lavori AI di verifica formale / theorem proving basati su <strong>Lean</strong> rispetto ad altri proof assistant."
+    :isCount
+    ?"Numero assoluto annuo di pubblicazioni AI e matematiche che utilizzano <strong>Lean</strong> (Lean 3/4 &amp; Mathlib)."
+    :"Incidenza di <strong>Lean</strong> sull'intero corpus OpenAlex di Matematica + IA (include anche analisi numerica, ML applicato, statistica, ecc.).";
+
+  const val=r=>isCount?(r.verifiedCount||0):isFormal?r.verifiedPct:(r.mathAiPct??r.verifiedPct);
+  const yMax=isFormal?100:Math.max(d3.max(d,val)*1.18,1);
+
+  const{g,iw,ih}=mk("#stacked",560,310,{t:22,r:16,b:34,l:48}),x=d3.scaleBand().domain(d.map(r=>r.year)).range([0,iw]).padding(.24),y=d3.scaleLinear().domain([0,yMax]).nice().range([ih,0]);
+  gridY(g,y,iw,4);
   axX(g,x,ih).selectAll("text").style("font-weight",k=>foc.includes(k)?700:500).style("fill",k=>foc.includes(k)?C.ink:"#A4ABC4");
-  g.append("g").attr("class","axis").call(d3.axisLeft(y).ticks(4).tickFormat(v=>v+"%"));
-  tip(g.selectAll(".n").data(d).enter().append("rect").attr("class","hov").attr("x",r=>x(r.year)).attr("width",x.bandwidth()).attr("height",r=>y(r.verifiedPct)).attr("rx",3).attr("fill",C.sand).attr("opacity",r=>o(r.year)),
-    r=>`<b>Anno ${r.year}: non-Lean</b><br>Quota: <b class="g">${r.unverifiedPct.toFixed(1)}%</b>`);
-  tip(g.selectAll(".v").data(d).enter().append("rect").attr("class","hov").attr("x",r=>x(r.year)).attr("y",r=>y(r.verifiedPct)).attr("width",x.bandwidth()).attr("height",r=>ih-y(r.verifiedPct)).attr("rx",3).attr("fill",C.blue).attr("opacity",r=>o(r.year)),
-    r=>`<b>Anno ${r.year}: verificati con Lean</b><br>Quota: <b class="g">${r.verifiedPct.toFixed(1)}%</b><br><small>${it(r.verifiedCount)} paper</small>`);
-  if(labels)g.selectAll(".t").data(d).enter().append("text").attr("x",r=>x(r.year)+x.bandwidth()/2).attr("y",r=>r.verifiedPct>=8?y(r.verifiedPct/2)+4:y(r.verifiedPct)-6)
-    .attr("text-anchor","middle").attr("fill",r=>r.verifiedPct>=8?"#fff":C.ink).attr("opacity",r=>foc.includes(r.year)?1:.45).style("font","700 10px var(--sans)").style("pointer-events","none").text(r=>r.verifiedPct+"%");
+  g.append("g").attr("class","axis").call(d3.axisLeft(y).ticks(4).tickFormat(v=>isCount?it(v):fmtPct(v)));
+
+  if(isFormal){
+    tip(g.selectAll(".n").data(d).enter().append("rect").attr("class","hov").attr("x",r=>x(r.year)).attr("y",0).attr("width",x.bandwidth()).attr("height",r=>y(val(r))).attr("rx",3).attr("fill",C.sand).attr("opacity",r=>o(r.year)),
+      r=>`<b>Anno ${r.year}: altri proof assistant</b><br>Quota: <b class="g">${fmtPct(100-val(r))}</b><br><small>${it((r.formalTotalCount||r.totalCount)-(r.verifiedCount||0))} paper</small>`);
+  }
+
+  tip(g.selectAll(".v").data(d).enter().append("rect").attr("class","hov").attr("x",r=>x(r.year)).attr("y",r=>y(val(r))).attr("width",x.bandwidth()).attr("height",r=>Math.max(ih-y(val(r)),(r.verifiedCount||0)>0?2:0)).attr("rx",3).attr("fill",C.blue).attr("opacity",r=>o(r.year)),
+    r=>`<b>Anno ${r.year}: Lean</b><br>${isCount?"Pubblicazioni":"Quota"}: <b class="g">${isCount?it(val(r))+" paper":fmtPct(val(r))}</b><br><small>${it(r.verifiedCount)} paper su ${it(isFormal?(r.formalTotalCount||r.totalCount):r.totalCount)}</small>`);
+
+  if(labels){
+    g.selectAll(".t").data(d).enter().append("text").attr("x",r=>x(r.year)+x.bandwidth()/2)
+      .attr("y",r=>{const bh=ih-y(val(r));return isFormal&&bh>=24?y(val(r)/2)+4:y(val(r))-6})
+      .attr("text-anchor","middle").attr("fill",r=>{const bh=ih-y(val(r));return isFormal&&bh>=24?"#fff":C.ink})
+      .attr("opacity",r=>foc.includes(r.year)?1:.45).style("font","700 10px var(--sans)").style("pointer-events","none").text(r=>isCount?it(val(r)):fmtPct(val(r)));
+  }
 }
 
-/* Grafico 5: waffle */
+/* Grafico 5a: Confronto Peer-Reviewed vs arXiv anno per anno */
+function prYearly(){
+  const raw=D.peerReviewByYear.map(r=>{
+    const peerTot=r.peerReviewedTotalCount??Math.round((r.totalCount||0)*(r.peerReviewedPct||0)/100);
+    const arxivTot=r.arxivTotalCount??Math.round((r.totalCount||0)*(r.preprintPct||0)/100);
+    const both=r.bothCount??0;
+    const peerOnly=r.peerOnlyCount??Math.max(peerTot-both,0);
+    const arxivOnly=r.arxivOnlyCount??Math.max(arxivTot-both,0);
+    const ratio=r.ratioPeerToArxiv??+(peerTot/Math.max(arxivTot,1)).toFixed(2);
+    return{year:r.year,peerTot,arxivTot,both,peerOnly,arxivOnly,ratio};
+  });
+
+  const{g,iw,ih}=mk("#pr-yearly",940,340,{t:28,r:56,b:40,l:56});
+  d3.select("#pr-yearly svg").style("min-width","640px");
+  const x0=d3.scaleBand().domain(raw.map(r=>r.year)).range([0,iw]).paddingInner(.28).paddingOuter(.08),
+    x1=d3.scaleBand().domain(["peer","arxiv"]).range([0,x0.bandwidth()]).padding(.12),
+    y=d3.scaleLinear().domain([0,Math.max(d3.max(raw,r=>Math.max(r.peerTot,r.arxivTot))*1.14,10)]).nice().range([ih,0]),
+    yR=d3.scaleLinear().domain([0,Math.max(d3.max(raw,r=>r.ratio)*1.25,2)]).nice().range([ih,0]);
+
+  gridY(g,y,iw,5);axX(g,x0,ih,"axis big");
+  g.append("g").attr("class","axis").call(d3.axisLeft(y).ticks(5).tickFormat(v=>v>=1000?v/1000+"k":v));
+  g.append("g").attr("class","axis").attr("transform",`translate(${iw},0)`).call(d3.axisRight(yR).ticks(4).tickFormat(v=>v.toFixed(1)+"×"));
+  g.append("text").attr("x",iw).attr("y",-10).attr("text-anchor","end").attr("fill",C.mist).style("font","600 10.5px var(--sans)").text("Rapporto Peer / arXiv");
+
+  const yg=g.selectAll(".prg").data(raw).enter().append("g").attr("transform",r=>`translate(${x0(r.year)},0)`);
+
+  tip(yg.append("rect").attr("class","hov").attr("x",x1("peer")).attr("y",r=>y(r.peerOnly)).attr("width",x1.bandwidth()).attr("height",r=>ih-y(r.peerOnly)).attr("rx",3).attr("fill",C.blue),
+    r=>`<b>${r.year} · Solo Peer-Reviewed</b><br>${it(r.peerOnly)} paper<br><small>Totale Peer-Reviewed: ${it(r.peerTot)} (di cui ${it(r.both)} anche su arXiv)</small>`);
+  tip(yg.append("rect").attr("class","hov").attr("x",x1("peer")).attr("y",r=>y(r.peerTot)).attr("width",x1.bandwidth()).attr("height",r=>y(r.peerOnly)-y(r.peerTot)).attr("rx",3).attr("fill",C.mid),
+    r=>`<b>${r.year} · arXiv &rarr; Peer-Reviewed</b><br>${it(r.both)} paper su entrambi<br><small>Restano conteggiati sia tra i Peer-Reviewed che su arXiv</small>`);
+
+  tip(yg.append("rect").attr("class","hov").attr("x",x1("arxiv")).attr("y",r=>y(r.arxivOnly)).attr("width",x1.bandwidth()).attr("height",r=>ih-y(r.arxivOnly)).attr("rx",3).attr("fill",C.gold),
+    r=>`<b>${r.year} · Solo arXiv (non ancora pubblicati)</b><br>${it(r.arxivOnly)} preprint<br><small>Totale arXiv: ${it(r.arxivTot)}</small>`);
+  tip(yg.append("rect").attr("class","hov").attr("x",x1("arxiv")).attr("y",r=>y(r.arxivTot)).attr("width",x1.bandwidth()).attr("height",r=>y(r.arxivOnly)-y(r.arxivTot)).attr("rx",3).attr("fill",C.mid),
+    r=>`<b>${r.year} · arXiv &rarr; Peer-Reviewed</b><br>${it(r.both)} paper nati su arXiv e pubblicati`);
+
+  if(labels){
+    yg.append("text").attr("x",x1("peer")+x1.bandwidth()/2).attr("y",r=>y(r.peerTot)-5).attr("text-anchor","middle").attr("fill",C.blue).style("font","600 9.5px var(--sans)").text(r=>it(r.peerTot));
+    yg.append("text").attr("x",x1("arxiv")+x1.bandwidth()/2).attr("y",r=>y(r.arxivTot)-5).attr("text-anchor","middle").attr("fill",C.goldD).style("font","600 9.5px var(--sans)").text(r=>it(r.arxivTot));
+  }
+
+  const lineR=d3.line().x(r=>x0(r.year)+x0.bandwidth()/2).y(r=>yR(r.ratio)).curve(d3.curveMonotoneX);
+  g.append("path").datum(raw).attr("fill","none").attr("stroke",C.ink).attr("stroke-width",2).attr("stroke-dasharray","4,3").attr("d",lineR);
+  tip(g.selectAll(".rr").data(raw).enter().append("circle").attr("class","hov").attr("cx",r=>x0(r.year)+x0.bandwidth()/2).attr("cy",r=>yR(r.ratio)).attr("r",4).attr("fill","#fff").attr("stroke",C.ink).attr("stroke-width",2),
+    r=>`<b>Anno ${r.year}</b><br>Rapporto Peer-Reviewed / arXiv: <b class="g">${r.ratio.toFixed(2)}×</b><br><small>Peer: ${it(r.peerTot)} · arXiv: ${it(r.arxivTot)}</small>`);
+}
+
+/* Grafico 5b: Waffle a 3 stati */
 function wStats(m){
   const s=D.peerReviewByYear;
-  if(m==="now"){const r=s.find(d=>d.year==="2026")||s[s.length-1];
-    return{label:"Situazione attuale (2026)",pr:r.peerReviewedPct,pre:r.preprintPct,prs:it(Math.round(r.totalCount*r.peerReviewedPct/100))+" articoli",pres:it(Math.round(r.totalCount*r.preprintPct/100))+" preprint"}}
-  const p=s.filter(d=>+d.year<2026),t=d3.sum(p,d=>d.totalCount)||1,pre=Math.round(d3.sum(p,d=>d.totalCount*d.preprintPct)/t);
-  return{label:"Media 2019–2025",pr:100-pre,pre,prs:"media ponderata 2019–2025",pres:"media ponderata 2019–2025"}
+  const toRow=r=>{
+    const hasClean=r.peerOnlyPct!==undefined&&r.bothPct!==undefined;
+    if(hasClean){
+      const pr=Math.round(r.peerOnlyPct),bo=Math.round(r.bothPct),pre=Math.max(100-pr-bo,0);
+      return{pr,bo,pre,prs:it(r.peerOnlyCount)+" articoli",bos:it(r.bothCount)+" su entrambi",pres:it(r.arxivOnlyCount)+" solo arXiv"};
+    }
+    const pr=Math.round(r.peerReviewedPct||0),pre=Math.max(100-pr,0);
+    return{pr,bo:0,pre,prs:pr+"%",bos:"0",pres:pre+"%"};
+  };
+  if(m==="hist"){
+    const p=s.filter(d=>+d.year<2026),t=d3.sum(p,d=>d.classifiedCount||d.totalCount)||1;
+    const hasClean=p.some(d=>d.peerOnlyCount!==undefined);
+    if(hasClean){
+      const po=d3.sum(p,d=>d.peerOnlyCount||0),boC=d3.sum(p,d=>d.bothCount||0),ao=d3.sum(p,d=>d.arxivOnlyCount||0),tot=Math.max(po+boC+ao,1);
+      const pr=Math.round(po/tot*100),bo=Math.round(boC/tot*100),pre=Math.max(100-pr-bo,0);
+      return{label:"Media 2019–2025",pr,bo,pre,prs:"media ponderata 2019–2025",bos:"nati su arXiv e pubblicati",pres:"media ponderata 2019–2025"};
+    }
+    const pre=Math.round(d3.sum(p,d=>d.totalCount*d.preprintPct)/t);
+    return{label:"Media 2019–2025",pr:100-pre,bo:0,pre,prs:"media 2019–2025",bos:"—",pres:"media 2019–2025"};
+  }
+  const yr=m==="now"?"2026":m;
+  const r=s.find(d=>d.year===yr)||s[s.length-1];
+  return{label:yr==="2026"?"Situazione attuale (2026)":`Anno ${yr}`,...toRow(r)};
 }
 function initWaffle(){
   const n=10,cs=23,gp=4.5,sz=n*(cs+gp)-gp;
   const svg=d3.select("#waffle").html("").append("svg").attr("viewBox",`0 0 ${sz} ${sz}`).attr("class","chart").style("max-width","280px");
   wR=svg.selectAll("rect").data(d3.range(100).map(i=>({i:i+1,r:n-1-Math.floor(i/n),c:i%n}))).enter().append("rect").attr("class","hov")
     .attr("x",d=>d.c*(cs+gp)).attr("y",d=>d.r*(cs+gp)).attr("width",cs).attr("height",cs).attr("rx",5);
-  tip(wR,d=>{const s=wStats(wMode);return `<b>${s.label}</b><br>${d.i<=s.pr?"Peer-reviewed ("+s.pr+"%)":"Preprint ("+s.pre+"%)"}`});
+  tip(wR,d=>{const s=wStats(wMode);const cat=d.i<=s.pr?`Solo Peer-reviewed (${s.pr}%)`:d.i<=s.pr+s.bo?`arXiv + Peer-reviewed (${s.bo}%)`:`Solo arXiv (${s.pre}%)`;
+    return `<b>${s.label}</b><br>${cat}`});
+  const pills=d3.select("#wf-pills").html("");
+  [{k:"hist",t:"Media 2019–2025"},...D.peerReviewByYear.map(d=>({k:d.year==="2026"?"now":d.year,t:d.year}))].forEach(itP=>{
+    pills.append("button").attr("type","button").attr("class","pill"+(itP.k===wMode?" on":"")).attr("data-k",itP.k).text(itP.t)
+      .on("click",()=>setWaffle(itP.k));
+  });
   setWaffle("hist");
 }
 function setWaffle(m){
   wMode=m;const s=wStats(m);if(!wR)return;
-  wR.transition().duration(rm?0:350).attr("fill",d=>d.i<=s.pr?C.blue:C.gold);
-  $("w-label").textContent=s.label;$("w-pr").textContent=s.pr+"%";$("w-prs").textContent=s.prs;$("w-pre").textContent=s.pre+"%";$("w-pres").textContent=s.pres;
+  wR.transition().duration(rm?0:350).attr("fill",d=>d.i<=s.pr?C.blue:d.i<=s.pr+s.bo?C.mid:C.gold);
+  $("w-label").textContent=s.label;
+  $("w-pr").textContent=s.pr+"%";$("w-prs").textContent=s.prs;
+  $("w-bo").textContent=s.bo+"%";$("w-bos").textContent=s.bos;
+  $("w-pre").textContent=s.pre+"%";$("w-pres").textContent=s.pres;
+  document.querySelectorAll("#wf-pills .pill").forEach(el=>el.classList.toggle("on",el.dataset.k===m));
 }
 
 /* Grafico 6: dumbbell */
@@ -424,7 +682,7 @@ function dumbbell(){
   g.append("g").attr("class","axis big").call(d3.axisLeft(y).tickSize(0)).select(".domain").remove();
   g.selectAll(".b").data(d).enter().append("line").attr("x1",r=>x(r.pct2019)).attr("x2",r=>x(r.pct2026)).attr("y1",cy).attr("y2",cy).attr("stroke","#CBD3EA").attr("stroke-width",4).attr("stroke-linecap","round");
   tip(g.selectAll(".a").data(d).enter().append("circle").attr("class","hov").attr("cx",r=>x(r.pct2019)).attr("cy",cy).attr("r",5.5).attr("fill",C.gold).attr("stroke",C.goldD).attr("stroke-width",1.2),
-    r=>`<b>${r.field}</b><br>2019: <b>${r.pct2019}%</b> → 2026: <b class="g">${r.pct2026}%</b>`);
+    r=>`<b>${r.field}</b><br>2019: <b>${r.pct2019}%</b> &rarr; 2026: <b class="g">${r.pct2026}%</b>`);
   tip(g.selectAll(".z").data(d).enter().append("circle").attr("class","hov").attr("cx",r=>x(r.pct2026)).attr("cy",cy).attr("r",6.5).attr("fill",C.blue).attr("stroke","#fff").attr("stroke-width",1.5),
     r=>`<b>${r.field}</b><br>2026: <b class="g">${r.pct2026}%</b> (+${(r.pct2026-r.pct2019).toFixed(1)} pp)`);
   if(labels){
@@ -433,26 +691,27 @@ function dumbbell(){
   }
 }
 
-/* Grafico 7: heatmap */
+/* Grafico 7: heatmap (bianco puro = 0) */
 function heat(){
   const raw=D.geographicHeatmap,yrs=["2019","2020","2021","2022","2023","2024","2025","2026"],cells=[];
   raw.forEach(r=>yrs.forEach(y=>cells.push({c:r.country,code:r.code,y,v:r.values[y]})));
-  const mn=d3.min(cells,d=>d.v),mx=d3.max(cells,d=>d.v),cols=["#F1E8C8","#B9C4E6","#3F5CC4","#0E1F6B"],
-    col=d3.scaleSequential().domain([mn,mx]).interpolator(d3.interpolateRgbBasis(cols));
-  $("heat-lg").innerHTML=`Pubblicazioni / anno<div style="background:linear-gradient(to right,${cols.join(",")})"></div><p><span>${it(mn)}</span><span>${it(mx)}</span></p>`;
+  const mx=Math.max(d3.max(cells,d=>d.v),1),
+    cols=["#FFFFFF","#DCE4FA","#8EA2E0","#3F5CC4","#0E1F6B"],
+    col=d3.scaleSequential().domain([0,mx]).clamp(true).interpolator(d3.interpolateRgbBasis(cols));
+  $("heat-lg").innerHTML=`Pubblicazioni / anno<div style="background:linear-gradient(to right,${cols.join(",")})"></div><p><span>0</span><span>${it(mx)}</span></p>`;
   const{g,iw,ih}=mk("#heat",940,415,{t:32,r:18,b:18,l:112});d3.select("#heat svg").style("min-width","620px");
   const x=d3.scaleBand().domain(yrs).range([0,iw]).padding(.07),y=d3.scaleBand().domain(raw.map(r=>r.country)).range([0,ih]).padding(.09),
-    st=d=>d.c==="Italia"?C.gold:"#fff";
+    st=d=>d.c==="Italia"?C.gold:C.line;
   g.append("g").attr("class","axis big").call(d3.axisTop(x).tickSize(0)).select(".domain").remove();
   g.append("g").attr("class","axis big").call(d3.axisLeft(y).tickSize(0)).select(".domain").remove();
   tip(g.selectAll(".h").data(cells).enter().append("rect").attr("class","hov").attr("x",d=>x(d.y)).attr("y",d=>y(d.c)).attr("width",x.bandwidth()).attr("height",y.bandwidth()).attr("rx",6)
     .attr("fill",d=>col(d.v)).attr("stroke",st).attr("stroke-width",d=>d.c==="Italia"?2.4:1),
     d=>`<b>${d.c} (${d.code}), ${d.y}</b><br>Pubblicazioni: <b class="g">${it(d.v)}</b>`);
   if(labels)g.selectAll(".t").data(cells).enter().append("text").attr("x",d=>x(d.y)+x.bandwidth()/2).attr("y",d=>y(d.c)+y.bandwidth()/2+4).attr("text-anchor","middle")
-    .attr("fill",d=>d.v>mx*.42?"#fff":C.ink).style("font","600 10.5px var(--sans)").style("pointer-events","none").text(d=>it(d.v));
+    .attr("fill",d=>d.v>mx*.48?"#fff":C.ink).style("font","600 10.5px var(--sans)").style("pointer-events","none").text(d=>it(d.v));
 }
 
-const renderAll=()=>{trendChart();grouped();smalls();stacked();dumbbell();heat()};
+const renderAll=()=>{trendChart();grouped();smalls();stacked();prYearly();dumbbell();heat()};
 
 /* Scrollytelling */
 function watch(sel,cb){
@@ -462,7 +721,7 @@ function watch(sel,cb){
 }
 function setupScroll(){
   addEventListener("scroll",()=>{const h=document.documentElement.scrollHeight-innerHeight;$("bar").style.width=(h>0?scrollY/h*100:0)+"%"},{passive:true});
-  const labelsT={data:"Dati osservati",trend:"Trend pre-IA (ML)",boom:"Boom 2026"};
+  const labelsT={data:"Dati osservati",trend:`Regressione ${HIST_START}–2025`,boom:"Confronto 2026"};
   watch(".st-trend",v=>{if(v!==tPh){tPh=v;$("phase-badge").textContent=labelsT[v];trendChart()}});
   watch(".st-lean",v=>{if(v!==lPh){lPh=v;stacked()}});
   watch(".st-wf",v=>{if(v!==wMode)setWaffle(v)});
@@ -471,27 +730,48 @@ function setupScroll(){
   document.querySelectorAll("header[id],section[id]").forEach(s=>no.observe(s));
 }
 
-/* Avvio: dati da ./data/openalex_ai_math.json */
+/* Avvio */
 async function init(){
   try{
     const r=await fetch("./data/openalex_ai_math.json");if(!r.ok)throw new Error("HTTP "+r.status);
-    D=await r.json();ML=fitOLS(D.preAiHistoricalSeries);
-    SER=[...D.preAiHistoricalSeries.slice(0,4).map(d=>({year:d.year,actual:d.totalCount})),...D.leanVerificationByYear.map(d=>({year:d.year,actual:d.totalCount}))].map(d=>({...d,baseline:ML.predict(d.year)}));
-    const last=SER[SER.length-1],sp=Math.round((last.actual-last.baseline)/Math.max(last.baseline,1)*100),
-      l26=D.leanVerificationByYear.find(d=>d.year==="2026"),p26=D.peerReviewByYear.find(d=>d.year==="2026");
+    D=await r.json();
+
+    const byYr=new Map();
+    (D.preAiHistoricalSeries||[]).forEach(d=>byYr.set(String(d.year),+d.totalCount));
+    (D.leanVerificationByYear||[]).forEach(d=>byYr.set(String(d.year),+d.totalCount));
+    const yearsSorted=[...byYr.keys()].sort((a,b)=>+a-+b);
+    HIST_START=yearsSorted[0]||"2000";
+    SER=yearsSorted.map(y=>({year:y,actual:byYr.get(y),baseline:0}));
+
+    const l26=D.leanVerificationByYear.find(d=>d.year==="2026"),p26=D.peerReviewByYear.find(d=>d.year==="2026");
     $("kpi-total").textContent=it(d3.sum(D.leanVerificationByYear,d=>d.totalCount));
-    $("kpi-surplus").textContent=(sp>=0?"+":"")+sp+"%";
-    if(l26)$("kpi-lean").textContent=l26.verifiedPct+"%";
-    if(p26)$("kpi-preprint").textContent=p26.preprintPct+"%";
-    $("boom-text").innerHTML=`Dal 2022 la curva reale si stacca nettamente dalla previsione del modello. Nel 2026 le pubblicazioni osservate raggiungono <strong>${it(last.actual)}</strong> contro le <strong>${it(last.baseline)}</strong> previste dal trend naturale: un boom del <strong>+${sp}%</strong>.`;
+    if(l26)$("kpi-lean").textContent=fmtPct(l26.verifiedPct);
+    if(p26){
+      const arxPct=p26.arxivTotalSharePct!==undefined?p26.arxivTotalSharePct:p26.preprintPct;
+      $("kpi-preprint").textContent=fmtPct(arxPct);
+    }
+
+    $("s1-title").textContent=`La crescita delle pubblicazioni, ${HIST_START}–2026`;
+    $("s2-title").textContent=`Modello esponenziale e polinomiale (${HIST_START}–2025)`;
+    $("t-sub").textContent=`Pubblicazioni di IA in matematica, ${HIST_START}–2026`;
+
     if(D.metadata?.generatedAt)$("meta").textContent=`Dati OpenAlex estratti il ${new Date(D.metadata.generatedAt).toLocaleDateString("it-IT")}, letti da ./data/openalex_ai_math.json`;
-    heroCurve();initWaffle();renderAll();setupScroll();
+
+    initWaffle();
+    applyRegression();
+    grouped();smalls();stacked();prYearly();dumbbell();heat();
+    setupScroll();
   }catch(e){console.error("Errore caricamento JSON:",e);$("err").style.display="block"}
 }
+
 document.addEventListener("DOMContentLoaded",()=>{
   init();
+  document.querySelectorAll("#reg-pills .pill").forEach(btn=>btn.onclick=()=>{regMode=btn.dataset.m;if(D)applyRegression()});
+  document.querySelectorAll("#lean-pills .pill").forEach(btn=>btn.onclick=()=>{leanMode=btn.dataset.m;if(D)stacked()});
   const bl=$("btn-labels");bl.onclick=()=>{labels=!labels;bl.textContent=labels?"Nascondi valori":"Mostra valori";if(D)renderAll()};
   const bu=$("btn-unige");bu.onclick=()=>{uni=!uni;bu.classList.toggle("on",uni);if(D){grouped();smalls()}};
+  $("sm-prev").onclick=()=>$("smalls").scrollBy({left:-258,behavior:"smooth"});
+  $("sm-next").onclick=()=>$("smalls").scrollBy({left:258,behavior:"smooth"});
 });
 </script>
 </body>

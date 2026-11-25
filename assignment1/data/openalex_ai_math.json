@@ -1,80 +1,165 @@
 {
   "metadata": {
     "source": "OpenAlex API (https://api.openalex.org/works)",
-    "filter": "concepts.id:C33923547,concepts.id:C154945302",
-    "period": "2015-2026",
-    "generatedAt": "2026-11-24T10:59:55.756619+00:00"
+    "filter": "topics.field.id:26,topics.subfield.id:1702",
+    "arxivSourceId": "S4306400194",
+    "period": "2000-2026",
+    "generatedAt": "2026-11-25T14:17:05.388875+00:00"
   },
   "preAiHistoricalSeries": [
     {
+      "year": "2000",
+      "totalCount": 3484
+    },
+    {
+      "year": "2001",
+      "totalCount": 3689
+    },
+    {
+      "year": "2002",
+      "totalCount": 5524
+    },
+    {
+      "year": "2003",
+      "totalCount": 5201
+    },
+    {
+      "year": "2004",
+      "totalCount": 5238
+    },
+    {
+      "year": "2005",
+      "totalCount": 6077
+    },
+    {
+      "year": "2006",
+      "totalCount": 6910
+    },
+    {
+      "year": "2007",
+      "totalCount": 7255
+    },
+    {
+      "year": "2008",
+      "totalCount": 7527
+    },
+    {
+      "year": "2009",
+      "totalCount": 8205
+    },
+    {
+      "year": "2010",
+      "totalCount": 8702
+    },
+    {
+      "year": "2011",
+      "totalCount": 8954
+    },
+    {
+      "year": "2012",
+      "totalCount": 9542
+    },
+    {
+      "year": "2013",
+      "totalCount": 9797
+    },
+    {
+      "year": "2014",
+      "totalCount": 10313
+    },
+    {
       "year": "2015",
-      "totalCount": 196280
+      "totalCount": 10009
     },
     {
       "year": "2016",
-      "totalCount": 199672
+      "totalCount": 10947
     },
     {
       "year": "2017",
-      "totalCount": 202756
+      "totalCount": 10999
     },
     {
       "year": "2018",
-      "totalCount": 223333
+      "totalCount": 12073
     },
     {
       "year": "2019",
-      "totalCount": 241122
+      "totalCount": 12691
+    },
+    {
+      "year": "2020",
+      "totalCount": 13551
+    },
+    {
+      "year": "2021",
+      "totalCount": 13484
+    },
+    {
+      "year": "2022",
+      "totalCount": 13002
+    },
+    {
+      "year": "2023",
+      "totalCount": 13628
+    },
+    {
+      "year": "2024",
+      "totalCount": 15168
+    },
+    {
+      "year": "2025",
+      "totalCount": 18286
     }
   ],
   "universitiesByYear": [
     {
       "year": "2019",
-      "Oxford": 800,
-      "NYU": 540,
-      "UniGe": 176
+      "Oxford": 92,
+      "NYU": 48,
+      "UniGe": 13
     },
     {
       "year": "2020",
-      "Oxford": 868,
-      "NYU": 648,
-      "UniGe": 207
+      "Oxford": 112,
+      "NYU": 52,
+      "UniGe": 5
     },
     {
       "year": "2021",
-      "Oxford": 938,
-      "NYU": 601,
-      "UniGe": 220
+      "Oxford": 127,
+      "NYU": 66,
+      "UniGe": 11
     },
     {
       "year": "2022",
-      "Oxford": 884,
-      "NYU": 559,
-      "UniGe": 221
+      "Oxford": 131,
+      "NYU": 50,
+      "UniGe": 9
     },
     {
       "year": "2023",
-      "Oxford": 928,
-      "NYU": 623,
-      "UniGe": 230
+      "Oxford": 85,
+      "NYU": 73,
+      "UniGe": 16
     },
     {
       "year": "2024",
-      "Oxford": 619,
-      "NYU": 484,
-      "UniGe": 150
+      "Oxford": 87,
+      "NYU": 69,
+      "UniGe": 17
     },
     {
       "year": "2025",
-      "Oxford": 606,
-      "NYU": 428,
-      "UniGe": 110
+      "Oxford": 105,
+      "NYU": 80,
+      "UniGe": 9
     },
     {
       "year": "2026",
-      "Oxford": 629,
-      "NYU": 455,
-      "UniGe": 93
+      "Oxford": 173,
+      "NYU": 101,
+      "UniGe": 21
     }
   ],
   "geographicHeatmap": [
@@ -82,281 +167,393 @@
       "country": "Stati Uniti",
       "code": "US",
       "values": {
-        "2019": 34604,
-        "2020": 38480,
-        "2021": 38396,
-        "2022": 35763,
-        "2023": 37228,
-        "2024": 24982,
-        "2025": 20006,
-        "2026": 20971
+        "2019": 2702,
+        "2020": 3058,
+        "2021": 2988,
+        "2022": 2755,
+        "2023": 2809,
+        "2024": 3223,
+        "2025": 3741,
+        "2026": 5150
       }
     },
     {
       "country": "Cina",
       "code": "CN",
       "values": {
-        "2019": 54746,
-        "2020": 59172,
-        "2021": 69715,
-        "2022": 80721,
-        "2023": 90805,
-        "2024": 70544,
-        "2025": 51674,
-        "2026": 32249
+        "2019": 1294,
+        "2020": 1420,
+        "2021": 1640,
+        "2022": 1851,
+        "2023": 2176,
+        "2024": 2453,
+        "2025": 2952,
+        "2026": 3492
       }
     },
     {
       "country": "Regno Unito",
       "code": "GB",
       "values": {
-        "2019": 10518,
-        "2020": 11008,
-        "2021": 11779,
-        "2022": 11211,
-        "2023": 12108,
-        "2024": 8341,
-        "2025": 6447,
-        "2026": 6422
+        "2019": 693,
+        "2020": 765,
+        "2021": 764,
+        "2022": 804,
+        "2023": 745,
+        "2024": 780,
+        "2025": 918,
+        "2026": 1272
       }
     },
     {
       "country": "Germania",
       "code": "DE",
       "values": {
-        "2019": 9547,
-        "2020": 9972,
-        "2021": 11138,
-        "2022": 10837,
-        "2023": 11672,
-        "2024": 7473,
-        "2025": 5695,
-        "2026": 68211
+        "2019": 466,
+        "2020": 540,
+        "2021": 587,
+        "2022": 525,
+        "2023": 583,
+        "2024": 677,
+        "2025": 775,
+        "2026": 1037
       }
     },
     {
       "country": "Francia",
       "code": "FR",
       "values": {
-        "2019": 8156,
-        "2020": 7728,
-        "2021": 7962,
-        "2022": 8311,
-        "2023": 8338,
-        "2024": 6214,
-        "2025": 4533,
-        "2026": 4225
+        "2019": 679,
+        "2020": 650,
+        "2021": 703,
+        "2022": 776,
+        "2023": 697,
+        "2024": 729,
+        "2025": 843,
+        "2026": 881
       }
     },
     {
       "country": "Italia",
       "code": "IT",
       "values": {
-        "2019": 6025,
-        "2020": 6379,
-        "2021": 7016,
-        "2022": 7280,
-        "2023": 7760,
-        "2024": 4929,
-        "2025": 3851,
-        "2026": 3561
+        "2019": 311,
+        "2020": 343,
+        "2021": 405,
+        "2022": 364,
+        "2023": 415,
+        "2024": 459,
+        "2025": 661,
+        "2026": 809
       }
     },
     {
       "country": "Canada",
       "code": "CA",
       "values": {
-        "2019": 6233,
-        "2020": 6928,
-        "2021": 7353,
-        "2022": 6934,
-        "2023": 7423,
-        "2024": 4704,
-        "2025": 3479,
-        "2026": 2986
+        "2019": 347,
+        "2020": 446,
+        "2021": 458,
+        "2022": 401,
+        "2023": 432,
+        "2024": 439,
+        "2025": 541,
+        "2026": 668
       }
     },
     {
       "country": "Giappone",
       "code": "JP",
       "values": {
-        "2019": 7442,
-        "2020": 7315,
-        "2021": 7556,
-        "2022": 7326,
-        "2023": 7696,
-        "2024": 5422,
-        "2025": 4195,
-        "2026": 3804
+        "2019": 319,
+        "2020": 341,
+        "2021": 392,
+        "2022": 370,
+        "2023": 331,
+        "2024": 417,
+        "2025": 504,
+        "2026": 695
       }
     },
     {
       "country": "Svizzera",
       "code": "CH",
       "values": {
-        "2019": 2219,
-        "2020": 2464,
-        "2021": 2887,
-        "2022": 2934,
-        "2023": 2892,
-        "2024": 1847,
-        "2025": 1582,
-        "2026": 1591
+        "2019": 172,
+        "2020": 175,
+        "2021": 195,
+        "2022": 251,
+        "2023": 190,
+        "2024": 177,
+        "2025": 262,
+        "2026": 344
       }
     },
     {
       "country": "India",
       "code": "IN",
       "values": {
-        "2019": 11919,
-        "2020": 14614,
-        "2021": 17345,
-        "2022": 19511,
-        "2023": 20707,
-        "2024": 15413,
-        "2025": 11455,
-        "2026": 7836
+        "2019": 371,
+        "2020": 440,
+        "2021": 530,
+        "2022": 509,
+        "2023": 596,
+        "2024": 703,
+        "2025": 854,
+        "2026": 1007
       }
     }
   ],
   "leanVerificationByYear": [
     {
       "year": "2019",
-      "verifiedPct": 0.0,
-      "unverifiedPct": 100.0,
-      "verifiedCount": 6,
-      "totalCount": 241122
+      "verifiedPct": 7.1,
+      "unverifiedPct": 92.9,
+      "mathAiPct": 2.19,
+      "verifiedCount": 278,
+      "formalTotalCount": 3889,
+      "totalCount": 12691
     },
     {
       "year": "2020",
-      "verifiedPct": 0.0,
-      "unverifiedPct": 100.0,
-      "verifiedCount": 6,
-      "totalCount": 254336
+      "verifiedPct": 7.1,
+      "unverifiedPct": 92.9,
+      "mathAiPct": 2.3,
+      "verifiedCount": 311,
+      "formalTotalCount": 4389,
+      "totalCount": 13551
     },
     {
       "year": "2021",
-      "verifiedPct": 0.0,
-      "unverifiedPct": 100.0,
-      "verifiedCount": 21,
-      "totalCount": 278067
+      "verifiedPct": 7.2,
+      "unverifiedPct": 92.8,
+      "mathAiPct": 2.61,
+      "verifiedCount": 352,
+      "formalTotalCount": 4906,
+      "totalCount": 13484
     },
     {
       "year": "2022",
-      "verifiedPct": 0.0,
-      "unverifiedPct": 100.0,
-      "verifiedCount": 15,
-      "totalCount": 275106
+      "verifiedPct": 8.5,
+      "unverifiedPct": 91.5,
+      "mathAiPct": 3.22,
+      "verifiedCount": 419,
+      "formalTotalCount": 4910,
+      "totalCount": 13002
     },
     {
       "year": "2023",
-      "verifiedPct": 0.0,
-      "unverifiedPct": 100.0,
-      "verifiedCount": 18,
-      "totalCount": 301202
+      "verifiedPct": 9.7,
+      "unverifiedPct": 90.3,
+      "mathAiPct": 4.24,
+      "verifiedCount": 578,
+      "formalTotalCount": 5982,
+      "totalCount": 13628
     },
     {
       "year": "2024",
-      "verifiedPct": 0.0,
-      "unverifiedPct": 100.0,
-      "verifiedCount": 28,
-      "totalCount": 218109
+      "verifiedPct": 10.5,
+      "unverifiedPct": 89.5,
+      "mathAiPct": 5.47,
+      "verifiedCount": 830,
+      "formalTotalCount": 7897,
+      "totalCount": 15168
     },
     {
       "year": "2025",
-      "verifiedPct": 0.0,
-      "unverifiedPct": 100.0,
-      "verifiedCount": 61,
-      "totalCount": 211608
+      "verifiedPct": 15.6,
+      "unverifiedPct": 84.4,
+      "mathAiPct": 9.4,
+      "verifiedCount": 1719,
+      "formalTotalCount": 11018,
+      "totalCount": 18286
     },
     {
       "year": "2026",
-      "verifiedPct": 0.2,
-      "unverifiedPct": 99.8,
-      "verifiedCount": 700,
-      "totalCount": 334886
+      "verifiedPct": 43.7,
+      "unverifiedPct": 56.3,
+      "mathAiPct": 36.19,
+      "verifiedCount": 9853,
+      "formalTotalCount": 22530,
+      "totalCount": 27223
     }
   ],
   "peerReviewByYear": [
     {
       "year": "2019",
-      "peerReviewedPct": 90,
-      "preprintPct": 10,
-      "totalCount": 241122
+      "totalCount": 12691,
+      "peerReviewedTotalCount": 7337,
+      "arxivTotalCount": 2714,
+      "bothCount": 1675,
+      "peerOnlyCount": 5662,
+      "arxivOnlyCount": 1039,
+      "classifiedCount": 8376,
+      "peerOnlyPct": 67.6,
+      "bothPct": 20.0,
+      "arxivOnlyPct": 12.4,
+      "peerReviewedPct": 87.6,
+      "preprintPct": 12.4,
+      "peerTotalSharePct": 87.6,
+      "arxivTotalSharePct": 32.4,
+      "ratioPeerToArxiv": 2.7
     },
     {
       "year": "2020",
-      "peerReviewedPct": 90,
-      "preprintPct": 10,
-      "totalCount": 254336
+      "totalCount": 13551,
+      "peerReviewedTotalCount": 8004,
+      "arxivTotalCount": 3282,
+      "bothCount": 2077,
+      "peerOnlyCount": 5927,
+      "arxivOnlyCount": 1205,
+      "classifiedCount": 9209,
+      "peerOnlyPct": 64.4,
+      "bothPct": 22.6,
+      "arxivOnlyPct": 13.0,
+      "peerReviewedPct": 87.0,
+      "preprintPct": 13.0,
+      "peerTotalSharePct": 86.9,
+      "arxivTotalSharePct": 35.6,
+      "ratioPeerToArxiv": 2.44
     },
     {
       "year": "2021",
-      "peerReviewedPct": 89,
-      "preprintPct": 11,
-      "totalCount": 278067
+      "totalCount": 13484,
+      "peerReviewedTotalCount": 8386,
+      "arxivTotalCount": 3439,
+      "bothCount": 2146,
+      "peerOnlyCount": 6240,
+      "arxivOnlyCount": 1293,
+      "classifiedCount": 9679,
+      "peerOnlyPct": 64.5,
+      "bothPct": 22.2,
+      "arxivOnlyPct": 13.3,
+      "peerReviewedPct": 86.7,
+      "preprintPct": 13.3,
+      "peerTotalSharePct": 86.6,
+      "arxivTotalSharePct": 35.5,
+      "ratioPeerToArxiv": 2.44
     },
     {
       "year": "2022",
-      "peerReviewedPct": 91,
-      "preprintPct": 9,
-      "totalCount": 275106
+      "totalCount": 13002,
+      "peerReviewedTotalCount": 8349,
+      "arxivTotalCount": 3742,
+      "bothCount": 2475,
+      "peerOnlyCount": 5874,
+      "arxivOnlyCount": 1267,
+      "classifiedCount": 9616,
+      "peerOnlyPct": 61.1,
+      "bothPct": 25.7,
+      "arxivOnlyPct": 13.2,
+      "peerReviewedPct": 86.8,
+      "preprintPct": 13.2,
+      "peerTotalSharePct": 86.8,
+      "arxivTotalSharePct": 38.9,
+      "ratioPeerToArxiv": 2.23
     },
     {
       "year": "2023",
-      "peerReviewedPct": 90,
-      "preprintPct": 10,
-      "totalCount": 301202
+      "totalCount": 13628,
+      "peerReviewedTotalCount": 8899,
+      "arxivTotalCount": 4043,
+      "bothCount": 2617,
+      "peerOnlyCount": 6282,
+      "arxivOnlyCount": 1426,
+      "classifiedCount": 10325,
+      "peerOnlyPct": 60.8,
+      "bothPct": 25.3,
+      "arxivOnlyPct": 13.9,
+      "peerReviewedPct": 86.1,
+      "preprintPct": 13.9,
+      "peerTotalSharePct": 86.2,
+      "arxivTotalSharePct": 39.2,
+      "ratioPeerToArxiv": 2.2
     },
     {
       "year": "2024",
-      "peerReviewedPct": 89,
-      "preprintPct": 11,
-      "totalCount": 218109
+      "totalCount": 15168,
+      "peerReviewedTotalCount": 9851,
+      "arxivTotalCount": 4674,
+      "bothCount": 2881,
+      "peerOnlyCount": 6970,
+      "arxivOnlyCount": 1793,
+      "classifiedCount": 11644,
+      "peerOnlyPct": 59.9,
+      "bothPct": 24.7,
+      "arxivOnlyPct": 15.4,
+      "peerReviewedPct": 84.6,
+      "preprintPct": 15.4,
+      "peerTotalSharePct": 84.6,
+      "arxivTotalSharePct": 40.1,
+      "ratioPeerToArxiv": 2.11
     },
     {
       "year": "2025",
-      "peerReviewedPct": 75,
-      "preprintPct": 25,
-      "totalCount": 211608
+      "totalCount": 18286,
+      "peerReviewedTotalCount": 10802,
+      "arxivTotalCount": 5545,
+      "bothCount": 3054,
+      "peerOnlyCount": 7748,
+      "arxivOnlyCount": 2491,
+      "classifiedCount": 13293,
+      "peerOnlyPct": 58.3,
+      "bothPct": 23.0,
+      "arxivOnlyPct": 18.7,
+      "peerReviewedPct": 81.3,
+      "preprintPct": 18.7,
+      "peerTotalSharePct": 81.3,
+      "arxivTotalSharePct": 41.7,
+      "ratioPeerToArxiv": 1.95
     },
     {
       "year": "2026",
-      "peerReviewedPct": 37,
-      "preprintPct": 63,
-      "totalCount": 334886
+      "totalCount": 27223,
+      "peerReviewedTotalCount": 9979,
+      "arxivTotalCount": 9486,
+      "bothCount": 2897,
+      "peerOnlyCount": 7082,
+      "arxivOnlyCount": 6589,
+      "classifiedCount": 16568,
+      "peerOnlyPct": 42.7,
+      "bothPct": 17.5,
+      "arxivOnlyPct": 39.8,
+      "peerReviewedPct": 60.2,
+      "preprintPct": 39.8,
+      "peerTotalSharePct": 60.2,
+      "arxivTotalSharePct": 57.3,
+      "ratioPeerToArxiv": 1.05
     }
   ],
   "subfieldsComparison": [
     {
       "field": "Logica & Fondamenti",
-      "pct2019": 24.2,
-      "pct2026": 37.5
+      "pct2019": 9.7,
+      "pct2026": 12.8
     },
     {
       "field": "Analisi Numerica & PDE",
-      "pct2019": 27.0,
-      "pct2026": 8.8
+      "pct2019": 8.2,
+      "pct2026": 13.7
     },
     {
       "field": "Combinatoria & Teoria Grafi",
-      "pct2019": 24.1,
-      "pct2026": 39.6
+      "pct2019": 7.6,
+      "pct2026": 3.4
     },
     {
       "field": "Algebra & Teoria dei Numeri",
-      "pct2019": 15.1,
-      "pct2026": 15.2
+      "pct2019": 4.7,
+      "pct2026": 7.6
     },
     {
       "field": "Geometria & Topologia",
-      "pct2019": 23.1,
-      "pct2026": 11.2
+      "pct2019": 5.7,
+      "pct2026": 4.1
     },
     {
       "field": "Probabilità & Statistica Mat.",
-      "pct2019": 23.4,
-      "pct2026": 27.8
+      "pct2019": 6.5,
+      "pct2026": 12.8
     }
   ]
 }
