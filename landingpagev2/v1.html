@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI &amp; Mathematics — A data story</title>
+<style>
+:root{--bg:#070b1a;--card:rgba(255,255,255,.05);--line:rgba(255,255,255,.12);--txt:#e8ecf8;--mut:#94a0c4;--a:#5eead4;--b:#a78bfa}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+body{background:var(--bg);color:var(--txt);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.6}
+#bg{position:fixed;inset:0;z-index:0}
+header{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;justify-content:space-between;align-items:center;padding:18px 5vw;backdrop-filter:blur(12px);background:rgba(7,11,26,.45);border-bottom:1px solid var(--line)}
+.logo{font-weight:700;letter-spacing:.08em}.logo span{color:var(--a)}
+nav{display:flex;gap:26px}
+nav a{color:var(--mut);text-decoration:none;font-size:.88rem;cursor:pointer;transition:.2s}
+nav a:hover,nav a.on{color:var(--a)}
+.cta{padding:9px 20px;border-radius:99px;border:1px solid var(--a);color:var(--a);font-size:.84rem;cursor:pointer;text-decoration:none;transition:.3s}
+.cta:hover{background:var(--a);color:#06101f}
+.sec{position:fixed;inset:0;z-index:5;display:flex;flex-direction:column;justify-content:center;padding:100px 5vw 70px;max-width:1240px;margin:auto;opacity:0;pointer-events:none;transform:translateY(40px);filter:blur(8px);transition:opacity .9s,transform .9s,filter .9s}
+.sec.active{opacity:1;pointer-events:auto;transform:none;filter:none;transition-delay:.35s}
+.sec>*{max-width:580px}.sec>.wide{max-width:720px}
+.tag{color:var(--a);font-size:.78rem;letter-spacing:.22em;text-transform:uppercase;margin-bottom:14px}
+h1{font-size:clamp(2.3rem,6.4vw,5.2rem);line-height:1.04;font-weight:800}
+h2{font-size:clamp(1.8rem,4.2vw,3.2rem);line-height:1.1;font-weight:800;margin-bottom:6px}
+em{font-style:normal;background:linear-gradient(90deg,var(--a),var(--b));-webkit-background-clip:text;background-clip:text;color:transparent}
+p.lead{color:var(--mut);font-size:1.12rem;margin:18px 0 28px}
+.row{display:flex;gap:14px;flex-wrap:wrap}
+.btn{display:inline-block;padding:14px 28px;border-radius:99px;background:linear-gradient(90deg,var(--a),var(--b));color:#06101f;font-weight:700;text-decoration:none;width:fit-content;cursor:pointer;transition:.3s}
+.btn:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(94,234,212,.25)}
+.btn.ghost{background:none;color:var(--txt);border:1px solid var(--line)}
+.btn.ghost:hover{border-color:var(--a);box-shadow:none}
+.scroll{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:20;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--mut);text-align:center;transition:.5s}
+.scroll::after{content:"";display:block;width:1px;height:32px;background:var(--a);margin:8px auto 0;animation:p 1.6s infinite}
+@keyframes p{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+.dots{position:fixed;right:2.2vw;top:50%;transform:translateY(-50%);z-index:20;display:flex;flex-direction:column;gap:14px;transition:.5s}
+.dots b{width:9px;height:9px;border-radius:50%;border:1px solid var(--a);cursor:pointer;transition:.3s}
+.dots b.on{background:var(--a);transform:scale(1.4)}
+.count{position:fixed;left:5vw;bottom:28px;z-index:20;color:var(--mut);font-size:.85rem;letter-spacing:.1em}
+.tl{border-left:2px solid var(--line);padding-left:26px;margin:16px 0 26px}
+.ev{position:relative;margin-bottom:16px}
+.ev::before{content:"";position:absolute;left:-35px;top:8px;width:12px;height:12px;border-radius:50%;background:var(--a);box-shadow:0 0 14px var(--a)}
+.ev b{color:var(--b)}.ev p{color:var(--mut);font-size:.95rem}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:18px 0 22px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px 22px;backdrop-filter:blur(10px)}
+.num{font-size:2.2rem;font-weight:800;color:var(--a);line-height:1.2}
+.card small{color:var(--mut);font-size:.8rem}
+.chart{margin-top:14px}.chart h3{font-weight:600;font-size:.95rem;margin-bottom:4px}
+svg{width:100%;height:auto;display:block}
+.axis{stroke:var(--line)}.lbl{fill:var(--mut);font-size:12px}
+.path{fill:none;stroke:var(--a);stroke-width:3;stroke-linecap:round;stroke-dasharray:1200;stroke-dashoffset:1200}
+.run .path{transition:stroke-dashoffset 2.4s ease .6s;stroke-dashoffset:0}
+.dot{fill:var(--b)}
+.note{color:var(--mut);font-size:.75rem;margin:8px 0 18px}
+@media(max-width:800px){nav{display:none}.dots{display:none}.sec{padding-top:84px}.grid{gap:8px}.num{font-size:1.6rem}.card{padding:12px}}
+</style>
+</head>
+<body>
+<canvas id="bg"></canvas>
+<header><div class="logo">AI<span>∑</span>MATH</div>
+<nav><a data-go="0">Home</a><a data-go="1">Why it matters</a><a data-go="2">Research</a><a data-go="3">Cost</a><a data-go="4">Future</a></nav>
+<a class="cta" data-go="5">Get in touch</a></header>
+
+<main>
+<!-- 0 HERO -->
+<section class="sec" id="s0">
+<div class="tag">A data story</div>
+<h1>Mathematics is being <em>rewritten</em>.</h1>
+<p class="lead">For centuries, math moved at the speed of human thought. Artificial intelligence is changing that pace. We built this page to show how, with data.</p>
+<div class="row"><a class="btn" data-go="1">Begin the story</a></div>
+</section>
+
+<!-- 1 WHY -->
+<section class="sec" id="s1">
+<div class="tag">Chapter 1 · Why it matters</div>
+<h2>Everything runs on <em>math</em>.</h2>
+<p class="lead">Encryption, medicine, climate models, the chip in your phone: all of it rests on equations and proofs. Progress used to depend on a few brilliant minds and a great deal of time. Now machines have joined the conversation, and the impact on mathematics is enormous.</p>
+<div class="row"><a class="btn" data-go="2">Continue</a></div>
+</section>
+
+<!-- 2 RESEARCH -->
+<section class="sec" id="s2">
+<div class="tag">Chapter 2 · Research</div>
+<h2>AI is becoming a <em>research partner</em>.</h2>
+<p class="lead">It has spotted hidden patterns in knot theory, found faster ways to multiply matrices and solved olympiad problems once thought out of reach. Mathematicians are no longer working alone.</p>
+<div class="row"><a class="btn" data-go="6">Explore the research impact →</a><a class="btn ghost" data-go="3">Next chapter</a></div>
+</section>
+
+<!-- 3 COST -->
+<section class="sec" id="s3">
+<div class="tag">Chapter 3 · The price of progress</div>
+<h2>But this power is <em>not free</em>.</h2>
+<p class="lead">Frontier models need thousands of chips, vast amounts of energy and budgets that only a handful of organizations can afford. Who gets to do AI-powered mathematics tomorrow?</p>
+<div class="row"><a class="btn" data-go="7">See what it costs →</a><a class="btn ghost" data-go="4">Next chapter</a></div>
+</section>
+
+<!-- 4 FUTURE -->
+<section class="sec" id="s4">
+<div class="tag">Chapter 4 · What comes next</div>
+<h2>A new chapter, <em>not the last</em>.</h2>
+<p class="lead">Proofs verified by computers, AI tutors for students, open questions about trust and credit. The story of AI and mathematics is still being written, and you can be part of it.</p>
+<div class="row"><a class="btn" data-go="5">Join the conversation</a></div>
+</section>
+
+<!-- 5 CONTACT -->
+<section class="sec" id="s5">
+<div class="tag">Sources &amp; contact</div>
+<h2>Let's talk <em>numbers</em>.</h2>
+<p class="lead">Add your data sources, credits and a contact here. Questions, ideas or datasets to share? We'd love to hear from you.</p>
+<div class="row"><a class="btn" href="mailto:info@example.com">Email us</a><a class="btn ghost" data-go="0">Back to start</a></div>
+</section>
+
+<!-- 6 DEEP: RESEARCH -->
+<section class="sec" id="s6">
+<div class="tag">Deep dive · Research impact</div>
+<h2>From curiosity to <em>discovery</em>.</h2>
+<div class="tl">
+<div class="ev"><b>2021</b><p>Neural networks help mathematicians uncover new conjectures in knot theory.</p></div>
+<div class="ev"><b>2022</b><p>AlphaTensor discovers faster algorithms for matrix multiplication.</p></div>
+<div class="ev"><b>2023</b><p>FunSearch builds new examples for the cap set problem.</p></div>
+<div class="ev"><b>2024</b><p>AlphaProof and AlphaGeometry reach olympiad medal level.</p></div>
+</div>
+<div class="row"><a class="btn ghost" data-go="2">← Back to the story</a></div>
+</section>
+
+<!-- 7 DEEP: COST -->
+<section class="sec" id="s7">
+<div class="tag">Deep dive · The cost</div>
+<h2>The bill keeps <em>growing</em>.</h2>
+<div class="grid wide" style="max-width:720px">
+<div class="card"><div class="num" data-n="10" data-s="K+">0</div><small>Chips used for one training run</small></div>
+<div class="card"><div class="num" data-n="100" data-s="M$">0</div><small>Estimated cost of a frontier model</small></div>
+<div class="card"><div class="num" data-n="4" data-s="x/yr">0</div><small>Yearly growth in training compute</small></div>
+</div>
+<div class="card chart wide"><h3>Estimated training cost of frontier models ($M)</h3><svg viewBox="0 0 700 220" id="svgLine"></svg></div>
+<p class="note">* Demo data: replace with real figures and sources.</p>
+<div class="row"><a class="btn ghost" data-go="3">← Back to the story</a></div>
+</section>
+</main>
+
+<div class="dots" id="dots"></div>
+<div class="count" id="count"></div>
+<div class="scroll" id="hint">Scroll</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+const secs=[...document.querySelectorAll('.sec')],MAIN=6,parent={6:2,7:3};
+let cur=0,lock=false;
+
+/* ---------- 3D scene ---------- */
+const st=[[0,0,30],[-26,-16,8],[8,-38,-12],[38,-28,-34],[28,2,-56],[0,16,-78],[-44,-44,-30],[62,-46,-56]];
+const rolls=[0,.08,-.06,.1,-.08,0,.12,-.1];
+let cam,renderer,scene,objs=[],mx=0,my=0;
+(function(){
+  if(!window.THREE)return;
+  renderer=new THREE.WebGLRenderer({canvas:document.getElementById('bg'),antialias:true,alpha:true});
+  renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+  scene=new THREE.Scene();scene.fog=new THREE.Fog(0x070b1a,40,140);
+  cam=new THREE.PerspectiveCamera(60,1,.1,300);cam.position.set(...st[0]);
+  const P=3400,pos=new Float32Array(P*3);
+  for(let i=0;i<P;i++){pos[i*3]=(Math.random()-.4)*190-10;pos[i*3+1]=(Math.random()-.7)*120;pos[i*3+2]=40-Math.random()*150}
+  const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(pos,3));
+  scene.add(new THREE.Points(g,new THREE.PointsMaterial({size:.25,color:0x5eead4,transparent:true,opacity:.75})));
+  function orb(c1){const c=document.createElement('canvas');c.width=c.height=256;const x=c.getContext('2d');
+    const gr=x.createRadialGradient(128,128,0,128,128,128);gr.addColorStop(0,c1);gr.addColorStop(1,'rgba(0,0,0,0)');
+    x.fillStyle=gr;x.fillRect(0,0,256,256);return new THREE.SpriteMaterial({map:new THREE.CanvasTexture(c),transparent:true,blending:THREE.AdditiveBlending,depthWrite:false,opacity:.5})}
+  const mats=[orb('rgba(94,234,212,.7)'),orb('rgba(167,139,250,.7)')];
+  const wf=c=>new THREE.MeshBasicMaterial({color:c,wireframe:true,transparent:true,opacity:.4});
+  const geos=[new THREE.TorusKnotGeometry(6,1.5,140,16,2,3),new THREE.IcosahedronGeometry(6,1),new THREE.OctahedronGeometry(7,1),new THREE.TorusGeometry(5,1.2,14,48),new THREE.DodecahedronGeometry(6,0),new THREE.TorusKnotGeometry(5,1.2,120,14,3,5),new THREE.IcosahedronGeometry(6,0),new THREE.TorusKnotGeometry(5,1.3,120,14,3,2)];
+  const wide=innerWidth>800;
+  st.forEach((s,i)=>{
+    const m=new THREE.Mesh(geos[i],wf(i%2?0xa78bfa:0x5eead4));
+    m.position.set(s[0]+(wide?10:0),s[1]+(wide?0:10),s[2]-26);scene.add(m);objs.push(m);
+    const sp=new THREE.Sprite(mats[i%2]);sp.scale.setScalar(36);sp.position.copy(m.position);scene.add(sp);
+  });
+  function resize(){renderer.setSize(innerWidth,innerHeight);cam.aspect=innerWidth/innerHeight;cam.updateProjectionMatrix()}
+  addEventListener('resize',resize);resize();
+  addEventListener('mousemove',e=>{mx=e.clientX/innerWidth-.5;my=e.clientY/innerHeight-.5});
+  const tgt=new THREE.Vector3();
+  (function loop(t){
+    t*=.001;
+    objs.forEach((o,i)=>{o.rotation.x=t*.15*(i%2?-1:1)+i;o.rotation.y=t*.22});
+    const s=st[cur];tgt.set(s[0]+mx*6,s[1]-my*4,s[2]);
+    cam.position.lerp(tgt,.035);
+    cam.rotation.z+=(rolls[cur]-cam.rotation.z)*.03;
+    renderer.render(scene,cam);requestAnimationFrame(loop);
+  })(0);
+})();
+
+/* ---------- Navigation ---------- */
+const dots=document.getElementById('dots');
+for(let i=0;i<MAIN;i++){const b=document.createElement('b');b.onclick=()=>go(i);dots.appendChild(b)}
+function go(i){
+  if(i<0||i>=secs.length||i===cur||lock)return;
+  lock=true;cur=i;render();setTimeout(()=>lock=false,1100);
+}
+function render(){
+  secs.forEach((s,i)=>{s.classList.toggle('active',i===cur);s.classList.toggle('run',i===cur)});
+  const deep=cur>=MAIN,mi=deep?parent[cur]:cur;
+  [...dots.children].forEach((d,i)=>d.classList.toggle('on',i===mi));
+  document.querySelectorAll('nav a').forEach(a=>a.classList.toggle('on',+a.dataset.go===mi));
+  document.getElementById('count').textContent=deep?'DEEP DIVE':'0'+(cur+1)+' / 0'+MAIN;
+  document.getElementById('hint').style.opacity=(cur===MAIN-1||deep)?0:1;
+  secs[cur].querySelectorAll('.num').forEach(count);
+}
+function count(el){const n=+el.dataset.n,s=el.dataset.s,t0=performance.now()+500;
+  (function f(t){const p=Math.max(0,Math.min((t-t0)/1600,1));el.textContent=Math.round(n*(1-Math.pow(1-p,3)))+s;if(p<1)requestAnimationFrame(f)})(t0)}
+function step(d){
+  if(cur>=MAIN){ if(d<0) go(parent[cur]); return; }   // deep dives: scroll up returns to the story
+  if(cur+d<MAIN) go(cur+d);
+}
+document.querySelectorAll('[data-go]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();go(+a.dataset.go)}));
+addEventListener('wheel',e=>{if(Math.abs(e.deltaY)>12)step(e.deltaY>0?1:-1)},{passive:true});
+addEventListener('keydown',e=>{
+  if(['ArrowDown','PageDown',' '].includes(e.key))step(1);
+  if(['ArrowUp','PageUp'].includes(e.key))step(-1);
+});
+let ty=0;
+addEventListener('touchstart',e=>ty=e.touches[0].clientY,{passive:true});
+addEventListener('touchend',e=>{const d=ty-e.changedTouches[0].clientY;if(Math.abs(d)>50)step(d>0?1:-1)},{passive:true});
+
+/* ---------- Line chart (demo data) ---------- */
+(function(){
+  const data=[{y:2018,v:1},{y:2019,v:3},{y:2020,v:12},{y:2021,v:30},{y:2022,v:60},{y:2023,v:100}]; // DEMO
+  const W=700,H=220,p=38,max=100,x=i=>p+i*(W-2*p)/(data.length-1),y=v=>H-p-(v/max)*(H-2*p);
+  let h='';
+  [0,50,100].forEach(v=>h+=`<line class="axis" x1="${p}" x2="${W-p}" y1="${y(v)}" y2="${y(v)}"/><text class="lbl" x="2" y="${y(v)+4}">$${v}M</text>`);
+  data.forEach((d,i)=>h+=`<text class="lbl" x="${x(i)-14}" y="${H-10}">${d.y}</text>`);
+  h+=`<path class="path" d="${data.map((d,i)=>(i?'L':'M')+x(i)+' '+y(d.v)).join(' ')}"/>`;
+  data.forEach((d,i)=>h+=`<circle class="dot" cx="${x(i)}" cy="${y(d.v)}" r="5"><title>${d.y}: $${d.v}M</title></circle>`);
+  document.getElementById('svgLine').innerHTML=h;
+})();
+render();
+</script>
+</body>
+</html>
