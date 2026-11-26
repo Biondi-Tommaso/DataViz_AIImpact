@@ -124,69 +124,69 @@ footer b{display:block;font:700 18px var(--serif);color:#fff;margin-bottom:4px}
 </head>
 <body>
 <div id="bar"></div><div id="tt"></div>
-<div id="err">Impossibile caricare <code>./data/openalex_ai_math.json</code>. Esegui <code>python fetch_openalex_data.py</code> e apri la pagina da un server locale (es. <code>python -m http.server 8000</code>).</div>
+<div id="err">Unable to load <code>./data/openalex_ai_math.json</code>. Run <code>python fetch_openalex_data.py</code> and open the page from a local server (e.g., <code>python -m http.server 8000</code>).</div>
 
 <nav><div class="wrap">
   <a href="#top" class="brand">AI-Math Data</a>
-  <ul><li><a href="#rivoluzione">Trend &amp; Regressione</a></li><li><a href="#hub-globali">Atenei</a></li><li><a href="#prove-formali">Lean</a></li><li><a href="#preprint-review">Peer Review</a></li><li><a href="#mappa-geografica">Rete</a></li></ul>
+  <ul><li><a href="#rivoluzione">Trends &amp; Regression</a></li><li><a href="#hub-globali">Universities</a></li><li><a href="#prove-formali">Lean</a></li><li><a href="#preprint-review">Peer Review</a></li><li><a href="#mappa-geografica">Network</a></li></ul>
 </div></nav>
 
-<aside class="rail" aria-label="Avanzamento capitoli">
+<aside class="rail" aria-label="Chapter progress">
   <a href="#top" class="on" data-t="top"><span>Intro</span><i></i></a>
-  <a href="#rivoluzione" data-t="rivoluzione"><span>Trend &amp; Reg.</span><i></i></a>
-  <a href="#hub-globali" data-t="hub-globali"><span>Atenei</span><i></i></a>
+  <a href="#rivoluzione" data-t="rivoluzione"><span>Trends &amp; Reg.</span><i></i></a>
+  <a href="#hub-globali" data-t="hub-globali"><span>Universities</span><i></i></a>
   <a href="#prove-formali" data-t="prove-formali"><span>Lean 4</span><i></i></a>
   <a href="#preprint-review" data-t="preprint-review"><span>Peer Review</span><i></i></a>
-  <a href="#mappa-geografica" data-t="mappa-geografica"><span>Geografia</span><i></i></a>
+  <a href="#mappa-geografica" data-t="mappa-geografica"><span>Geography</span><i></i></a>
 </aside>
 
 <header id="top"><div class="wrap hero">
   <div>
     <h1>The Quiet Revolution</h1>
-    <p class="lead">L'intelligenza artificiale sta cambiando la ricerca matematica ben oltre la traiettoria attesa. Scorri: prima i dati osservati dal 2000, poi la regressione addestrata fino al 2025, infine il confronto con il 2026.</p>
+    <p class="lead">Artificial Intelligence is changing mathematical research far beyond the expected trajectory. Scroll to see: first, the observed data from 2000; then, the regression trained up to 2025; and finally, the comparison with 2026.</p>
     <div class="kpis">
-      <div><b id="kpi-total">—</b><small>paper OpenAlex, 2019–2026</small></div>
-      <div><b id="kpi-surplus" class="g">—</b><small id="kpi-surplus-lbl">nel 2026 rispetto alla regressione 2000–2025</small></div>
-      <div><b id="kpi-lean">—</b><small>dei paper AI di verifica formale usa Lean (2026)</small></div>
-      <div><b id="kpi-preprint">—</b><small>presenti su arXiv nel 2026</small></div>
+      <div><b id="kpi-total">—</b><small>OpenAlex papers, 2019–2026</small></div>
+      <div><b id="kpi-surplus" class="g">—</b><small id="kpi-surplus-lbl">in 2026 compared to the 2000–2025 regression</small></div>
+      <div><b id="kpi-lean">—</b><small>of AI formal verification papers using Lean (2026)</small></div>
+      <div><b id="kpi-preprint">—</b><small>present on arXiv in 2026</small></div>
     </div>
   </div>
   <div class="curve">
     <div id="hero-curve"></div>
-    <p><span><i></i>Pubblicazioni osservate</span><span><i class="d"></i>Regressione storica (fino al 2025)</span></p>
+    <p><span><i></i>Observed publications</span><span><i class="d"></i>Historical regression (up to 2025)</span></p>
   </div>
 </div></header>
 
 <section id="rivoluzione"><div class="wrap"><div class="split">
   <div class="steps">
     <div class="step st-trend on" data-v="data">
-      <span class="k">Fase 1: i dati osservati</span>
-      <h3 id="s1-title">La crescita delle pubblicazioni, 2000–2026</h3>
-      <p>I dati di OpenAlex mostrano l'intera serie delle pubblicazioni all'incrocio tra matematica e intelligenza artificiale, a partire dagli anni 2000 fino al 2026.</p>
+      <span class="k">Phase 1: observed data</span>
+      <h3 id="s1-title">Growth of publications, 2000–2026</h3>
+      <p>OpenAlex data shows the entire series of publications at the intersection of mathematics and artificial intelligence, from the 2000s through 2026.</p>
     </div>
     <div class="step gold st-trend" data-v="trend">
-      <span class="k" style="color:var(--goldD)">Fase 2: regressione fino al 2025</span>
-      <h3 id="s2-title">Modello esponenziale e polinomiale (2000–2025)</h3>
-      <p id="s2-text">Addestriamo una regressione (esponenziale o polinomiale di 2°/3° grado) su tutta la serie storica fino al 2025 incluso, per stimare la traiettoria di crescita attesa fino al 2026.</p>
+      <span class="k" style="color:var(--goldD)">Phase 2: regression up to 2025</span>
+      <h3 id="s2-title">Exponential and polynomial models (2000–2025)</h3>
+      <p id="s2-text">We train a regression (exponential or 2nd/3rd degree polynomial) on the entire historical series up to 2025 inclusive, to estimate the expected growth trajectory into 2026.</p>
     </div>
     <div class="step st-trend" data-v="boom">
-      <span class="k">Fase 3: il 2026 rispetto al modello</span>
-      <h3>Lo scarto del 2026 rispetto alla curva stimata</h3>
-      <p id="boom-text">Confrontando il valore osservato del 2026 con la proiezione della regressione addestrata fino al 2025, misuriamo quanto il ritmo attuale superi la tendenza storica.</p>
+      <span class="k">Phase 3: 2026 vs. the model</span>
+      <h3>The 2026 gap relative to the estimated curve</h3>
+      <p id="boom-text">By comparing the observed value of 2026 with the projection of the regression trained up to 2025, we measure how much the current pace exceeds the historical trend.</p>
     </div>
   </div>
   <div class="sticky"><div class="panel">
-    <div class="row"><span class="sub" id="t-sub">Pubblicazioni di IA in matematica, 2000–2026</span><span id="phase-badge" class="badge">Dati osservati</span></div>
-    <h3 class="t" style="margin-top:8px">Dati reali, regressione 2000–2025 e proiezione 2026</h3>
+    <div class="row"><span class="sub" id="t-sub">AI publications in mathematics, 2000–2026</span><span id="phase-badge" class="badge">Observed data</span></div>
+    <h3 class="t" style="margin-top:8px">Real data, 2000–2025 regression and 2026 projection</h3>
     <div id="reg-pills" class="pills">
-      <button type="button" class="pill on" data-m="exp">Esponenziale</button>
-      <button type="button" class="pill" data-m="poly2">Polinomiale 2° grado</button>
-      <button type="button" class="pill" data-m="poly3">Polinomiale 3° grado</button>
+      <button type="button" class="pill on" data-m="exp">Exponential</button>
+      <button type="button" class="pill" data-m="poly2">2nd Degree Polynomial</button>
+      <button type="button" class="pill" data-m="poly3">3rd Degree Polynomial</button>
     </div>
     <div class="lg">
-      <div><i class="ln"></i>Dati osservati (OpenAlex)</div>
-      <div id="lg-trend" style="opacity:.25"><i class="dsh"></i><span id="lg-avg-txt">Regressione (2000–2025)</span></div>
-      <div id="lg-boom" style="opacity:.25"><i style="background:var(--sand);border:1px solid var(--gold)"></i>Scarto rispetto al modello</div>
+      <div><i class="ln"></i>Observed data (OpenAlex)</div>
+      <div id="lg-trend" style="opacity:.25"><i class="dsh"></i><span id="lg-avg-txt">Regression (2000–2025)</span></div>
+      <div id="lg-boom" style="opacity:.25"><i style="background:var(--sand);border:1px solid var(--gold)"></i>Gap relative to model</div>
     </div>
     <div id="trend-chart"></div>
     <div class="ml"><span id="ml-win">Training: 2000–2025</span><span id="ml-f">ŷ(t) = —</span><b id="ml-r2">R² = —</b></div>
@@ -196,30 +196,30 @@ footer b{display:block;font:700 18px var(--serif);color:#fff;margin-bottom:4px}
 <section id="hub-globali"><div class="wrap">
   <div class="row" style="align-items:flex-end;margin-bottom:44px">
     <div class="sh" style="margin:0">
-      <span class="k">Capitolo 2: istituzioni</span>
+      <span class="k">Chapter 2: institutions</span>
       <h2>Global Hubs of Innovation</h2>
-      <p>Tre poli accademici a confronto: <strong>University of Oxford</strong>, <strong>New York University (NYU)</strong> e <strong>Università degli Studi di Genova (UniGe)</strong>.</p>
+      <p>A comparison of three academic poles: <strong>University of Oxford</strong>, <strong>New York University (NYU)</strong>, and <strong>University of Genoa (UniGe)</strong>.</p>
     </div>
     <div class="btns" style="margin:0">
-      <button id="btn-labels" class="btn">Nascondi valori</button>
-      <button id="btn-unige" class="btn alt">Evidenzia UniGe</button>
+      <button id="btn-labels" class="btn">Hide values</button>
+      <button id="btn-unige" class="btn alt">Highlight UniGe</button>
     </div>
   </div>
   <div class="stack">
     <div class="panel">
-      <div class="row"><h3 class="t">Produzione annua per ateneo, 2019–2026</h3>
+      <div class="row"><h3 class="t">Annual production per university, 2019–2026</h3>
         <div class="lg" style="margin:0"><div><i style="background:var(--blue)"></i>Oxford</div><div><i style="background:var(--sky)"></i>NYU</div><div><i style="background:var(--gold)"></i>UniGe</div></div></div>
       <div id="grouped" class="scr" style="margin-top:14px"></div>
     </div>
     <div class="panel">
       <div class="row" style="align-items:center">
         <div>
-          <h3 class="t">Anno per anno, a scala condivisa</h3>
-          <p class="sub">Scorri orizzontalmente le card anno per anno dentro questo pannello (stesso asse verticale).</p>
+          <h3 class="t">Year by year, shared scale</h3>
+          <p class="sub">Scroll horizontally through the year cards within this panel (shared vertical axis).</p>
         </div>
         <div class="btns" style="margin:0">
-          <button id="sm-prev" class="btn alt sm-nav" type="button" aria-label="Scorri a sinistra">&#8249;</button>
-          <button id="sm-next" class="btn alt sm-nav" type="button" aria-label="Scorri a destra">&#8250;</button>
+          <button id="sm-prev" class="btn alt sm-nav" type="button" aria-label="Scroll left">&#8249;</button>
+          <button id="sm-next" class="btn alt sm-nav" type="button" aria-label="Scroll right">&#8250;</button>
         </div>
       </div>
       <div id="smalls" class="sm"></div>
@@ -229,50 +229,50 @@ footer b{display:block;font:700 18px var(--serif);color:#fff;margin-bottom:4px}
 
 <section id="prove-formali"><div class="wrap"><div class="split lean">
   <div class="sticky"><div class="panel">
-    <span class="k">Capitolo 3: verifica formale</span>
+    <span class="k">Chapter 3: formal verification</span>
     <div class="row" style="align-items:center;margin-bottom:8px">
       <h2 style="font-size:clamp(28px,3.4vw,40px)">The Rise of Formal Proofs</h2>
     </div>
-    <p class="sub" id="lean-sub">Quota annua di paper AI di verifica formale / theorem proving che utilizzano <strong>Lean</strong> (Lean 3/4 &amp; Mathlib) rispetto ad altri proof assistant.</p>
+    <p class="sub" id="lean-sub">Annual share of AI formal verification / theorem proving papers using <strong>Lean</strong> (Lean 3/4 &amp; Mathlib) compared to other proof assistants.</p>
     <div id="lean-pills" class="pills">
-      <button type="button" class="pill on" data-m="formal">Quota tra i Proof Assistant (AI)</button>
-      <button type="button" class="pill" data-m="mathai">Quota su tutto Math + AI</button>
-      <button type="button" class="pill" data-m="count">Volumi assoluti (paper)</button>
+      <button type="button" class="pill on" data-m="formal">Share among Proof Assistants (AI)</button>
+      <button type="button" class="pill" data-m="mathai">Share of all Math + AI</button>
+      <button type="button" class="pill" data-m="count">Absolute volume (papers)</button>
     </div>
-    <div class="lg"><div><i style="background:var(--blue)"></i><span id="lg-lean-txt">Lean (verificati formalmente)</span></div><div id="lg-nonlean"><i style="background:var(--sand)"></i>Altri proof assistant (Isabelle, Coq/Rocq, HOL…)</div></div>
+    <div class="lg"><div><i style="background:var(--blue)"></i><span id="lg-lean-txt">Lean (formally verified)</span></div><div id="lg-nonlean"><i style="background:var(--sand)"></i>Other proof assistants (Isabelle, Coq/Rocq, HOL…)</div></div>
     <div id="stacked"></div>
   </div></div>
   <div class="steps">
     <div class="step gold st-lean on" data-v="early">
-      <span class="k" style="color:var(--goldD)">2019–2022: i primi passi</span>
-      <h3>Prima della svolta di Lean 4</h3>
-      <p>Tra il 2019 e il 2022 il theorem proving neurale era frammentato tra Isabelle, Coq, HOL Light e Metamath; i lavori basati su Lean e Mathlib erano ancora una minoranza.</p>
+      <span class="k" style="color:var(--goldD)">2019–2022: first steps</span>
+      <h3>Before the Lean 4 breakthrough</h3>
+      <p>Between 2019 and 2022, neural theorem proving was fragmented across Isabelle, Coq, HOL Light, and Metamath; works based on Lean and Mathlib were still a minority.</p>
     </div>
     <div class="step st-lean" data-v="boom">
-      <span class="k">2023–2026: l'accelerazione</span>
-      <h3>L'ascesa di Lean 4 e Mathlib4</h3>
-      <p>Con Lean 4, Mathlib4 e i nuovi prover LLM (AlphaProof, DeepSeek-Prover, Goedel-Prover), Lean diventa rapidamente il linguaggio dominante nella verifica formale assistita dall'IA.</p>
+      <span class="k">2023–2026: acceleration</span>
+      <h3>The rise of Lean 4 and Mathlib4</h3>
+      <p>With Lean 4, Mathlib4, and new LLM provers (AlphaProof, DeepSeek-Prover, Goedel-Prover), Lean is rapidly becoming the dominant language in AI-assisted formal verification.</p>
     </div>
   </div>
 </div></div></section>
 
 <section id="preprint-review"><div class="wrap">
   <div class="sh">
-    <span class="k">Capitolo 4: validazione e preprint</span>
+    <span class="k">Chapter 4: validation and preprints</span>
     <h2>From arXiv to Peer-Reviewed</h2>
-    <p>Confronto pulito anno per anno tra <strong>pubblicazioni peer-reviewed</strong> (riviste e conferenze) e <strong>preprint su arXiv</strong>. Usiamo tutte le <code>locations</code> di OpenAlex, così un paper nato su arXiv e poi pubblicato in rivista <strong>continua a risultare presente su arXiv</strong>.</p>
+    <p>A clean year-by-year comparison between <strong>peer-reviewed publications</strong> (journals and conferences) and <strong>preprints on arXiv</strong>. We use all OpenAlex <code>locations</code>, so a paper born on arXiv and later published in a journal <strong>remains present on arXiv</strong>.</p>
   </div>
 
   <div class="panel" style="margin-bottom:28px">
     <div class="row">
       <div>
-        <h3 class="t">Peer-Reviewed vs arXiv anno per anno, 2019–2026</h3>
-        <p class="sub">Le barre mostrano i volumi totali annuali e l'intersezione esatta (paper presenti sia su arXiv che su rivista/conferenza); la linea tratteggiata indica il rapporto Peer-Reviewed / arXiv.</p>
+        <h3 class="t">Peer-Reviewed vs arXiv year by year, 2019–2026</h3>
+        <p class="sub">Bars show total annual volumes and the exact intersection (papers present on both arXiv and journal/conference); the dashed line indicates the Peer-Reviewed / arXiv ratio.</p>
       </div>
       <div class="lg" style="margin:0">
-        <div><i style="background:var(--blue)"></i>Solo Peer-Reviewed</div>
-        <div><i style="background:var(--mid)"></i>arXiv &rarr; Peer-Reviewed (entrambi)</div>
-        <div><i style="background:var(--gold)"></i>Solo arXiv</div>
+        <div><i style="background:var(--blue)"></i>Peer-Reviewed Only</div>
+        <div><i style="background:var(--mid)"></i>arXiv &rarr; Peer-Reviewed (both)</div>
+        <div><i style="background:var(--gold)"></i>arXiv Only</div>
       </div>
     </div>
     <div id="pr-yearly" class="scr" style="margin-top:14px"></div>
@@ -280,32 +280,32 @@ footer b{display:block;font:700 18px var(--serif);color:#fff;margin-bottom:4px}
 
   <div class="split wf" style="margin-bottom:48px">
     <div class="sticky"><div class="panel">
-      <div class="row" style="align-items:baseline"><h3 id="w-label" style="font-size:26px">Media 2019–2025</h3><span class="sub">1 quadratino = 1%</span></div>
+      <div class="row" style="align-items:baseline"><h3 id="w-label" style="font-size:26px">Average 2019–2025</h3><span class="sub">1 square = 1%</span></div>
       <div id="wf-pills" class="pills"></div>
       <div id="waffle" style="display:flex;justify-content:center;margin:22px 0"></div>
       <div class="cells">
-        <div class="cell pr"><em style="color:var(--blue)"><i style="width:9px;height:9px;border-radius:3px;background:var(--blue)"></i>Solo Peer-reviewed</em><b id="w-pr">—</b><small id="w-prs">—</small></div>
+        <div class="cell pr"><em style="color:var(--blue)"><i style="width:9px;height:9px;border-radius:3px;background:var(--blue)"></i>Peer-reviewed only</em><b id="w-pr">—</b><small id="w-prs">—</small></div>
         <div class="cell bo"><em style="color:var(--mid)"><i style="width:9px;height:9px;border-radius:3px;background:var(--mid)"></i>arXiv + Peer-reviewed</em><b id="w-bo">—</b><small id="w-bos">—</small></div>
-        <div class="cell pre"><em style="color:var(--goldD)"><i style="width:9px;height:9px;border-radius:3px;background:var(--gold)"></i>Solo arXiv</em><b id="w-pre">—</b><small id="w-pres">—</small></div>
+        <div class="cell pre"><em style="color:var(--goldD)"><i style="width:9px;height:9px;border-radius:3px;background:var(--gold)"></i>arXiv only</em><b id="w-pre">—</b><small id="w-pres">—</small></div>
       </div>
     </div></div>
     <div class="steps" style="gap:38vh">
       <div class="step st-wf on" data-v="hist">
-        <span class="k">Fase 1: media 2019–2025</span>
-        <h3>La doppia vita dei paper su arXiv</h3>
-        <p>Negli anni 2019–2025 una quota consistente dei lavori pubblicati su riviste o conferenze conserva anche la propria copia su arXiv (fascia azzurro-ardesia): tracciarla evita di sottostimare arXiv negli anni passati.</p>
+        <span class="k">Phase 1: average 2019–2025</span>
+        <h3>The double life of papers on arXiv</h3>
+        <p>In the years 2019–2025, a significant portion of works published in journals or conferences also maintain their copy on arXiv (slate-blue band); tracking this avoids underestimating arXiv in previous years.</p>
       </div>
       <div class="step gold st-wf" data-v="now">
-        <span class="k" style="color:var(--goldD)">Fase 2: situazione attuale, 2026</span>
-        <h3>L'avanzata immediata su arXiv</h3>
-        <p>Nel 2026 la rapidità di pubblicazione aumenta la quota dei lavori presenti su arXiv rispetto a quelli che hanno già completato la revisione paritaria.</p>
+        <span class="k" style="color:var(--goldD)">Phase 2: current situation, 2026</span>
+        <h3>The immediate advance on arXiv</h3>
+        <p>In 2026, the speed of publication increases the share of works present on arXiv compared to those that have already completed peer review.</p>
       </div>
     </div>
   </div>
 
   <div class="panel">
     <div class="row">
-      <div><h3 class="t">Adozione dell'IA per sottodisciplina, 2019 vs 2026</h3><p class="sub">Variazione della quota di pubblicazioni che usano metodi di IA in ciascuna branca matematica.</p></div>
+      <div><h3 class="t">AI Adoption by sub-discipline, 2019 vs 2026</h3><p class="sub">Variation in the share of publications using AI methods in each branch of mathematics.</p></div>
       <div class="lg" style="margin:0"><div><i style="background:var(--gold);border-radius:50%"></i>2019</div><div><i style="background:var(--blue);border-radius:50%"></i>2026</div></div>
     </div>
     <div id="dumbbell" class="scr" style="margin-top:14px"></div>
@@ -315,19 +315,20 @@ footer b{display:block;font:700 18px var(--serif);color:#fff;margin-bottom:4px}
 <section id="mappa-geografica"><div class="wrap">
   <div class="row" style="align-items:flex-end;margin-bottom:36px">
     <div class="sh" style="margin:0">
-      <span class="k">Capitolo 5: geografia della ricerca</span>
+      <span class="k">Chapter 5: research geography</span>
       <h2>Mapping the Network</h2>
-      <p>Produzione scientifica nei 10 Paesi più attivi, 2019–2026. Il bianco neutro corrisponde esattamente allo <strong>0</strong>; l'Italia ha il bordo dorato.</p>
+      <p>Scientific production in the 10 most active countries, 2019–2026. Neutral white corresponds exactly to <strong>0</strong>; Italy is marked with a golden border.</p>
     </div>
     <div id="heat-lg" class="panel" style="padding:14px 18px"></div>
   </div>
   <div class="panel">
     <div id="heat" class="scr"></div>
-    <div class="foot"><span>Dati letti da <code>./data/openalex_ai_math.json</code></span><span>Unità: paper / anno (0 = bianco)</span></div>
+    <div class="foot"><span>Data read from <code>./data/openalex_ai_math.json</code></span><span>Unit: papers / year (0 = white)</span></div>
   </div>
 </div></section>
 
-<footer><div class="wrap"><b>AI-Math Data, 2000–2026</b><span id="meta">Fonti: OpenAlex API, arXiv, Lean / Mathlib4.</span></div></footer>
+<footer><div class="wrap"><b>AI-Math Data, 2000–2026</b><span id="meta">Sources: OpenAlex API, arXiv, Lean / Mathlib4.</span></div></footer>
+</body>
 
 <script>
 let D,SER=[],HIST_START="2000",REG=null,regMode="exp",leanMode="formal",labels=true,uni=false,tPh="data",lPh="early",wMode="hist",wR;
