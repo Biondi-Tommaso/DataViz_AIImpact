@@ -4,7 +4,7 @@
     "filter": "topics.field.id:26,topics.subfield.id:1702",
     "arxivSourceId": "S4306400194",
     "period": "2000-2026",
-    "generatedAt": "2026-11-25T14:17:05.388875+00:00"
+    "generatedAt": "2026-11-26T10:17:02.935178+00:00"
   },
   "preAiHistoricalSeries": [
     {
@@ -115,56 +115,56 @@
   "universitiesByYear": [
     {
       "year": "2019",
-      "Oxford": 92,
-      "NYU": 48,
+      "Princeton": 58,
+      "Harvard": 93,
       "UniGe": 13
     },
     {
       "year": "2020",
-      "Oxford": 112,
-      "NYU": 52,
+      "Princeton": 76,
+      "Harvard": 90,
       "UniGe": 5
     },
     {
       "year": "2021",
-      "Oxford": 127,
-      "NYU": 66,
+      "Princeton": 39,
+      "Harvard": 97,
       "UniGe": 11
     },
     {
       "year": "2022",
-      "Oxford": 131,
-      "NYU": 50,
+      "Princeton": 38,
+      "Harvard": 106,
       "UniGe": 9
     },
     {
       "year": "2023",
-      "Oxford": 85,
-      "NYU": 73,
+      "Princeton": 35,
+      "Harvard": 109,
       "UniGe": 16
     },
     {
       "year": "2024",
-      "Oxford": 87,
-      "NYU": 69,
+      "Princeton": 34,
+      "Harvard": 130,
       "UniGe": 17
     },
     {
       "year": "2025",
-      "Oxford": 105,
-      "NYU": 80,
+      "Princeton": 43,
+      "Harvard": 169,
       "UniGe": 9
     },
     {
       "year": "2026",
-      "Oxford": 173,
-      "NYU": 101,
+      "Princeton": 51,
+      "Harvard": 203,
       "UniGe": 21
     }
   ],
   "geographicHeatmap": [
     {
-      "country": "Stati Uniti",
+      "country": "United States",
       "code": "US",
       "values": {
         "2019": 2702,
@@ -178,7 +178,7 @@
       }
     },
     {
-      "country": "Cina",
+      "country": "China",
       "code": "CN",
       "values": {
         "2019": 1294,
@@ -192,7 +192,7 @@
       }
     },
     {
-      "country": "Regno Unito",
+      "country": "United Kingdom",
       "code": "GB",
       "values": {
         "2019": 693,
@@ -206,7 +206,7 @@
       }
     },
     {
-      "country": "Germania",
+      "country": "Germany",
       "code": "DE",
       "values": {
         "2019": 466,
@@ -220,7 +220,7 @@
       }
     },
     {
-      "country": "Francia",
+      "country": "France",
       "code": "FR",
       "values": {
         "2019": 679,
@@ -234,7 +234,7 @@
       }
     },
     {
-      "country": "Italia",
+      "country": "Italy",
       "code": "IT",
       "values": {
         "2019": 311,
@@ -262,7 +262,7 @@
       }
     },
     {
-      "country": "Giappone",
+      "country": "Japan",
       "code": "JP",
       "values": {
         "2019": 319,
@@ -276,7 +276,7 @@
       }
     },
     {
-      "country": "Svizzera",
+      "country": "Switzerland",
       "code": "CH",
       "values": {
         "2019": 172,
@@ -363,9 +363,9 @@
       "year": "2025",
       "verifiedPct": 15.6,
       "unverifiedPct": 84.4,
-      "mathAiPct": 9.4,
-      "verifiedCount": 1719,
-      "formalTotalCount": 11018,
+      "mathAiPct": 9.41,
+      "verifiedCount": 1720,
+      "formalTotalCount": 11020,
       "totalCount": 18286
     },
     {
@@ -374,7 +374,7 @@
       "unverifiedPct": 56.3,
       "mathAiPct": 36.19,
       "verifiedCount": 9853,
-      "formalTotalCount": 22530,
+      "formalTotalCount": 22531,
       "totalCount": 27223
     }
   ],
@@ -526,32 +526,32 @@
   ],
   "subfieldsComparison": [
     {
-      "field": "Logica & Fondamenti",
+      "field": "Logic & Foundations",
       "pct2019": 9.7,
       "pct2026": 12.8
     },
     {
-      "field": "Analisi Numerica & PDE",
+      "field": "Numerical Analysis & PDEs",
       "pct2019": 8.2,
       "pct2026": 13.7
     },
     {
-      "field": "Combinatoria & Teoria Grafi",
+      "field": "Combinatorics & Graph Theory",
       "pct2019": 7.6,
       "pct2026": 3.4
     },
     {
-      "field": "Algebra & Teoria dei Numeri",
+      "field": "Algebra & Number Theory",
       "pct2019": 4.7,
       "pct2026": 7.6
     },
     {
-      "field": "Geometria & Topologia",
+      "field": "Geometry & Topology",
       "pct2019": 5.7,
       "pct2026": 4.1
     },
     {
-      "field": "Probabilità & Statistica Mat.",
+      "field": "Probability & Math. Statistics",
       "pct2019": 6.5,
       "pct2026": 12.8
     }

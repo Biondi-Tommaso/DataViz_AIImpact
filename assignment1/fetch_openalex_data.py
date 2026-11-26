@@ -7,29 +7,29 @@ import requests
 BASE_URL = "https://api.openalex.org/works"
 CONTACT_EMAIL = os.environ.get("OPENALEX_EMAIL", "research@example.org")
 API_KEY = os.environ.get("OPENALEX_API_KEY", "").strip()
-HEADERS = {"User-Agent": f"AIMathObservatory/1.3 (mailto:{CONTACT_EMAIL})"}
+HEADERS = {"User-Agent": f"AIMathObservatory/1.4 (mailto:{CONTACT_EMAIL})"}
 
-# Tassonomia aggiornata OpenAlex (Topics sostituisce Concepts dal 2024):
+# Updated OpenAlex taxonomy (Topics replaced Concepts in 2024):
 # Field 26 = Mathematics, Subfield 1702 = Artificial Intelligence
 MATH_FIELD_ID = "26"
 AI_SUBFIELD_ID = "1702"
 BASE_FILTER = f"topics.field.id:{MATH_FIELD_ID},topics.subfield.id:{AI_SUBFIELD_ID}"
 
-# Concetti legacy mantenuti solo per i sotto-campi specifici nello step 6
+# Legacy Concept IDs retained only for specific mathematical subfields in Step 6
 MATH_CONCEPT_ID = "C33923547"
 ARXIV_SOURCE_ID = "S4306400194"
 
-YEARS_HISTORY = [str(y) for y in range(2000, 2026)]  # 2000–2025 per la regressione storica
-YEARS_MAIN = [str(y) for y in range(2019, 2027)]     # 2019–2026 per i dettagli annuali
+YEARS_HISTORY = [str(y) for y in range(2000, 2026)]  # 2000–2025 for historical regression
+YEARS_MAIN = [str(y) for y in range(2019, 2027)]     # 2019–2026 for annual breakdowns
 
-# Query Lean senza falsi positivi (esclude "lean manufacturing", "lean body", ecc.)
+# Lean query excluding false positives (e.g., "lean manufacturing", "lean body")
 LEAN_SEARCH = (
     'mathlib OR mathlib4 OR "Lean 4" OR "Lean4" OR "Lean prover" OR "Lean theorem prover" '
     'OR (Lean AND ("proof assistant" OR "theorem proving" OR "theorem prover" '
     'OR formalization OR autoformalization OR "formal proof" OR "formal verification"))'
 )
 
-# Universo per la verifica formale / theorem proving (Lean vs Isabelle, Coq/Rocq, HOL, ecc.)
+# Formal verification / theorem proving universe (Lean vs Isabelle, Coq/Rocq, HOL, etc.)
 FORMAL_SEARCH = (
     '"theorem proving" OR "proof assistant" OR autoformalization OR "formal proof" '
     'OR "formal mathematics" OR Isabelle OR Coq OR Rocq OR "HOL Light" OR Metamath '
@@ -38,7 +38,7 @@ FORMAL_SEARCH = (
 
 
 def openalex_get(params: dict, retries: int = 4) -> dict:
-    """Esegue una richiesta GET a OpenAlex con gestione API key, polite pool e retry."""
+    """Perform an OpenAlex GET request with API key, polite pool, and retry logic."""
     req_params = dict(params)
     req_params.setdefault("mailto", CONTACT_EMAIL)
     if API_KEY:
@@ -48,14 +48,14 @@ def openalex_get(params: dict, retries: int = 4) -> dict:
         resp = requests.get(BASE_URL, params=req_params, headers=HEADERS, timeout=45)
         if resp.status_code in (429, 500, 502, 503, 504) and attempt < retries - 1:
             wait_s = 1.5 * (2 ** attempt)
-            print(f"  [OpenAlex {resp.status_code}] attendo {wait_s:.1f}s e riprovo...")
+            print(f"  [OpenAlex {resp.status_code}] waiting {wait_s:.1f}s and retrying...")
             time.sleep(wait_s)
             continue
         if not resp.ok:
             raise RuntimeError(f"OpenAlex HTTP {resp.status_code}: {resp.text[:300]}")
         time.sleep(0.18)
         return resp.json()
-    raise RuntimeError("OpenAlex: numero massimo di tentativi superato.")
+    raise RuntimeError("OpenAlex: maximum number of retries exceeded.")
 
 
 def fetch_group_by_year(
@@ -63,7 +63,7 @@ def fetch_group_by_year(
     year_range: str = "2019-2026",
     search_query: str | None = None,
 ) -> dict[str, int]:
-    """Esegue una query OpenAlex raggruppata per anno di pubblicazione."""
+    """Run an OpenAlex query grouped by publication year."""
     full_filter = f"{extra_filter},publication_year:{year_range}"
     params = {
         "filter": full_filter,
@@ -82,7 +82,7 @@ def fetch_group_by_year(
 
 
 def fetch_count(extra_filter: str, search_query: str | None = None) -> int:
-    """Restituisce il conteggio totale (meta.count) per un filtro."""
+    """Return total work count (meta.count) for a given filter."""
     params = {"filter": extra_filter, "per_page": 1}
     if search_query:
         params["search"] = search_query
@@ -91,7 +91,7 @@ def fetch_count(extra_filter: str, search_query: str | None = None) -> int:
 
 
 def fetch_search_counts_by_year(scope_filter: str, search_query: str) -> dict[str, int]:
-    """Ottiene i conteggi 2019–2026 per una query di ricerca con fallback anno per anno."""
+    """Fetch 2019–2026 counts for a search query with year-by-year fallback."""
     counts = fetch_group_by_year(scope_filter, "2019-2026", search_query=search_query)
     if sum(counts.values()) == 0:
         counts = {
@@ -102,7 +102,7 @@ def fetch_search_counts_by_year(scope_filter: str, search_query: str) -> dict[st
 
 
 def fetch_ai_or_math_union(search_query: str) -> dict[str, int]:
-    """Calcola l'unione esatta (AI subfield 1702) U (Math field 26) via inclusione-esclusione."""
+    """Compute exact union (AI subfield 1702) U (Math field 26) via inclusion-exclusion."""
     ai_only_and_both = fetch_search_counts_by_year(f"topics.subfield.id:{AI_SUBFIELD_ID}", search_query)
     math_only_and_both = fetch_search_counts_by_year(f"topics.field.id:{MATH_FIELD_ID}", search_query)
     both = fetch_search_counts_by_year(BASE_FILTER, search_query)
@@ -113,7 +113,7 @@ def fetch_ai_or_math_union(search_query: str) -> dict[str, int]:
 
 
 def main():
-    print("1/6 Scarico serie totale 2000–2026 (Mathematics field:26 + AI subfield:1702)...")
+    print("1/6 Fetching 2000–2026 series (Mathematics field:26 + AI subfield:1702)...")
     totals_all = fetch_group_by_year(BASE_FILTER, "2000-2026")
 
     historical_series = [
@@ -121,10 +121,10 @@ def main():
         for yr in YEARS_HISTORY
     ]
 
-    print("2/6 Scarico dati per Università (Oxford, NYU, UniGe)...")
+    print("2/6 Fetching University data (Princeton, Harvard, UniGe)...")
     inst_ids = {
-        "Oxford": "I40120149",
-        "NYU": "I57206974",
+        "Princeton": "I20089843",
+        "Harvard": "I136199984",
         "UniGe": "I83816512",
     }
     inst_counts = {
@@ -134,24 +134,24 @@ def main():
     universities_by_year = [
         {
             "year": yr,
-            "Oxford": inst_counts["Oxford"].get(yr, 0),
-            "NYU": inst_counts["NYU"].get(yr, 0),
+            "Princeton": inst_counts["Princeton"].get(yr, 0),
+            "Harvard": inst_counts["Harvard"].get(yr, 0),
             "UniGe": inst_counts["UniGe"].get(yr, 0),
         }
         for yr in YEARS_MAIN
     ]
 
-    print("3/6 Scarico distribuzione geografica (Top 10 Paesi)...")
+    print("3/6 Fetching geographic distribution (Top 10 Countries)...")
     countries = [
-        ("Stati Uniti", "US"),
-        ("Cina", "CN"),
-        ("Regno Unito", "GB"),
-        ("Germania", "DE"),
-        ("Francia", "FR"),
-        ("Italia", "IT"),
+        ("United States", "US"),
+        ("China", "CN"),
+        ("United Kingdom", "GB"),
+        ("Germany", "DE"),
+        ("France", "FR"),
+        ("Italy", "IT"),
         ("Canada", "CA"),
-        ("Giappone", "JP"),
-        ("Svizzera", "CH"),
+        ("Japan", "JP"),
+        ("Switzerland", "CH"),
         ("India", "IN"),
     ]
     geographic_heatmap = []
@@ -163,7 +163,7 @@ def main():
             "values": {yr: c_counts.get(yr, 0) for yr in YEARS_MAIN},
         })
 
-    print("4/6 Scarico adozione di Lean (unione AI U Math, e quota tra i Proof Assistant)...")
+    print("4/6 Fetching Lean adoption (AI U Math union, and share among Proof Assistants)...")
     lean_counts = fetch_ai_or_math_union(LEAN_SEARCH)
     formal_counts = fetch_ai_or_math_union(FORMAL_SEARCH)
 
@@ -186,12 +186,12 @@ def main():
             "totalCount": tot_math_ai,
         })
         print(
-            f"  {yr}: Lean={verified} paper | "
-            f"{formal_share_pct}% tra i Proof Assistant ({verified}/{formal_tot}) | "
-            f"{math_ai_pct}% su Math+AI ({verified}/{tot_math_ai})"
+            f"  {yr}: Lean={verified} papers | "
+            f"{formal_share_pct}% among Proof Assistants ({verified}/{formal_tot}) | "
+            f"{math_ai_pct}% of Math+AI ({verified}/{tot_math_ai})"
         )
 
-    print("5/6 Scarico confronto pulito Peer-Reviewed vs arXiv (locations)...")
+    print("5/6 Fetching Peer-Reviewed vs arXiv comparison (locations)...")
     arxiv_counts = fetch_group_by_year(f"{BASE_FILTER},locations.source.id:{ARXIV_SOURCE_ID}")
     peer_counts = fetch_group_by_year(f"{BASE_FILTER},locations.source.type:journal|conference")
     both_counts = fetch_group_by_year(
@@ -232,14 +232,14 @@ def main():
             "ratioPeerToArxiv": round(peer_tot / max(arxiv_tot, 1), 2),
         })
 
-    print("6/6 Scarico confronto sottodiscipline matematiche (2019 vs 2026)...")
+    print("6/6 Fetching mathematical subfields comparison (2019 vs 2026)...")
     subfields = [
-        ("Logica & Fondamenti", f"concepts.id:{MATH_CONCEPT_ID},concepts.id:C111472728"),
-        ("Analisi Numerica & PDE", f"concepts.id:{MATH_CONCEPT_ID},concepts.id:C28826006"),
-        ("Combinatoria & Teoria Grafi", f"concepts.id:{MATH_CONCEPT_ID},concepts.id:C114614502"),
-        ("Algebra & Teoria dei Numeri", f"concepts.id:{MATH_CONCEPT_ID},concepts.id:C136119220"),
-        ("Geometria & Topologia", f"concepts.id:{MATH_CONCEPT_ID},concepts.id:C2524010"),
-        ("Probabilità & Statistica Mat.", f"concepts.id:{MATH_CONCEPT_ID},concepts.id:C105795698"),
+        ("Logic & Foundations", f"concepts.id:{MATH_CONCEPT_ID},concepts.id:C111472728"),
+        ("Numerical Analysis & PDEs", f"concepts.id:{MATH_CONCEPT_ID},concepts.id:C28826006"),
+        ("Combinatorics & Graph Theory", f"concepts.id:{MATH_CONCEPT_ID},concepts.id:C114614502"),
+        ("Algebra & Number Theory", f"concepts.id:{MATH_CONCEPT_ID},concepts.id:C136119220"),
+        ("Geometry & Topology", f"concepts.id:{MATH_CONCEPT_ID},concepts.id:C2524010"),
+        ("Probability & Math. Statistics", f"concepts.id:{MATH_CONCEPT_ID},concepts.id:C105795698"),
     ]
     subfields_comparison = []
     for label, sf_filter in subfields:
@@ -274,7 +274,7 @@ def main():
     with open(out_path, "w", encoding="utf-8") as f:
         json.dump(payload, f, ensure_ascii=False, indent=2)
 
-    print(f"Completato! File salvato in: {out_path}")
+    print(f"Done! File saved to: {out_path}")
 
 
 if __name__ == "__main__":
