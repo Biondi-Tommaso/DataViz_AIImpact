@@ -317,12 +317,15 @@ const clickable=[];
     scene.add(g);clickable.push(g);
   });
   // ---- custom 3D models ----
+  const SIT=[false,true,false]; // true = abbassa il modello fino a farlo poggiare sul piedistallo
   const hold=[null,null,null],mul=[1,1,1],names=['I · Research','II · Cost','III · Mind'];
   function place(i,obj){
     const m=slots[i];if(hold[i]){m.remove(hold[i]);hold[i]=null}
     if(obj){const box=new THREE.Box3().setFromObject(obj),size=box.getSize(new THREE.Vector3()),ctr=box.getCenter(new THREE.Vector3());
       obj.position.sub(ctr);const w=new THREE.Group();w.add(obj);w.userData.k=5.5/(Math.max(size.x,size.y,size.z)||1);
-      w.scale.setScalar(w.userData.k*mul[i]);hold[i]=w;m.add(w);w.traverse(o=>{if(o.isMesh)o.userData.idx=i})}
+      w.scale.setScalar(w.userData.k*mul[i]);
+      if(SIT[i]){const h=size.y*w.userData.k;w.position.y=-(5.5-h)/2} // basso: appoggia la base alla stessa quota degli altri
+      hold[i]=w;m.add(w);w.traverse(o=>{if(o.isMesh)o.userData.idx=i})}
     m.children.forEach(c=>{c.visible=c===hold[i]||!obj});
   }
   upd.push(t=>hold.forEach((w,i)=>{if(w){w.rotation.y=t*.4;w.scale.setScalar(w.userData.k*mul[i])}}));
